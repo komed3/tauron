@@ -30,3 +30,10 @@ target_link_libraries(
   PRIVATE
   tauron
 )
+
+target_compile_options(
+  tauron PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+)
