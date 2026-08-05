@@ -20,3 +20,18 @@ Tauron is designed around a few core principles:
 - Low runtime overhead
 - Clean and maintainable implementation
 - Extensible and experiment-friendly design
+
+## Core Concept
+
+Instead of relying on a single cryptographic mechanism, Tauron aims to combine multiple independent concepts into a layered architecture.
+
+Possible components include:
+
+- Key derivation
+- State initialization
+- Non-linear mixing
+- Diffusion and permutation
+- Keystream generation
+- Dynamic state mutation
+
+The project intentionally separates these components to allow experimentation with different implementations and combinations.
