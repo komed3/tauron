@@ -4,3 +4,5 @@
 
 #include <tauron/core/context.hpp>
 #include <tauron/core/module.hpp>
+
+namespace tauron::module {}
