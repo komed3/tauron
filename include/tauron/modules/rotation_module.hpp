@@ -11,5 +11,9 @@ namespace tauron {
     std::string_view name() const override {
       return "rotation";
     }
+
+    void process( Context& ) override {
+      std::cout << "Rotation module executed\n";
+    }
   };
 }
