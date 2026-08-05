@@ -73,3 +73,11 @@ The framework is intended to support configurable parameters such as:
 - Streaming behavior
 
 This allows different configurations to be benchmarked and analyzed under identical conditions.
+
+## Project Status
+
+Tauron is currently an experimental research project.
+
+The implementation is expected to evolve significantly as new ideas, experiments and performance evaluations are conducted.
+
+**Do not use Tauron to protect real-world sensitive data.**
