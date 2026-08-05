@@ -8,6 +8,6 @@ int main() {
   tauron::Engine engine;
   tauron::Context context;
 
-  engine.use( std::make_unique< tauron::RotationModule >() );
+  engine.use< tauron::RotationModule >();
   engine.process( context );
 }
