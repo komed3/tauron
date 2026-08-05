@@ -6,5 +6,10 @@
 #include <tauron/core/module.hpp>
 
 namespace tauron {
-  class RotationModule final : public Module {};
+  class RotationModule final : public Module {
+  public:
+    std::string_view name() const override {
+      return "rotation";
+    }
+  };
 }
