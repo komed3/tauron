@@ -5,6 +5,6 @@
 #include <tauron/core/context.hpp>
 #include <tauron/core/module.hpp>
 
-namespace tauron::module {
+namespace tauron {
   class RotationModule final : public Module {};
 }
