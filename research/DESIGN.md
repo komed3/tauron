@@ -50,3 +50,13 @@ graph LR;
 ```
 
 The intention is to make each stage of the encryption process dependent on the complete history of the stream rather than only on the original key material.
+
+## Security Philosophy
+
+Tauron is built around the following research objective:
+
+> Recovering the secret key should not be sufficient to reconstruct the complete internal evolution of an active encryption stream.
+
+> Likewise, recovering intermediate states should ideally not allow efficient reconstruction of previous states.
+
+These are research goals rather than proven security guarantees and will be continuously evaluated throughout the project.
