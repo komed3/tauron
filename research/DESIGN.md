@@ -60,3 +60,16 @@ Tauron is built around the following research objective:
 > Likewise, recovering intermediate states should ideally not allow efficient reconstruction of previous states.
 
 These are research goals rather than proven security guarantees and will be continuously evaluated throughout the project.
+
+## Configuration
+
+The framework is intended to support configurable parameters such as:
+
+- Key size
+- Internal state size
+- Number of rounds
+- Security profile
+- Performance profile
+- Streaming behavior
+
+This allows different configurations to be benchmarked and analyzed under identical conditions.
