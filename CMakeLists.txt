@@ -19,3 +19,14 @@ target_include_directories(
   PUBLIC
   include
 )
+
+add_executable(
+  basic
+  examples/basic.cpp
+)
+
+target_link_libraries(
+  basic
+  PRIVATE
+  tauron
+)
