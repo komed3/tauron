@@ -35,3 +35,18 @@ Possible components include:
 - Dynamic state mutation
 
 The project intentionally separates these components to allow experimentation with different implementations and combinations.
+
+## Dynamic State Evolution
+
+One of Tauron's primary research areas is the concept of a continuously evolving internal state.
+
+Rather than producing encryption output from a static internal state, every processed block may transform the cipher state before generating the next output.
+
+```mermaid
+graph LR;
+  a[Initial State]-->b[Generate Output];
+  b-->c[Mutate Internal State];
+  c-->d[Next Output];
+```
+
+The intention is to make each stage of the encryption process dependent on the complete history of the stream rather than only on the original key material.
