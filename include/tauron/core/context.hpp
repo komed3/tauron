@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "tauron/state/state.hpp"
 
 namespace tauron::core {
