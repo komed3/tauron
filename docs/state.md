@@ -64,3 +64,16 @@ Possible examples include:
 - Internal iteration counter
 
 Counters allow identical input and keys to produce deterministic execution while ensuring the state evolves continuously.
+
+### Entropy Pool
+
+The entropy pool stores values used to increase internal diversity.
+
+Possible future sources include:
+
+- Derived key material
+- Previous state values
+- Internal mixing operations
+- Timing-independent deterministic generators
+
+The entropy pool is never intended to rely on external randomness during normal execution.
