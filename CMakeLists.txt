@@ -12,11 +12,19 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
+  include/tauron/core/context.hpp
+  include/tauron/core/engine.hpp
+  include/tauron/modules/cipher.hpp
+  include/tauron/modules/evolution.hpp
+  include/tauron/modules/module.hpp
+  include/tauron/pipeline/pipeline.hpp
+  include/tauron/state/state.hpp
+  include/tauron/utils/hex.hpp
+
   src/core/engine.cpp
   src/pipeline/pipeline.cpp
   src/modules/evolution.cpp
   src/modules/cipher.cpp
-  src/utils/hex.cpp
 )
 
 target_include_directories(
