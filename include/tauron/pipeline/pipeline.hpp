@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "tauron/modules/module.hpp"
 #include "tauron/core/context.hpp"
+#include "tauron/modules/module.hpp"
 
 namespace tauron::pipeline {
 
