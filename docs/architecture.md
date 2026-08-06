@@ -240,3 +240,33 @@ The system architecture defines how nodes communicate and derive states.
 The execution architecture defines how a single node processes data internally.
 
 A Tauron node is built around a lightweight, modular execution engine.
+
+## Component Architecture
+
+```mermaid
+flowchart TD
+  CLI["CLI"]
+  Engine["Engine"]
+  Pipeline["Pipeline"]
+  Context["Execution Context"]
+
+  ModuleA["Module"]
+  ModuleB["Module"]
+  ModuleC["Module"]
+
+  Output["Result"]
+
+  CLI --> Engine
+  Engine --> Pipeline
+
+  Pipeline --> ModuleA
+  ModuleA --> ModuleB
+  ModuleB --> ModuleC
+
+  Engine -. manage .-> Context
+  Context -. shared .-> ModuleA
+  Context -. shared .-> ModuleB
+  Context -. shared .-> ModuleC
+
+  ModuleC --> Output
+```
