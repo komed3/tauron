@@ -32,3 +32,69 @@ A Tauron instance **does not distinguish between sender and receiver**. Every pa
 - Strong separation of responsibilities
 - Configurable cryptographic pipeline
 - Future-proof and easy to extend
+
+## High-Level Architecture
+
+```mermaid
+flowchart TD
+  User["Application / CLI"]
+  Node["Tauron Node"]
+  Context["Execution Context"]
+  Pipeline["Processing Pipeline"]
+  Modules["Cryptographic Modules"]
+  State["Local State"]
+  Output["Encrypted / Decrypted Data"]
+
+  User --> Node
+  Node --> Context
+  Context --> State
+  Context --> Pipeline
+  Pipeline --> Modules
+  Modules --> State
+  Modules --> Output
+```
+
+## Node-Based Communication Model
+
+Tauron uses a node-based model instead of a sender/receiver model.
+
+Every participant owns an independent Tauron instance.
+
+```mermaid
+flowchart LR
+  NodeA["Node A"]
+  NodeB["Node B"]
+  NodeC["Node C"]
+
+  NodeA <-->|"Independent state evolution"| NodeB
+  NodeA <-->|"Independent state evolution"| NodeC
+  NodeB <-->|"Independent state evolution"| NodeC
+```
+
+Nodes never exchange internal states.
+
+Each node derives required states independently.
+
+## State Hierarchy
+
+Tauron uses multiple layers of state.
+
+Each layer is derived from the previous layer.
+
+Lower layers must never be able to reconstruct higher layers.
+
+```mermaid
+flowchart TD
+  Root["Root Secret"]
+  Session["Session State"]
+  Direction["Direction State"]
+  NodeState["Node State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Root -->|"derive"| Session
+  Session -->|"derive"| Direction
+  Direction -->|"derive"| NodeState
+  NodeState -->|"derive"| Epoch
+  Epoch -->|"derive"| Packet
+```
