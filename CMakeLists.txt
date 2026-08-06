@@ -16,6 +16,7 @@ add_library(
   src/pipeline/pipeline.cpp
   src/modules/evolution.cpp
   src/modules/cipher.cpp
+  include/tauron/utils/hex.hpp
 )
 
 target_include_directories(
