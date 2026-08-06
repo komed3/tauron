@@ -22,3 +22,32 @@ The **cryptographic algorithm** itself is intentionally **separated from the eng
 - Strong separation of responsibilities
 - Configurable cryptographic pipeline
 - Future-proof and easy to extend
+
+## High-Level Architecture
+
+```mermaid
+flowchart TD
+  CLI["CLI"]
+  Engine["Engine"]
+  Pipeline["Pipeline"]
+  Context["Execution Context"]
+
+  ModuleA["Module"]
+  ModuleB["Module"]
+  ModuleC["Module"]
+
+  Output["Result"]
+
+  CLI --> Engine
+  Engine --> Pipeline
+
+  Pipeline --> ModuleA
+  ModuleA --> ModuleB
+  ModuleB --> ModuleC
+
+  Context -. shared .-> ModuleA
+  Context -. shared .-> ModuleB
+  Context -. shared .-> ModuleC
+
+  ModuleC --> Output
+```
