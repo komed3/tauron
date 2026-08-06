@@ -126,3 +126,13 @@ flowchart LR
 Every module contributes to the evolution of the state.
 
 No module should assume that the state remains unchanged after another module has executed.
+
+## Lifetime
+
+The state is created during engine initialization.
+
+It exists for the duration of exactly one encryption or decryption operation.
+
+Once execution completes, the state should be securely cleared before being released.
+
+No state information should survive between independent operations unless explicitly defined by the engine.
