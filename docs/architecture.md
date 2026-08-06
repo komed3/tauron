@@ -68,3 +68,18 @@ Responsibilities:
 - Report progress and errors
 
 The CLI should remain thin and contain no cryptographic logic.
+
+### Engine
+
+The engine is responsible for orchestrating the entire execution.
+
+Responsibilities:
+
+- Create the execution context
+- Load configuration
+- Build the processing pipeline
+- Register modules
+- Execute the pipeline
+- Handle errors and lifecycle events
+
+The engine does not implement cryptographic primitives.
