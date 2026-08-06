@@ -17,6 +17,8 @@ add_library(
   include/tauron/modules/module.hpp
   include/tauron/modules/registry.hpp
   include/tauron/utils/hex.hpp
+
+  src/modules/registry.cpp
 )
 
 target_include_directories(
