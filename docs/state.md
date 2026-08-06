@@ -136,3 +136,35 @@ It exists for the duration of exactly one encryption or decryption operation.
 Once execution completes, the state should be securely cleared before being released.
 
 No state information should survive between independent operations unless explicitly defined by the engine.
+
+## Design Principles
+
+### Stateful Processing
+
+The algorithm is intentionally state-driven.
+
+Every processed block or stream segment contributes to the evolution of the internal state.
+
+### Deterministic Mutation
+
+State evolution must remain completely deterministic.
+
+No hidden randomness should influence execution.
+
+### Algorithm Independence
+
+The engine defines the existence of the state.
+
+The algorithm defines how the state changes.
+
+### Continuous Evolution
+
+The state should never become static during long-running operations.
+
+Even when processing repetitive input, internal state evolution should continue.
+
+### Efficient Memory Layout
+
+The state should remain compact and cache-friendly.
+
+Avoid unnecessary allocations or fragmented memory structures.
