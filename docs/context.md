@@ -20,3 +20,17 @@ The execution context should be:
 - Easy to inspect during debugging
 - Independent of individual cryptographic modules
 - Reusable for both block and streaming operations
+
+## High-Level Structure
+
+```mermaid
+flowchart TD
+  Context["Execution Context"]
+
+  Context --> Config["Configuration"]
+  Context --> Keys["Key Store"]
+  Context --> State["Internal State"]
+  Context --> Buffers["Buffers"]
+  Context --> Metadata["Metadata"]
+  Context --> Runtime["Runtime Information"]
+```
