@@ -106,3 +106,23 @@ Examples include:
 - Synchronization markers
 
 These values support execution but are not considered long-term cryptographic state.
+
+## State Evolution
+
+```mermaid
+flowchart LR
+  Initial["Initial State"]
+  M1["Module"]
+  M2["Module"]
+  M3["Module"]
+  Final["Updated State"]
+
+  Initial --> M1
+  M1 --> M2
+  M2 --> M3
+  M3 --> Final
+```
+
+Every module contributes to the evolution of the state.
+
+No module should assume that the state remains unchanged after another module has executed.
