@@ -9,8 +9,8 @@
 namespace tauron::core {
 
 Engine::Engine() {
-  pipeline.registerModule( std::make_unique< modules::EvolutionModule >() );
-  pipeline.registerModule( std::make_unique< modules::CipherModule >() );
+  pipeline.add( std::make_unique< modules::EvolutionModule >() );
+  pipeline.add( std::make_unique< modules::CipherModule >() );
 }
 
 void Engine::run() {
