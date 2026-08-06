@@ -149,3 +149,11 @@ sequenceDiagram
 Each execution creates exactly one context.
 
 Contexts are never shared between independent operations.
+
+## Ownership
+
+The engine owns the execution context.
+
+Modules receive a reference to the context during execution.
+
+No module should take ownership of the context or extend its lifetime.
