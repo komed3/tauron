@@ -434,3 +434,17 @@ The execution context is the only shared communication channel.
 The architecture should support both fixed-size blocks and continuous data streams.
 
 No component should assume that all input data is available at once.
+
+## Future Extensions
+
+The architecture intentionally leaves room for future features, including:
+
+- Additional cryptographic modules
+- Multiple pipeline configurations
+- Parallel execution where applicable
+- Hardware acceleration
+- Plugin-based module discovery
+- Benchmark mode
+- Test and validation framework
+
+These features should integrate without requiring fundamental architectural changes.
