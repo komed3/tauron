@@ -20,6 +20,8 @@ void Engine::run() {
   pipeline.process( context );
 
   std::cout << "Finished.\n";
+
+  for ( const auto& byte : context.output ) std::cout << byte;
 }
 
 }
