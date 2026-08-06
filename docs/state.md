@@ -77,3 +77,32 @@ Possible future sources include:
 - Timing-independent deterministic generators
 
 The entropy pool is never intended to rely on external randomness during normal execution.
+
+### Mutation Data
+
+Mutation data controls how the state evolves over time.
+
+Rather than following a completely static execution path, future modules may use these values to influence:
+
+- Transformation order
+- Rotation values
+- Mixing patterns
+- Internal scheduling
+- Module behavior
+
+Mutation must always remain deterministic.
+
+Identical input and configuration must produce identical output.
+
+### Runtime Values
+
+Runtime values contain temporary execution data.
+
+Examples include:
+
+- Active module index
+- Current processing phase
+- Temporary intermediate values
+- Synchronization markers
+
+These values support execution but are not considered long-term cryptographic state.
