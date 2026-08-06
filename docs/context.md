@@ -9,3 +9,14 @@ It represents the **complete state of a single encryption or decryption operatio
 Rather than communicating directly, **modules exchange information** exclusively **through the execution context**.
 
 A context exists only for the lifetime of a single operation.
+
+## Design Goals
+
+The execution context should be:
+
+- Lightweight
+- Cache-friendly
+- Deterministic
+- Easy to inspect during debugging
+- Independent of individual cryptographic modules
+- Reusable for both block and streaming operations
