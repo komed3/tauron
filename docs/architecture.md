@@ -150,7 +150,7 @@ sequenceDiagram
   CLI->>Engine: Create execution
   Engine->>Pipeline: Build pipeline
 
-  loop Registered Modules
+  loop Modules
     Pipeline->>Module: Execute
     Module-->>Pipeline: Continue
   end

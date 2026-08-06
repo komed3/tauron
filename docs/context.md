@@ -126,3 +126,26 @@ Examples:
 - Debug flags
 
 These values primarily support execution and diagnostics.
+
+## Lifetime
+
+```mermaid
+sequenceDiagram
+  participant Engine
+  participant Context
+  participant Pipeline
+
+  Engine->>Context: Create
+  Context-->>Pipeline: Shared
+
+  loop Modules
+    Pipeline->>Context: Read / Write
+  end
+
+  Pipeline-->>Engine: Finished
+  Engine->>Context: Destroy
+```
+
+Each execution creates exactly one context.
+
+Contexts are never shared between independent operations.
