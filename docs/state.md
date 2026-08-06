@@ -20,3 +20,16 @@ The state should be:
 - Mutation-friendly
 - Suitable for both block and streaming operations
 - Independent of specific algorithms
+
+## High-Level Structure
+
+```mermaid
+flowchart TD
+  State["Internal State"]
+
+  State --> Core["Core Memory"]
+  State --> Counters["Counters"]
+  State --> Entropy["Entropy Pool"]
+  State --> Mutation["Mutation Data"]
+  State --> Runtime["Runtime Values"]
+```
