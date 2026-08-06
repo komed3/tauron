@@ -45,6 +45,7 @@ flowchart TD
   ModuleA --> ModuleB
   ModuleB --> ModuleC
 
+  Engine -. manage .-> Context
   Context -. shared .-> ModuleA
   Context -. shared .-> ModuleB
   Context -. shared .-> ModuleC
