@@ -171,3 +171,43 @@ flowchart TD
 ```
 
 Compromise of one node does not automatically compromise other nodes.
+
+## State Evolution
+
+States are not transferred.
+
+They evolve locally and deterministically.
+
+```mermaid
+sequenceDiagram
+  participant A as Node A
+  participant B as Node B
+
+  A->>A: Derive Packet State
+  A->>B: Encrypted Data + Public Metadata
+
+  B->>B: Derive Same Packet State
+
+  B->>B: Decrypt Data
+
+  A->>A: Mutate State
+  B->>B: Mutate State
+```
+
+## Packet Structure
+
+Packets contain only information required for synchronization and processing.
+
+No secret state material is transmitted.
+
+- Public Header
+- Encrypted Payload
+- Authentication Data
+
+Possible public metadata:
+
+- Version
+- Counter
+- Epoch identifier
+- Algorithm profile
+- Flags
