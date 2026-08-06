@@ -1,0 +1,11 @@
+# Tauron Execution Context
+
+## Overview
+
+The execution context is the **central data structure** of Tauron.
+
+It represents the **complete state of a single encryption or decryption operation** and is shared across all modules within the processing pipeline.
+
+Rather than communicating directly, **modules exchange information** exclusively **through the execution context**.
+
+A context exists only for the lifetime of a single operation.
