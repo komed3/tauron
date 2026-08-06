@@ -35,7 +35,9 @@ flowchart TD
   Context --> Runtime["Runtime Information"]
 ```
 
-## Configuration
+## Components
+
+### Configuration
 
 Configuration contains all user-defined settings for the current operation.
 
@@ -51,7 +53,7 @@ Examples:
 
 Configuration is considered read-only after initialization.
 
-## Key Store
+### Key Store
 
 The key store contains every key required during execution.
 
@@ -66,7 +68,7 @@ The exact key hierarchy is intentionally left undefined and will evolve alongsid
 
 Modules may derive additional keys but should never modify the original user key.
 
-## Internal State
+### Internal State
 
 The internal state represents the evolving cryptographic state of the engine.
 
@@ -83,7 +85,7 @@ Possible future contents include:
 
 The state is the primary working area of the algorithm.
 
-## Buffers
+### Buffers
 
 Buffers store the data currently processed by the engine.
 
@@ -95,7 +97,7 @@ Typical buffers include:
 
 Streaming implementations may reuse the same buffers throughout execution to minimize memory allocations.
 
-## Metadata
+### Metadata
 
 Metadata contains non-cryptographic information about the current operation.
 
@@ -109,3 +111,18 @@ Examples:
 - Format version
 
 Metadata should never influence cryptographic security unless explicitly defined by the algorithm.
+
+### Runtime Information
+
+Runtime information is used by the engine itself.
+
+Examples:
+
+- Current pipeline stage
+- Module index
+- Block counter
+- Stream position
+- Timing information
+- Debug flags
+
+These values primarily support execution and diagnostics.
