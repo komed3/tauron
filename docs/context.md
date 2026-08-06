@@ -65,3 +65,20 @@ Initially this may include:
 The exact key hierarchy is intentionally left undefined and will evolve alongside the algorithm.
 
 Modules may derive additional keys but should never modify the original user key.
+
+## Internal State
+
+The internal state represents the evolving cryptographic state of the engine.
+
+Unlike keys, the state is expected to change continuously during execution.
+
+Possible future contents include:
+
+- Internal words
+- Counters
+- Entropy pool
+- Mutation variables
+- Synchronization values
+- Round information
+
+The state is the primary working area of the algorithm.
