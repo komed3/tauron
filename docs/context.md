@@ -82,3 +82,30 @@ Possible future contents include:
 - Round information
 
 The state is the primary working area of the algorithm.
+
+## Buffers
+
+Buffers store the data currently processed by the engine.
+
+Typical buffers include:
+
+- Input buffer
+- Output buffer
+- Temporary working buffer
+
+Streaming implementations may reuse the same buffers throughout execution to minimize memory allocations.
+
+## Metadata
+
+Metadata contains non-cryptographic information about the current operation.
+
+Examples:
+
+- Input size
+- Output size
+- Processing mode
+- File information
+- User-defined metadata
+- Format version
+
+Metadata should never influence cryptographic security unless explicitly defined by the algorithm.
