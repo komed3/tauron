@@ -15,6 +15,8 @@ std::string hex( const std::vector< std::uint8_t >& bytes ) {
       << std::setfill( '0' )
       << static_cast< int >( byte )
       << ' ';
+
+  return stream.str();
 }
 
 }
