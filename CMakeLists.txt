@@ -11,7 +11,11 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
 add_library(
   tauron
-  src/engine/engine.cpp
+
+  src/core/engine.cpp
+  src/pipeline/pipeline.cpp
+  src/modules/evolution.cpp
+  src/modules/cipher.cpp
 )
 
 target_include_directories(
