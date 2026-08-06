@@ -378,3 +378,59 @@ sequenceDiagram
   Engine-->>CLI: Result
   CLI-->>User: Output
 ```
+
+## Architectural Principles
+
+### State Is Derived
+
+States are generated locally.
+
+Internal states are never transmitted.
+
+### Direction Independence
+
+Every communication direction has independent state evolution.
+
+### Layer Isolation
+
+Lower-level states cannot reconstruct higher-level secrets.
+
+### Deterministic Evolution
+
+Identical initial conditions produce identical state progression.
+
+### Modular Processing
+
+Cryptographic behavior is implemented through independent modules.
+
+### Stateless Communication
+
+The network transports data, not secrets.
+
+### Single Responsibility
+
+Every component should have one clearly defined responsibility.
+
+### Modular Design
+
+Every cryptographic operation should be implemented as an independent module.
+
+Modules should be reusable and composable.
+
+### Engine First
+
+The engine provides infrastructure only.
+
+Cryptographic behavior belongs to modules.
+
+### Context-Based Communication
+
+Modules never communicate directly.
+
+The execution context is the only shared communication channel.
+
+### Streaming Ready
+
+The architecture should support both fixed-size blocks and continuous data streams.
+
+No component should assume that all input data is available at once.
