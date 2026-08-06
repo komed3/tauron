@@ -50,3 +50,18 @@ Examples:
 - Module-specific settings
 
 Configuration is considered read-only after initialization.
+
+## Key Store
+
+The key store contains every key required during execution.
+
+Initially this may include:
+
+- User key
+- Derived working keys
+- Session-specific keys
+- Temporary module keys
+
+The exact key hierarchy is intentionally left undefined and will evolve alongside the algorithm.
+
+Modules may derive additional keys but should never modify the original user key.
