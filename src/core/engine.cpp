@@ -13,4 +13,10 @@ Engine::Engine() {
   pipeline.add( std::make_unique< modules::CipherModule >() );
 }
 
+void Engine::run() {
+  std::cout << "Starting Tauron ... \n";
+  pipeline.process( context );
+  std::cout << "Finished.\n";
+}
+
 }
