@@ -99,3 +99,34 @@ flowchart TD
   NodeState -->|"derive"| Epoch
   Epoch -->|"derive"| Packet
 ```
+
+## Information Flow Rules
+
+Allowed:
+
+```mermaid
+flowchart LR
+  Root["Root Secret"]
+  Session["Session State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Root --> Session
+  Session --> Epoch
+  Epoch --> Packet
+```
+
+Forbidden:
+
+```mermaid
+flowchart LR
+  Session["Session State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Packet --> Epoch
+  Epoch --> Epoch
+  Epoch --> Session
+```
+
+A compromised lower-level state must not expose higher-level secrets.
