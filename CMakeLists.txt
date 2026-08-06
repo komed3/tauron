@@ -12,6 +12,9 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
+  include/tauron/core/context.hpp
+  include/tauron/core/state.hpp
+  include/tauron/modules/module.hpp
   include/tauron/utils/hex.hpp
 )
 
@@ -21,10 +24,10 @@ target_include_directories(
   include
 )
 
-#add_executable(
-#  basic
-#  examples/basic.cpp
-#)
+add_executable(
+  basic
+  examples/basic.cpp
+)
 
 target_link_libraries(
   basic
