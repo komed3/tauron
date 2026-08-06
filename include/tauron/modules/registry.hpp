@@ -13,7 +13,7 @@ class Registry {
 public:
   using Factory = std::function< std::unique_ptr< Module >() >;
   void add( const std::string& name, Factory factory );
-  std::unique_ptr< Module > create( const std::string& name );
+  std::unique_ptr< Module > create( const std::string& name ) const;
 
 private:
   std::unordered_map< std::string, Factory > factories;
