@@ -33,3 +33,20 @@ flowchart TD
   State --> Mutation["Mutation Data"]
   State --> Runtime["Runtime Values"]
 ```
+
+## Components
+
+### Core Memory
+
+The core memory represents the primary cryptographic working area.
+
+It contains the mutable data manipulated by cryptographic modules.
+
+Its exact size is intentionally configurable and may depend on:
+
+- Security profile
+- Key size
+- Selected algorithm
+- User configuration
+
+Modules should treat the core memory as the primary source for transformations.
