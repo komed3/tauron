@@ -168,3 +168,15 @@ Even when processing repetitive input, internal state evolution should continue.
 The state should remain compact and cache-friendly.
 
 Avoid unnecessary allocations or fragmented memory structures.
+
+## Future Extensions
+
+Future versions may extend the state with additional components, including:
+
+- Integrity tracking
+- Authentication data
+- Adaptive scheduling information
+- Parallel processing metadata
+- Hardware-specific optimizations
+
+Such extensions should preserve the existing architectural principles without changing the external engine design.
