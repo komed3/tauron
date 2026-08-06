@@ -51,3 +51,20 @@ flowchart TD
 
   ModuleC --> Output
 ```
+
+## Components
+
+### CLI
+
+The command-line interface is the only public entry point.
+
+Responsibilities:
+
+- Parse command-line arguments
+- Load configuration
+- Open files or streams
+- Initialize the engine
+- Execute the requested operation
+- Report progress and errors
+
+The CLI should remain thin and contain no cryptographic logic.
