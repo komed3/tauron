@@ -270,3 +270,86 @@ flowchart TD
 
   ModuleC --> Output
 ```
+
+## Components
+
+### CLI
+
+The command-line interface is the only public entry point.
+
+Responsibilities:
+
+- Parse command-line arguments
+- Load configuration
+- Open files or streams
+- Initialize the engine
+- Execute the requested operation
+- Report progress and errors
+
+The CLI should remain thin and contain no cryptographic logic.
+
+### Engine
+
+The engine is responsible for orchestrating the entire execution.
+
+Responsibilities:
+
+- Create the execution context
+- Load configuration
+- Build the processing pipeline
+- Register modules
+- Execute the pipeline
+- Handle errors and lifecycle events
+
+The engine does not implement cryptographic primitives.
+
+### Pipeline
+
+The pipeline defines the execution order of all registered modules.
+
+Responsibilities:
+
+- Maintain module order
+- Execute modules sequentially
+- Provide deterministic execution
+- Allow future extension through additional modules
+
+The pipeline itself should contain no cryptographic logic.
+
+### Modules
+
+Modules perform the actual work.
+
+Each module should have exactly one responsibility.
+
+Examples include:
+
+- Key scheduling
+- State initialization
+- Mixing
+- Mutation
+- Permutation
+- Random generation
+- Integrity verification
+
+Modules communicate exclusively through the shared execution context.
+
+### Execution Context
+
+The execution context is shared by every module.
+
+It stores all information required during execution.
+
+Examples:
+
+- Configuration
+- Keys
+- Internal state
+- Input buffers
+- Output buffers
+- Metadata
+- Runtime statistics
+
+Modules should never communicate directly with each other.
+
+All shared information flows through the context.
