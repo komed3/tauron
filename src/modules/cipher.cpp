@@ -14,7 +14,10 @@ void CipherModule::process( core::Context& context ) {
   std::cout
     << "[Cipher] processing state "
     << context.state.counter
-    << "\n";
+    << " ...\n";
+
+  for ( const auto& byte : context.input )
+    context.output.push_back( byte ^ context.state.counter );
 }
 
 }
