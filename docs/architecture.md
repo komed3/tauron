@@ -130,3 +130,24 @@ flowchart LR
 ```
 
 A compromised lower-level state must not expose higher-level secrets.
+
+## Direction Separation
+
+Communication directions use independent states.
+
+Example:
+
+```mermaid
+flowchart LR
+  Session["Session State"]
+  A["Node A → Node B"]
+  B["Node B → Node A"]
+
+  Session --> A
+  Session --> B
+
+  A --> AState["Independent State"]
+  B --> BState["Independent State"]
+```
+
+The state used for outgoing communication is never reused for incoming communication.
