@@ -5,6 +5,7 @@
 
 #include "tauron/modules/cipher.hpp"
 #include "tauron/modules/evolution.hpp"
+#include "tauron/utils/hex.hpp"
 
 namespace tauron::core {
 
@@ -19,9 +20,14 @@ void Engine::run() {
   context.input = { 'H', 'e', 'l', 'l', 'o' };
   pipeline.process( context );
 
-  std::cout << "Finished.\n";
-
-  for ( const auto& byte : context.output ) std::cout << byte;
+  std::cout
+    << "Finished.\n\n"
+    << "Input: "
+    << utils::hex( context.input )
+    << "\n"
+    << "Output: "
+    << utils::hex( context.output )
+    << "\n";
 }
 
 }
