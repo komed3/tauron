@@ -9,4 +9,12 @@ enum class Profile {
   Custom
 };
 
+struct CryptoConfig {};
+
+struct StreamConfig {};
+
+struct PerformanceConfig {};
+
+struct DebugConfig {};
+
 }
