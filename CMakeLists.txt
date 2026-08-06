@@ -19,6 +19,7 @@ add_library(
   include/tauron/modules/registry.hpp
   include/tauron/utils/hex.hpp
 
+  src/core/pipeline.cpp
   src/modules/registry.cpp
 )
 

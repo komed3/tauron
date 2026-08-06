@@ -6,7 +6,7 @@
 #include "tauron/modules/module.hpp"
 #include "context.hpp"
 
-namespace tauron::pipeline {
+namespace tauron::core {
 
 class Pipeline {
 public:
