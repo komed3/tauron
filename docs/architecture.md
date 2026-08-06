@@ -83,3 +83,16 @@ Responsibilities:
 - Handle errors and lifecycle events
 
 The engine does not implement cryptographic primitives.
+
+### Pipeline
+
+The pipeline defines the execution order of all registered modules.
+
+Responsibilities:
+
+- Maintain module order
+- Execute modules sequentially
+- Provide deterministic execution
+- Allow future extension through additional modules
+
+The pipeline itself should contain no cryptographic logic.
