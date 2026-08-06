@@ -114,3 +114,23 @@ Examples include:
 - Integrity verification
 
 Modules communicate exclusively through the shared execution context.
+
+### Execution Context
+
+The execution context is shared by every module.
+
+It stores all information required during execution.
+
+Examples:
+
+- Configuration
+- Keys
+- Internal state
+- Input buffers
+- Output buffers
+- Metadata
+- Runtime statistics
+
+Modules should never communicate directly with each other.
+
+All shared information flows through the context.
