@@ -11,7 +11,7 @@ namespace tauron::modules {
 class Module {
 public:
   virtual ~Module() = default;
-  virtual void execute( core::Context& context ) = 0;
+  virtual void process( core::Context& context ) = 0;
 };
 
 }
