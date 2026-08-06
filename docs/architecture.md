@@ -215,3 +215,22 @@ Possible public metadata:
 - Epoch identifier
 - Algorithm profile
 - Flags
+
+## Core Engine Flow
+
+```mermaid
+flowchart TD
+  Input["Input Data"]
+  Context["Execution Context"]
+  Pipeline["Pipeline"]
+  Modules["Modules"]
+  State["Current State"]
+  Output["Output Data"]
+
+  Input --> Context
+  State --> Context
+  Context --> Pipeline
+  Pipeline --> Modules
+  Modules --> State
+  Modules --> Output
+```
