@@ -75,3 +75,27 @@ flowchart LR
 Nodes never exchange internal states.
 
 Each node derives required states independently.
+
+## State Hierarchy
+
+Tauron uses multiple layers of state.
+
+Each layer is derived from the previous layer.
+
+**Lower layers must never be able to reconstruct higher layers.**
+
+```mermaid
+flowchart TD
+  Root["Root Secret"]
+  Session["Session State"]
+  Direction["Direction State"]
+  NodeState["Node State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Root -->|"derive"| Session
+  Session -->|"derive"| Direction
+  Direction -->|"derive"| NodeState
+  NodeState -->|"derive"| Epoch
+  Epoch -->|"derive"| Packet
+```
