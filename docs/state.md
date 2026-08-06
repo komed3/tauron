@@ -50,3 +50,17 @@ Its exact size is intentionally configurable and may depend on:
 - User configuration
 
 Modules should treat the core memory as the primary source for transformations.
+
+### Counters
+
+Counters provide deterministic progression throughout execution.
+
+Possible examples include:
+
+- Block counter
+- Stream position
+- Round counter
+- Mutation counter
+- Internal iteration counter
+
+Counters allow identical input and keys to produce deterministic execution while ensuring the state evolves continuously.
