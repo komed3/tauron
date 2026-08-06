@@ -13,6 +13,7 @@ add_library(
   tauron
 
   include/tauron/core/context.hpp
+  include/tauron/core/pipeline.hpp
   include/tauron/core/state.hpp
   include/tauron/modules/module.hpp
   include/tauron/modules/registry.hpp
