@@ -6,6 +6,6 @@
 
 namespace tauron::utils {
 
-std::string hex( const std::vector< std::uint8_t >& bytes );
+std::string hex( const std::vector< std::uint8_t >& bytes, char sep = ' ', bool upper = false );
 
 }
