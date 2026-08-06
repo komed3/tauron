@@ -134,3 +134,28 @@ Examples:
 Modules should never communicate directly with each other.
 
 All shared information flows through the context.
+
+### Execution Flow
+
+```mermaid
+sequenceDiagram
+
+  participant User
+  participant CLI
+  participant Engine
+  participant Pipeline
+  participant Module
+
+  User->>CLI: Execute command
+  CLI->>Engine: Create execution
+  Engine->>Pipeline: Build pipeline
+
+  loop Registered Modules
+    Pipeline->>Module: Execute
+    Module-->>Pipeline: Continue
+  end
+
+  Pipeline-->>Engine: Finished
+  Engine-->>CLI: Result
+  CLI-->>User: Output
+```
