@@ -16,7 +16,7 @@ void CipherModule::process( core::Context& context ) {
     << context.state.counter
     << " ...\n";
 
-  for ( const auto& byte : context.input )
+  for ( auto byte : context.input )
     context.output.push_back( byte ^ context.state.counter );
 }
 

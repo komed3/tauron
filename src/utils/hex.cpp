@@ -8,7 +8,7 @@ namespace tauron::utils {
 std::string hex( const std::vector< std::uint8_t >& bytes ) {
   std::ostringstream stream;
 
-  for ( const auto& byte : bytes )
+  for ( auto byte : bytes )
     stream
       << std::hex
       << std::setw( 2 )
