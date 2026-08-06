@@ -15,7 +15,10 @@ Engine::Engine() {
 
 void Engine::run() {
   std::cout << "Starting Tauron ... \n";
+
+  context.input = { 'H', 'e', 'l', 'l', 'o' };
   pipeline.process( context );
+
   std::cout << "Finished.\n";
 }
 
