@@ -17,4 +17,13 @@ struct PerformanceConfig {};
 
 struct DebugConfig {};
 
+class Config {
+public:
+  Profile profile = Profile::Balanced;
+  CryptoConfig crypto;
+  StreamConfig stream;
+  PerformanceConfig performance;
+  DebugConfig debug;
+};
+
 }
