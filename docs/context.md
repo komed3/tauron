@@ -157,3 +157,27 @@ The engine owns the execution context.
 Modules receive a reference to the context during execution.
 
 No module should take ownership of the context or extend its lifetime.
+
+## Design Principles
+
+### Single Source of Truth
+
+Every piece of shared execution data should exist only once.
+
+### Explicit Ownership
+
+The engine owns the context.
+
+Modules operate on it but never manage its lifetime.
+
+### Minimal Coupling
+
+Modules should never depend on other modules.
+
+All shared information flows through the execution context.
+
+### Algorithm Independence
+
+The execution context belongs to the engine, not to a specific cryptographic algorithm.
+
+This allows the internal algorithm to evolve without requiring structural changes to the framework.
