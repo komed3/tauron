@@ -96,3 +96,21 @@ Responsibilities:
 - Allow future extension through additional modules
 
 The pipeline itself should contain no cryptographic logic.
+
+### Modules
+
+Modules perform the actual work.
+
+Each module should have exactly one responsibility.
+
+Examples include:
+
+- Key scheduling
+- State initialization
+- Mixing
+- Mutation
+- Permutation
+- Random generation
+- Integrity verification
+
+Modules communicate exclusively through the shared execution context.
