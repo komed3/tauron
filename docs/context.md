@@ -181,3 +181,18 @@ All shared information flows through the execution context.
 The execution context belongs to the engine, not to a specific cryptographic algorithm.
 
 This allows the internal algorithm to evolve without requiring structural changes to the framework.
+
+## Future Extensions
+
+The execution context is expected to evolve over time.
+
+Potential additions include:
+
+- Randomness providers
+- Integrity information
+- Authentication state
+- Benchmark statistics
+- Hardware acceleration support
+- Custom module storage
+
+New components should integrate without changing the existing architectural principles.
