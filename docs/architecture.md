@@ -98,3 +98,76 @@ flowchart TD
   NodeState -->|"derive"| Epoch
   Epoch -->|"derive"| Packet
 ```
+
+## Information Flow Rules
+
+Allowed:
+
+```mermaid
+flowchart LR
+  Root["Root Secret"]
+  Session["Session State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Root --> Session
+  Session --> Epoch
+  Epoch --> Packet
+```
+
+Forbidden:
+
+```mermaid
+flowchart LR
+  Session["Session State"]
+  Epoch["Epoch State"]
+  Packet["Packet State"]
+
+  Packet --> Epoch
+  Epoch --> Session
+```
+
+A compromised lower-level state must not expose higher-level secrets.
+
+## Direction Separation
+
+Communication directions use independent states.
+
+Example:
+
+```mermaid
+flowchart LR
+  Session["Session State"]
+  A["Node A → Node B"]
+  B["Node B → Node A"]
+
+  Session --> A
+  Session --> B
+
+  A --> AState["Independent State"]
+  B --> BState["Independent State"]
+```
+
+The state used for outgoing communication is never reused for incoming communication.
+
+## Participant-Specific Derivation
+
+Multiple nodes can participate in the same communication environment.
+
+Each node receives a unique derived state.
+
+```mermaid
+flowchart TD
+  Shared["Shared Session Material"]
+  A["Node Identity A"]
+  B["Node Identity B"]
+  C["Node Identity C"]
+
+  Shared --> Derive["State Derivation"]
+
+  Derive --> SA["Node A State"]
+  Derive --> SB["Node B State"]
+  Derive --> SC["Node C State"]
+```
+
+Compromise of one node does not automatically compromise other nodes.
