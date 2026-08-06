@@ -34,3 +34,19 @@ flowchart TD
   Context --> Metadata["Metadata"]
   Context --> Runtime["Runtime Information"]
 ```
+
+## Configuration
+
+Configuration contains all user-defined settings for the current operation.
+
+Examples:
+
+- Encryption mode
+- Key size
+- Security level
+- Streaming mode
+- Buffer size
+- Enabled modules
+- Module-specific settings
+
+Configuration is considered read-only after initialization.
