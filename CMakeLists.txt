@@ -37,7 +37,13 @@ add_library(
 
   src/core/engine.cpp
 
+  src/modules/evolution.cpp
+  src/modules/finalize.cpp
+  src/modules/initialize.cpp
+  src/modules/mix.cpp
   src/modules/registry.cpp
+  src/modules/rotate.cpp
+  src/modules/xor.cpp
 
   src/pipeline/builder.cpp
   src/pipeline/pipeline.cpp
