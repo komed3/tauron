@@ -26,6 +26,7 @@ add_library(
   include/tauron/modules/rotate.hpp
   include/tauron/modules/xor.hpp
 
+  include/tauron/pipeline/builder.hpp
   include/tauron/pipeline/definition.hpp
   include/tauron/pipeline/pipeline.hpp
   include/tauron/pipeline/step.hpp
@@ -35,6 +36,7 @@ add_library(
 
   src/modules/registry.cpp
 
+  src/pipeline/builder.cpp
   src/pipeline/pipeline.cpp
 )
 
