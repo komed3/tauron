@@ -2,7 +2,7 @@
 
 namespace tauron::modules {
 
-void Registry::add( const std::string& name, Factory factory ) {
+void Registry::add( const std::string& name, ModuleFactory factory ) {
   factories[ name ] = std::move( factory );
 }
 
@@ -14,7 +14,7 @@ std::size_t Registry::size() const {
   return factories.size();
 }
 
-const Registry::Factory* Registry::find ( const std::string& name ) const {
+const Registry::ModuleFactory* Registry::find ( const std::string& name ) const {
   auto iterator = factories.find( name );
 
   if ( iterator == factories.end() ) return nullptr;
