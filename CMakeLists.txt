@@ -14,6 +14,7 @@ add_library(
 
   include/tauron/core/config.hpp
   include/tauron/core/context.hpp
+  include/tauron/core/engine.hpp
   include/tauron/core/profile.hpp
   include/tauron/core/state.hpp
 
