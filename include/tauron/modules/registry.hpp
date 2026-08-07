@@ -13,7 +13,14 @@ class Registry {
 public:
   using Factory = std::function< std::unique_ptr< Module >() >;
   void add( const std::string& name, Factory factory );
-  std::unique_ptr< Module > create( const std::string& name ) const;
+  bool contains( const std::string& name ) const;
+  std::size_t size() const;
+  const Factory* find ( const std::string& name ) const;
+
+  template< typename T >
+  void add( const std::string& name ) {
+    add( name, [] { return std::make_unique< T >() } );
+  }
 
 private:
   std::unordered_map< std::string, Factory > factories;
