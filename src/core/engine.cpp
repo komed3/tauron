@@ -9,6 +9,8 @@
 
 namespace tauron::core {
 
+Engine::Engine( Config config ) : config( std::move( config ) ) {}
+
 void Engine::initialize() {
   registry.add< modules::InitializeModule >();
   registry.add< modules::EvolutionModule >();
