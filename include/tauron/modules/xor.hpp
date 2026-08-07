@@ -4,9 +4,9 @@
 
 namespace tauron::modules {
 
-class RotateModule : public Module {
+class XorModule : public Module {
 public:
-  const char* name() const override { return "rotate"; }
+  const char* name() const override { return "xor"; }
   ModuleType type() const override { return ModuleType::Processing; }
   void execute( core::Context& context ) override {}
 };
