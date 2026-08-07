@@ -12,41 +12,9 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
-  include/tauron/core/config.hpp
-  include/tauron/core/context.hpp
-  include/tauron/core/engine.hpp
-  include/tauron/core/profile.hpp
-  include/tauron/core/state.hpp
-
-  include/tauron/modules/evolution.hpp
-  include/tauron/modules/finalize.hpp
-  include/tauron/modules/initialize.hpp
-  include/tauron/modules/mix.hpp
-  include/tauron/modules/module.hpp
-  include/tauron/modules/registry.hpp
-  include/tauron/modules/rotate.hpp
-  include/tauron/modules/xor.hpp
-
-  include/tauron/pipeline/builder.hpp
-  include/tauron/pipeline/definition.hpp
-  include/tauron/pipeline/pipeline.hpp
-  include/tauron/pipeline/step.hpp
-
-  include/tauron/utils/hex.hpp
-
-
-  src/core/engine.cpp
-
-  src/modules/evolution.cpp
-  src/modules/finalize.cpp
-  src/modules/initialize.cpp
-  src/modules/mix.cpp
-  src/modules/registry.cpp
-  src/modules/rotate.cpp
-  src/modules/xor.cpp
-
-  src/pipeline/builder.cpp
-  src/pipeline/pipeline.cpp
+  include/tauron/node/identity.hpp
+  include/tauron/node/secret.hpp
+  include/tauron/node/state.hpp
 )
 
 target_include_directories(
