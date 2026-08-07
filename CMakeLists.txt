@@ -34,6 +34,8 @@ add_library(
 
 
   src/modules/registry.cpp
+
+  src/pipeline/pipeline.cpp
 )
 
 target_include_directories(
