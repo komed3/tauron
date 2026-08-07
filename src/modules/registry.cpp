@@ -17,7 +17,7 @@ std::size_t Registry::size() const {
 
 std::vector< std::string > Registry::names() const {
   std::vector< std::string > result;
-  result.reserve( this->size() );
+  result.reserve( factories.size() );
 
   for ( const auto& [ name, _ ] : factories ) result.push_back( name );
   return result;
