@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "config.hpp"
-#include "state.hpp"
+#include "tauron/core/config.hpp"
+#include "tauron/core/state.hpp"
 
 namespace tauron::core {
 

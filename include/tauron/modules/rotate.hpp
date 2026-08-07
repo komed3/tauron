@@ -1,6 +1,6 @@
 #pragma once
 
-#include "module.hpp"
+#include "tauron/modules/module.hpp"
 
 namespace tauron::modules {
 

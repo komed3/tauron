@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "module.hpp"
+#include "tauron/modules/module.hpp"
 
 namespace tauron::modules {
 

@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include "profile.hpp"
+#include "tauron/core/profile.hpp"
 
 namespace tauron::core {
 
