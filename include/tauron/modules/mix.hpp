@@ -6,7 +6,7 @@ namespace tauron::modules {
 
 class MixModule : public Module {
 public:
-  const char* name() const override { return "mix"; }
+  std::string_view name() const override { return "mix"; }
   ModuleType type() const override { return ModuleType::Processing; }
   void execute( core::Context& context ) override {}
 };

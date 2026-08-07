@@ -6,7 +6,7 @@ namespace tauron::modules {
 
 class EvolutionModule : public Module {
 public:
-  const char* name() const override { return "evolution"; }
+  std::string_view name() const override { return "evolution"; }
   ModuleType type() const override { return ModuleType::Processing; }
   void execute( core::Context& context ) override {}
 };
