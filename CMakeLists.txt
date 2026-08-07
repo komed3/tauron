@@ -28,6 +28,7 @@ add_library(
 
   include/tauron/pipeline/definition.hpp
   include/tauron/pipeline/pipeline.hpp
+  include/tauron/pipeline/step.hpp
 
   include/tauron/utils/hex.hpp
 )
