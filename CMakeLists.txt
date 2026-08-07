@@ -17,11 +17,16 @@ add_library(
   include/tauron/core/pipeline.hpp
   include/tauron/core/profile.hpp
   include/tauron/core/state.hpp
+
   include/tauron/modules/module.hpp
   include/tauron/modules/registry.hpp
+  include/tauron/modules/rotate.hpp
+
   include/tauron/utils/hex.hpp
 
+
   src/core/pipeline.cpp
+
   src/modules/registry.cpp
 )
 

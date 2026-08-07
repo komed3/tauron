@@ -19,7 +19,7 @@ public:
 
   template< typename T >
   void add( const std::string& name ) {
-    add( name, [] { return std::make_unique< T >() } );
+    add( name, [] { return std::make_unique< T >(); } );
   }
 
 private:
