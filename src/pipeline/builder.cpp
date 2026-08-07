@@ -3,7 +3,7 @@
 
 namespace tauron::pipeline {
 
-Pipeline build( core::Profile selected, modules::Registry& registry ) {
+Pipeline Builder::build( core::Profile selected, modules::Registry& registry ) {
   Pipeline pipeline;
 
   for ( const auto& step : profile( selected ) ) {
