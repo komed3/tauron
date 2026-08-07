@@ -4,23 +4,25 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "module.hpp"
 
 namespace tauron::modules {
 
+using ModuleFactory = std::function< std::unique_ptr< Module >() >;
+
 class Registry {
 public:
-  using ModuleFactory = std::function< std::unique_ptr< Module >() >;
-  void add( const std::string& name, ModuleFactory factory );
-  bool contains( const std::string& name ) const;
-  std::size_t size() const;
-  const ModuleFactory* find ( const std::string& name ) const;
+  void add( ModuleFactory factory );
 
   template< typename T >
-  void add( const std::string& name ) {
-    add( name, [] { return std::make_unique< T >(); } );
-  }
+  void add() { add( [] { return std::make_unique< T >(); } ); }
+
+  bool contains( const std::string& name ) const;
+  std::size_t size() const;
+  std::vector< std::string > names() const;
+  const ModuleFactory* find ( const std::string& name ) const;
 
 private:
   std::unordered_map< std::string, ModuleFactory > factories;
