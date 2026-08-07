@@ -6,6 +6,9 @@
 
 namespace tauron::pipeline {
 
-
+class Builder {
+public:
+  static Pipeline build( core::Profile profile, modules::Registry registry );
+};
 
 }
