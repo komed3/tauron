@@ -1,14 +1,10 @@
 #pragma once
 
-#include <cstdint>
+#include <cstddef>
+
+#include "profile.hpp"
 
 namespace tauron::core {
-
-enum class Profile {
-  Default,
-  Fast,
-  Experimental
-};
 
 struct Config {
   Profile profile = Profile::Default;
