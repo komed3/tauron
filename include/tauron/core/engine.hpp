@@ -15,6 +15,11 @@ public:
   explicit Engine( Config config = {} );
   void initialize();
   std::vector< std::uint8_t > process( std::string_view input, Operation operation );
+
+private:
+  Config config;
+  modules::Registry registry;
+  pipeline::Pipeline pipeline;
 };
 
 }
