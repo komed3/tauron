@@ -30,7 +30,7 @@ std::vector< std::uint8_t > Engine::process( std::string_view input, Operation o
   context.buffers.input.assign( input.begin(), input.end() );
   pipeline.run( context );
 
-  return std::move( context.buffers.output );
+  return context.buffers.output;
 }
 
 }
