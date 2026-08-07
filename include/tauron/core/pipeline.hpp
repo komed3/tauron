@@ -11,7 +11,7 @@ namespace tauron::core {
 class Pipeline {
 public:
   void add( std::unique_ptr< modules::Module > module );
-  void process( core::Context& context );
+  void process( Context& context );
 
 private:
   std::vector< std::unique_ptr< modules::Module > > modules;

@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "config.hpp"
 #include "state.hpp"
 
 namespace tauron::core {
@@ -17,9 +18,10 @@ struct Runtime {
 };
 
 struct Context {
-  core::State state;
-  std::vector< std::uint8_t > input;
-  std::vector< std::uint8_t > output;
+  Config config;
+  State state;
+  Buffers buffers;
+  Runtime runtime;
 };
 
 }
