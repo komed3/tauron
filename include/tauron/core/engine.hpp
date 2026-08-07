@@ -14,6 +14,7 @@ class Engine {
 public:
   explicit Engine( Config config = {} );
   void initialize();
+  std::vector< std::uint8_t > process( std::string_view input, Operation operation );
 };
 
 }
