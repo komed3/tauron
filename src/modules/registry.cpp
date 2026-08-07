@@ -14,4 +14,11 @@ std::size_t Registry::size() const {
   return factories.size();
 }
 
+const Registry::Factory* Registry::find ( const std::string& name ) const {
+  auto iterator = factories.find( name );
+
+  if ( iterator == factories.end() ) return nullptr;
+  return &iterator->second;
+}
+
 }
