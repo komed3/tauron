@@ -35,6 +35,8 @@ add_library(
   include/tauron/utils/hex.hpp
 
 
+  src/core/engine.cpp
+
   src/modules/registry.cpp
 
   src/pipeline/builder.cpp
