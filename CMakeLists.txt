@@ -14,7 +14,6 @@ add_library(
 
   include/tauron/core/config.hpp
   include/tauron/core/context.hpp
-  include/tauron/core/pipeline.hpp
   include/tauron/core/profile.hpp
   include/tauron/core/state.hpp
 
@@ -27,12 +26,10 @@ add_library(
   include/tauron/modules/rotate.hpp
   include/tauron/modules/xor.hpp
 
+  include/tauron/pipeline/definition.hpp
+  include/tauron/pipeline/pipeline.hpp
+
   include/tauron/utils/hex.hpp
-
-
-  src/core/pipeline.cpp
-
-  src/modules/registry.cpp
 )
 
 target_include_directories(
