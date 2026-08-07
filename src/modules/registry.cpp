@@ -3,14 +3,15 @@
 namespace tauron::modules {
 
 void Registry::add( const std::string& name, Factory factory ) {
-  factories[ name ] = factory;
+  factories[ name ] = std::move( factory );
 }
 
-std::unique_ptr< Module > Registry::create( const std::string& name ) const {
-  auto iterator = factories.find( name );
+bool Registry::contains( const std::string& name ) const {
+  return factories.contains( name );
+}
 
-  if ( iterator == factories.end() ) return nullptr;
-  return iterator->second();
+std::size_t Registry::size() const {
+  return factories.size();
 }
 
 }
