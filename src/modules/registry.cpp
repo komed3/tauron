@@ -2,9 +2,9 @@
 
 namespace tauron::modules {
 
-void Registry::add( ModuleFactory factory ) {
+bool Registry::add( ModuleFactory factory ) {
   auto module = factory();
-  factories.emplace( module->name(), std::move( factory ) );
+  return factories.emplace( module->name(), std::move( factory ) ).second;
 }
 
 bool Registry::contains( const std::string& name ) const {

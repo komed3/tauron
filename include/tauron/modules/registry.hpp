@@ -14,10 +14,10 @@ using ModuleFactory = std::function< std::unique_ptr< Module >() >;
 
 class Registry {
 public:
-  void add( ModuleFactory factory );
+  bool add( ModuleFactory factory );
 
   template< typename T >
-  void add() { add( [] { return std::make_unique< T >(); } ); }
+  bool add() { return add( [] { return std::make_unique< T >(); } ); }
 
   bool contains( const std::string& name ) const;
   std::size_t size() const;
