@@ -18,10 +18,14 @@ add_library(
   include/tauron/core/profile.hpp
   include/tauron/core/state.hpp
 
+  include/tauron/modules/evolution.hpp
+  include/tauron/modules/finalize.hpp
+  include/tauron/modules/initialize.hpp
   include/tauron/modules/mix.hpp
   include/tauron/modules/module.hpp
   include/tauron/modules/registry.hpp
   include/tauron/modules/rotate.hpp
+  include/tauron/modules/xor.hpp
 
   include/tauron/utils/hex.hpp
 
