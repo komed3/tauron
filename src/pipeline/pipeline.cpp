@@ -18,4 +18,14 @@ void Pipeline::add( modules::ModuleType type, std::unique_ptr< modules::Module >
   }
 }
 
+void Pipeline::run( core::Context& context ) {
+  execute( setup, context );
+  execute( processing, context );
+  execute( finalization, context );
+}
+
+void Pipeline::execute( Pipeline::ModuleList& modules, core::Context& context ) {
+  for ( auto& module : modules ) module->execute( context );
+}
+
 }
