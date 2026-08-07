@@ -20,6 +20,7 @@ public:
   bool add() { return add( [] { return std::make_unique< T >(); } ); }
 
   bool contains( const std::string& name ) const;
+  std::unique_ptr< Module > create( std::string_view name ) const;
   std::size_t size() const;
   std::vector< std::string > names() const;
   const ModuleFactory* find ( const std::string& name ) const;
