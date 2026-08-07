@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <span>
 
 #include "tauron/core/profile.hpp"
 #include "tauron/pipeline/step.hpp"
@@ -31,5 +32,15 @@ inline constexpr std::array experimentalProfile {
   Step { "xor", modules::ModuleType::Processing },
   Step { "finalize", modules::ModuleType::Finalization }
 };
+
+inline std::span< const Step > profile( core::Profile profile ) {
+  switch ( profile ) {
+    case core::Profile::Default:      return defaultProfile;
+    case core::Profile::Fast:         return fastProfile;
+    case core::Profile::Experimental: return experimentalProfile;
+  }
+
+  return {};
+}
 
 }
