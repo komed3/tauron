@@ -15,8 +15,8 @@ enum class ModuleType {
 class Module {
 public:
   virtual ~Module() = default;
-  virtual std::string_view name() const = 0;
-  virtual ModuleType type() const = 0;
+  virtual [[nodiscard]] std::string_view name() const = 0;
+  virtual [[nodiscard]] ModuleType type() const = 0;
   virtual void execute( core::Context& context ) = 0;
 };
 

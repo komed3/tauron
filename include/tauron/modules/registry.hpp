@@ -19,10 +19,10 @@ public:
   template< typename T >
   bool add() { return add( [] { return std::make_unique< T >(); } ); }
 
-  bool contains( const std::string& name ) const;
-  std::size_t size() const;
-  std::vector< std::string > names() const;
-  const ModuleFactory* find ( const std::string& name ) const;
+  [[nodiscard]] bool contains( std::string_view name ) const;
+  [[nodiscard]] std::size_t size() const;
+  [[nodiscard]] std::vector< std::string > names() const;
+  [[nodiscard]] const ModuleFactory* find( std::string_view name ) const;
 
 private:
   std::unordered_map< std::string, ModuleFactory > factories;
