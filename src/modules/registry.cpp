@@ -4,11 +4,11 @@ namespace tauron::modules {
 
 bool Registry::add( ModuleFactory factory ) {
   auto module = factory();
-  return factories.emplace( module->name(), std::move( factory ) ).second;
+  return module && factories.emplace( module->name(), std::move( factory ) ).second;
 }
 
-bool Registry::contains( const std::string& name ) const {
-  return factories.contains( name );
+bool Registry::contains( std::string_view name ) const {
+  return factories.contains( std::string( name ) );
 }
 
 std::size_t Registry::size() const {
@@ -23,8 +23,8 @@ std::vector< std::string > Registry::names() const {
   return result;
 }
 
-const ModuleFactory* Registry::find ( const std::string& name ) const {
-  auto iterator = factories.find( name );
+const ModuleFactory* Registry::find( std::string_view name ) const {
+  auto iterator = factories.find( std::string( name ) );
 
   if ( iterator == factories.end() ) return nullptr;
   return &iterator->second;
