@@ -31,6 +31,9 @@ add_library(
   include/tauron/pipeline/step.hpp
 
   include/tauron/utils/hex.hpp
+
+
+  src/modules/registry.cpp
 )
 
 target_include_directories(

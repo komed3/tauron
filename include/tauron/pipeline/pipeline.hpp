@@ -10,11 +10,17 @@ namespace tauron::pipeline {
 
 class Pipeline {
 public:
-  void add( std::unique_ptr< modules::Module > module );
+  void add( modules::ModuleType type, std::unique_ptr< modules::Module > module );
   void execute( core::Context& context );
 
 private:
-  std::vector< std::unique_ptr< modules::Module > > modules;
+  using ModuleList = std::vector< std::unique_ptr< modules::Module > >;
+
+  ModuleList setup;
+  ModuleList processing;
+  ModuleList finalization;
+
+  void execute( ModuleList& modules, core::Context context );
 };
 
 }
