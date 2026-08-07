@@ -3,10 +3,10 @@
 
 namespace tauron::pipeline {
 
-Pipeline Builder::build( core::Profile selected, modules::Registry& registry ) {
+Pipeline Builder::build( core::Profile target, const modules::Registry& registry ) {
   Pipeline pipeline;
 
-  for ( const auto& step : profile( selected ) ) {
+  for ( const auto& step : profile( target ) ) {
     auto factory = registry.find( std::string( step.module ) );
     if ( ! factory ) continue;
 
