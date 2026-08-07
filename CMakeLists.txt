@@ -12,6 +12,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
+  include/tauron/core/config.hpp
   include/tauron/core/context.hpp
   include/tauron/core/pipeline.hpp
   include/tauron/core/state.hpp
