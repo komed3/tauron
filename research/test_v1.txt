@@ -26,12 +26,12 @@ R15  min 106  avg 127.5  max 148
 R16  min 107  avg 127.5  max 151
 
 === STATISTICAL TESTS ===
-Determinism       FAIL
-Random keys       avg 127.90
-Related keys      avg 127.46
-Bit balance       min 49.43%  avg 49.90%  max 50.30%
-Byte distribution min -27.2%  avg 6.8%  max 24.8%
-Hamming weight    avg 4.01  dev 1.41
+Determinism        PASS
+Random keys        avg 127.90
+Related keys       avg 127.46
+Bit balance        min 49.43%  avg 49.90%  max 50.30%
+Byte distribution  min -27.2%  avg 6.8%  max 24.8%
+Hamming weight     avg 4.01  dev 1.41
 Structured keys
   00 00 00 00 00 00 00 00 → 18 2f d6 75 bc 7b f7 16
   ff ff ff ff ff ff ff ff → e3 df 7f df f1 7d 04 4d
