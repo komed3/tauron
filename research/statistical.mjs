@@ -38,14 +38,16 @@ const deviation = ( values ) => {
   return Math.sqrt( average( values.map( value => ( value - avg ) ** 2 ) ) );
 };
 
-const testDeterminism = ( expandKey ) => {
+const equalBytes = ( a, b ) => a.length === b.length && a.every( ( byte, index ) => byte === b[ index ] );
+
+const testDeterminism = expandKey => {
   const key = randomKey();
 
   const a = expandKey( key );
   const b = expandKey( key );
 
-  const identical = a.every( ( value, index ) => value === b[ index ] );
-  console.log( `Determinism       ${ identical ? 'PASS' : 'FAIL' }` );
+  const identical = a.every( ( round, index ) => equalBytes( round, b[ index ] ) );
+  console.log( `Determinism        ${ identical ? 'PASS' : 'FAIL' }` );
 };
 
 const testRandomKeys = ( expandKey ) => {
@@ -59,7 +61,7 @@ const testRandomKeys = ( expandKey ) => {
     prev = current;
   }
 
-  console.log( `Random keys       avg ${ average( distances ).toFixed( 2 ) }` );
+  console.log( `Random keys        avg ${ average( distances ).toFixed( 2 ) }` );
 };
 
 const testRelatedKeys = ( expandKey ) => {
@@ -74,7 +76,7 @@ const testRelatedKeys = ( expandKey ) => {
     prev = current;
   }
 
-  console.log( `Related keys      avg ${ average( distances ).toFixed( 2 ) }` );
+  console.log( `Related keys       avg ${ average( distances ).toFixed( 2 ) }` );
 };
 
 const testBitBalance = ( expandKey ) => {
@@ -93,7 +95,7 @@ const testBitBalance = ( expandKey ) => {
   const values = Array.from( counts, count => ( count / total ) * 100 );
 
   console.log(
-    `Bit balance       min ${ Math.min( ...values ).toFixed( 2 ) }%` +
+    `Bit balance        min ${ Math.min( ...values ).toFixed( 2 ) }%` +
     `  avg ${ average( values ).toFixed( 2 ) }%` +
     `  max ${ Math.max( ...values ).toFixed( 2 ) }%`
   );
@@ -111,7 +113,7 @@ const testByteDistribution = ( expandKey ) => {
   const deviations = Array.from( counts, count => ( count - expected ) / expected * 100 );
 
   console.log(
-    `Byte distribution min ${ Math.min( ...deviations ).toFixed( 1 ) }%` +
+    `Byte distribution  min ${ Math.min( ...deviations ).toFixed( 1 ) }%` +
     `  avg ${ average( deviations.map( Math.abs ) ).toFixed( 1 ) }%` +
     `  max ${ Math.max( ...deviations ).toFixed( 1 ) }%`
   );
@@ -126,7 +128,7 @@ const testHammingWeight = ( expandKey ) => {
   }
 
   console.log(
-    `Hamming weight    avg ${ average( weights ).toFixed( 2 ) }` +
+    `Hamming weight     avg ${ average( weights ).toFixed( 2 ) }` +
     `  dev ${ deviation( weights ).toFixed( 2 ) }`
   );
 };
