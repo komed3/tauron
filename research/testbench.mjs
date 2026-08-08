@@ -161,3 +161,27 @@ const testMultiBitAvalanche = ( expandKey ) => {
     console.log( `${ count.toString().padStart( 4 ) } bits → ${ avg.toFixed( 1 ).padStart( 5 ) }` );
   }
 };
+
+const testPositionAvalanche = ( expandKey ) => {
+  const values = [];
+
+  for ( let round = 1; round <= ROUNDS; round++ ) {
+    const distances = [];
+
+    for ( let i = 0; i < SAMPLES; i++ ) {
+      const key = randomKey(), changed = flipBit( key, Math.floor( Math.random() * KEY_SIZE * 8 ) );
+      const a = expandKey( key ), b = expandKey( changed );
+
+      distances.push( hammingDistance( a[ round ], b[ round ] ) );
+    }
+
+    values.push( { round, ...stats( distances ) } );
+  }
+
+  console.log( 'Round'.padEnd( 7 ) + 'min'.padStart( 5 ) + 'avg'.padStart( 7 ) + 'max'.padStart( 7 ) );
+
+  for ( const value of values ) console.log(
+    `R${ value.round.toString().padStart( 2, '0' ) }` + value.min.toString().padStart( 7 ) +
+    value.avg.toFixed( 1 ).padStart( 7 ) + value.max.toString().padStart( 7 )
+  );
+};
