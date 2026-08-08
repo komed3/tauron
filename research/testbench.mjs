@@ -79,3 +79,20 @@ const testScheduleFormat = ( expandKey ) => {
   console.log( `Schedule format      ${ pass ? 'PASS' : 'FAIL' }` );
   return pass;
 };
+
+const testDeterminism = ( expandKey ) => {
+  let pass = true;
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey();
+    const a = expandKey( key ), b = expandKey( key );
+
+    if ( a.length !== b.length || a.some( ( round, index ) => !equalBytes( round, b[ index ] ) ) ) {
+      pass = false;
+      break;
+    }
+  }
+
+  console.log( `Determinism           ${ pass ? 'PASS' : 'FAIL' }` );
+  return pass;
+};
