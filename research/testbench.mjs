@@ -313,3 +313,25 @@ const testRoundRepetition = ( expandKey ) => {
 
   printStats( 'Round repetition', distances, '/256 bits' );
 };
+
+const testStructuredKeys = ( expandKey ) => {
+  const keys = [];
+
+  keys.push( new Uint8Array( KEY_SIZE ) );
+  keys.push( new Uint8Array( KEY_SIZE ).fill( 0xff ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => 0xff - index ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index % 2 ? 0xff : 0x00 ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index % 2 ? 0x00 : 0xff ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index === 0 ? 0x80 : 0x00 ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index === KEY_SIZE - 1 ? 0x80 : 0x00 ) );
+
+  for ( const key of keys ) {
+    const schedule = expandKey( key );
+
+    console.log(
+      `${ hex( key.subarray( 0, 8 ) ).padEnd( 23 ) } → ` +
+      hex( schedule[ ROUNDS ].subarray( 0, 8 ) )
+    );
+  }
+};
