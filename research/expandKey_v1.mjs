@@ -27,5 +27,11 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
       | ( bytes[ offset + 3 ] << 24 );
   }
 
+  // 3. Local ARX mixing
+  for ( let i = 0; i < 8; i += 2 ) {
+    words[ i ] = ( words[ i ] + rotl( words[ i + 1 ], 5 ) ) >>> 0;
+    words[ i + 1 ] = ( words[ i + 1 ] ^ rotl( words[ i ], 13 ) ) >>> 0;
+  }
+
   return result;
 } );
