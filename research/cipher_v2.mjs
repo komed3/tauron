@@ -40,3 +40,33 @@ const inverseMix = ( words ) => {
     words[ i ] = ( words[ i ] - rotl( words[ i + 1 ], 5 ) ) >>> 0;
   }
 };
+
+const toWords = ( bytes ) => {
+  const words = new Uint32Array( 8 );
+
+  for ( let i = 0; i < 8; i++ ) {
+    const offset = i * 4;
+
+    words[ i ] = bytes[ offset ] |
+      ( bytes[ offset + 1 ] << 8 ) |
+      ( bytes[ offset + 2 ] << 16 ) |
+      ( bytes[ offset + 3 ] << 24 );
+  }
+
+  return words;
+};
+
+const fromWords = ( words ) => {
+  const bytes = new Uint8Array( BLOCK_SIZE );
+
+  for ( let i = 0; i < 8; i++ ) {
+    const offset = i * 4, word = words[ i ];
+
+    bytes[ offset ] = word & 0xff;
+    bytes[ offset + 1 ] = ( word >>> 8 ) & 0xff;
+    bytes[ offset + 2 ] = ( word >>> 16 ) & 0xff;
+    bytes[ offset + 3 ] = ( word >>> 24 ) & 0xff;
+  }
+
+  return bytes;
+};
