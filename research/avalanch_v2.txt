@@ -1,0 +1,26 @@
+=== KEY SCHEDULE TEST ===
+                   R01  R02  R03  R04  R05  R06  R07  R08  R09  R10  R11  R12  R13  R14  R15  R16
+last bit           128  137  123  120  130  128  135  128  151  129  112  127  124  116  148  119
+first bit          138  130  122  136  133  119  145  116  122  129  123  139  135  119  127  118
+last byte          133  138  147  124  136  128  121  124  133  128  125  132  110  135  122  134
+first byte         124  119  114  136  121  129  134  140  139  123  133  129  127  137  117  129
+all bits           125  122  124  127  124  124  128  143  115  136  129  124  130  125  137  135
+
+=== BIT AVALANCHE ===
+R00  min 102  avg 126.9  max 149
+R01  min 101  avg 127.4  max 155
+R02  min 111  avg 128.6  max 152
+R03  min 110  avg 127.9  max 149
+R04  min 103  avg 127.1  max 152
+R05  min 106  avg 128.4  max 152
+R06  min 108  avg 128.5  max 153
+R07  min 106  avg 128.2  max 149
+R08  min 108  avg 128.4  max 150
+R09  min 106  avg 127.8  max 158
+R10  min 108  avg 128.5  max 151
+R11  min 105  avg 127.7  max 150
+R12  min 102  avg 128.1  max 147
+R13  min 106  avg 127.4  max 146
+R14  min 107  avg 127.7  max 151
+R15  min 109  avg 128.6  max 155
+R16  min 110  avg 127.9  max 148

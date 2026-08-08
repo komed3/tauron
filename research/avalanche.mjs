@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-import { expandKey_v1 as algo } from './expandKey_v1.mjs';
+import { expandKey_v2 as algo } from './expandKey_v2.mjs';
 import { KEY_SIZE, ROUNDS, hammingDistance } from './utils.mjs';
 
 const randomKey = () => new Uint8Array( crypto.randomBytes( KEY_SIZE ) );
