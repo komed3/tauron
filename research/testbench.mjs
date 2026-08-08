@@ -112,3 +112,19 @@ const testRoundZero = ( expandKey ) => {
   console.log( `Round 0 preservation  ${ pass ? 'PASS' : 'FAIL' }` );
   return pass;
 };
+
+const testCollisions = ( expandKey ) => {
+  const seen = new Set();
+  let collisions = 0;
+
+  for ( let i = 0; i < COLLISION_SAMPLES; i++ ) {
+    const key = randomKey(), schedule = expandKey( key );
+    const final = hex( schedule[ ROUNDS ] );
+
+    if ( seen.has( final ) ) collisions++;
+    else seen.add( final );
+  }
+
+  console.log( `Collisions            ${ collisions === 0 ? 'PASS' : `FAIL (${ collisions })` }` );
+  return collisions === 0;
+};
