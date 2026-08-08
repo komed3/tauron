@@ -204,3 +204,30 @@ const testRelatedKeys = ( expandKey ) => {
 
   printStats( 'Related keys', values, '/256 bits' );
 };
+
+const testBitBalance = ( expandKey ) => {
+  const counts = new Uint32Array( KEY_SIZE * 8 );
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), output = expandKey( key )[ ROUNDS ];
+
+    for ( let byte = 0; byte < output.length; byte++ ) for ( let bit = 0; bit < 8; bit++ )
+      if ( output[ byte ] & ( 1 << bit ) ) counts[ byte * 8 + bit ]++;
+  }
+
+  const percentages = Array.from( counts, count => count / SAMPLES * 100 );
+  printStats( 'Bit balance', percentages, '%' );
+};
+
+const testByteDistribution = ( expandKey ) => {
+  const counts = new Uint32Array( 256 );
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), output = expandKey( key )[ ROUNDS ];
+    for ( const byte of output ) counts[ byte ]++;
+  }
+
+  const expected = SAMPLES * KEY_SIZE / 256;
+  const deviations = Array.from( counts, count => ( count - expected ) / expected * 100 );
+  printStats( 'Byte distribution', deviations, '%' );
+};
