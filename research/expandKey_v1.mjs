@@ -1,4 +1,4 @@
-import { KEY_SIZE, ROUNDS } from './utils.mjs';
+import { KEY_SIZE, schedule } from './utils.mjs';
 
 export const transform_v1 = ( key, round ) => {
   // substitution
@@ -44,14 +44,4 @@ export const transform_v1 = ( key, round ) => {
   return result;
 };
 
-export const expandKey_v1 = key => {
-  const keys = [ new Uint8Array( key ) ];
-  let current = new Uint8Array( key );
-
-  for ( let round = 1; round <= ROUNDS; round++ ) {
-    current = transform_v1( current, round );
-    keys.push( current );
-  }
-
-  return keys;
-};
+export const expandKey_v1 = ( key ) => schedule( key, transform_v1 );
