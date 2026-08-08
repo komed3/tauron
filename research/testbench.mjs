@@ -255,3 +255,48 @@ const testHammingWeight = ( expandKey ) => {
   const deviation = Math.sqrt( values.reduce( ( sum, value ) => sum + ( value - avg ) ** 2, 0 ) / values.length );
   console.log( `Hamming weight       avg ${ avg.toFixed( 2 ) } dev ${ deviation.toFixed( 2 ) }` );
 };
+
+const testRoundUniqueness = ( expandKey ) => {
+  let duplicateSchedules = 0, duplicatePairs = 0;
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const schedule = expandKey( randomKey() );
+    const seen = new Set();
+
+    for ( const round of schedule ) {
+      const value = hex( round );
+
+      if ( seen.has( value ) ) duplicatePairs++;
+      else seen.add( value );
+    }
+
+    if ( seen.size !== schedule.length ) duplicateSchedules++;
+  }
+
+  console.log( `Round uniqueness      ${ duplicateSchedules === 0 ? 'PASS' : `FAIL (${ duplicateSchedules })` }` );
+  if ( duplicatePairs ) console.log( `  duplicate rounds   ${ duplicatePairs }` );
+
+  return duplicateSchedules === 0;
+};
+
+const testRoundDistances = ( expandKey ) => {
+  const values = Array.from( { length: ROUNDS }, () => [] );
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const schedule = expandKey( randomKey() );
+
+    for ( let round = 1; round <= ROUNDS; round++ )
+      values[ round - 1 ].push( hammingDistance( schedule[ round - 1 ], schedule[ round ] ) );
+  }
+
+  console.log( 'Round'.padEnd( 7 ) + 'min'.padStart( 5 ) + 'avg'.padStart( 7 ) + 'max'.padStart( 7 ) );
+
+  values.forEach( ( distances, index ) => {
+    const { min, avg, max } = stats( distances );
+
+    console.log(
+      `R${ ( index + 1 ).toString().padStart( 2, '0' ) }` + min.toString().padStart( 7 ) +
+      avg.toFixed( 1 ).padStart( 7 ) + max.toString().padStart( 7 )
+    );
+  } );
+};
