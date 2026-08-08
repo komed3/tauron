@@ -39,5 +39,16 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
     words[ i ] = ( words[ i ] ^ rotl( other, ( i * 7 + 3 ) % 32 ) ) >>> 0;
   }
 
+  // 5. Convert words back to bytes
+  for ( let i = 0; i < 8; i++ ) {
+    const offset = i * 4;
+    const word = words[ i ];
+
+    bytes[ offset ] = word & 0xff;
+    bytes[ offset + 1 ] = ( word >>> 8 ) & 0xff;
+    bytes[ offset + 2 ] = ( word >>> 16 ) & 0xff;
+    bytes[ offset + 3 ] = ( word >>> 24 ) & 0xff;
+  }
+
   return result;
 } );
