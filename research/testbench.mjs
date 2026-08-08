@@ -78,7 +78,7 @@ const testScheduleFormat = ( expandKey ) => {
     }
   }
 
-  console.log( `Schedule format      ${ pass ? 'PASS' : 'FAIL' }` );
+  console.log( `Schedule format       ${ pass ? 'PASS' : 'FAIL' }` );
   return pass;
 };
 
@@ -160,7 +160,7 @@ const testMultiBitAvalanche = ( expandKey ) => {
 
     const { avg } = stats( values );
 
-    console.log( `${ count.toString().padStart( 4 ) } bits → ${ avg.toFixed( 1 ).padStart( 5 ) }` );
+    console.log( `${ count.toString().padStart( 6 ) } bits  →  ${ avg.toFixed( 1 ).padStart( 5 ) }` );
   }
 };
 
@@ -183,7 +183,7 @@ const testPositionAvalanche = ( expandKey ) => {
   console.log( 'Round'.padEnd( 7 ) + 'min'.padStart( 5 ) + 'avg'.padStart( 7 ) + 'max'.padStart( 7 ) );
 
   for ( const value of values ) console.log(
-    `R${ value.round.toString().padStart( 2, '0' ) }` + value.min.toString().padStart( 7 ) +
+    `R${ value.round.toString().padStart( 2, '0' ) }` + value.min.toString().padStart( 9 ) +
     value.avg.toFixed( 1 ).padStart( 7 ) + value.max.toString().padStart( 7 )
   );
 };
@@ -255,7 +255,7 @@ const testHammingWeight = ( expandKey ) => {
 
   const { avg } = stats( values );
   const deviation = Math.sqrt( values.reduce( ( sum, value ) => sum + ( value - avg ) ** 2, 0 ) / values.length );
-  console.log( `Hamming weight       avg ${ avg.toFixed( 2 ) } dev ${ deviation.toFixed( 2 ) }` );
+  console.log( `Hamming weight          avg ${ avg.toFixed( 2 ) } dev ${ deviation.toFixed( 2 ) }` );
 };
 
 const testRoundUniqueness = ( expandKey ) => {
@@ -297,7 +297,7 @@ const testRoundDistances = ( expandKey ) => {
     const { min, avg, max } = stats( distances );
 
     console.log(
-      `R${ ( index + 1 ).toString().padStart( 2, '0' ) }` + min.toString().padStart( 7 ) +
+      `R${ ( index + 1 ).toString().padStart( 2, '0' ) }` + min.toString().padStart( 9 ) +
       avg.toFixed( 1 ).padStart( 7 ) + max.toString().padStart( 7 )
     );
   } );
@@ -329,7 +329,7 @@ const testStructuredKeys = ( expandKey ) => {
   keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index === KEY_SIZE - 1 ? 0x80 : 0x00 ) );
 
   for ( const key of keys ) console.log(
-    `${ hex( key.subarray( 0, 8 ) ).padEnd( 23 ) } → ` +
+    `${ hex( key.subarray( 0, 8 ) ).padEnd( 23 ) }  →  ` +
     hex( expandKey( key )[ ROUNDS ].subarray( 0, 8 ) )
   );
 };
@@ -373,17 +373,15 @@ const testPermutationSymmetry = ( expandKey ) => {
   const b = expandKey( key );
 
   const distance = hammingDistance( a[ ROUNDS ], b[ ROUNDS ] );
-  console.log( `Reverse-key distance ${ distance }/256 bits` );
+  console.log( `Reverse-key distance  ${ distance }/256 bits` );
 };
 
 export const runTests = ( expandKey, { samples = SAMPLES, collisionSamples = COLLISION_SAMPLES } = {} ) => {
   if ( typeof expandKey !== 'function' ) throw new TypeError( 'runTests() expects a key expansion function' );
 
   console.log( '=== KEY SCHEDULE ANALYSIS ===' );
-  console.log(
-    `Samples: ${ samples.toLocaleString() } | ` +
-    `Collisions: ${ collisionSamples.toLocaleString() }`
-  );
+  console.log( `Samples: ${ samples.toLocaleString() }` );
+  console.log( `Collisions: ${ collisionSamples.toLocaleString() }` );
 
   section( 'STRUCTURAL TESTS' );
 
