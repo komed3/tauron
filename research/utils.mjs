@@ -3,7 +3,7 @@ export const ROUNDS = 16;
 
 export const hex = ( bytes ) => {
   return Array.from( bytes, byte => byte.toString( 16 ).padStart( 2, '0' ) ).join( ' ' );
-}
+};
 
 export const hammingDistance = ( a, b ) => {
   let bits = 0;
@@ -18,7 +18,19 @@ export const hammingDistance = ( a, b ) => {
   }
 
   return bits;
-}
+};
+
+export const schedule = ( key, fn ) => {
+  const keys = [ new Uint8Array( key ) ];
+  let current = new Uint8Array( key );
+
+  for ( let round = 1; round <= ROUNDS; round++ ) {
+    current = fn( current, round );
+    keys.push( current );
+  }
+
+  return keys;
+};
 
 export const outKeys = ( keys ) => {
   keys.forEach( ( key, round ) => console.log(
