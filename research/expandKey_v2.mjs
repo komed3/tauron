@@ -1,6 +1,6 @@
 import { KEY_SIZE, schedule } from './utils.mjs';
 
-const WARMUP_ROUNDS = 3;
+const WARMUP_ROUNDS = 0;
 
 const permutation = [
   0, 13, 26, 7, 20, 1, 14, 27,
