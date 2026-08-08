@@ -84,3 +84,10 @@ const transform = ( key, round ) => {
 
   return result;
 };
+
+export const expandKey_v2 = ( key ) => {
+  let current = new Uint8Array( key );
+
+  for ( let round = 1; round <= WARMUP_ROUNDS; round++ ) current = transform( current, round );
+  return schedule( current, transform );
+};
