@@ -1,6 +1,5 @@
 import { expandKey_v2 } from './expandKey_v2.mjs';
-
-const BLOCK_SIZE = 32;
+import { BLOCK_SIZE } from './utils.mjs';
 
 const permutation = [
   0, 13, 26, 7, 20, 1, 14, 27,
