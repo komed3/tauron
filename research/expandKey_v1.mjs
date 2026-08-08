@@ -50,5 +50,9 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
     bytes[ offset + 3 ] = ( word >>> 24 ) & 0xff;
   }
 
+  // 6. Byte permutation
+  const result = new Uint8Array( KEY_SIZE );
+  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ permutation[ i ] ];
+
   return result;
 } );
