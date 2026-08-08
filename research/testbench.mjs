@@ -326,12 +326,8 @@ const testStructuredKeys = ( expandKey ) => {
   keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index === 0 ? 0x80 : 0x00 ) );
   keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index === KEY_SIZE - 1 ? 0x80 : 0x00 ) );
 
-  for ( const key of keys ) {
-    const schedule = expandKey( key );
-
-    console.log(
-      `${ hex( key.subarray( 0, 8 ) ).padEnd( 23 ) } → ` +
-      hex( schedule[ ROUNDS ].subarray( 0, 8 ) )
-    );
-  }
+  for ( const key of keys ) console.log(
+    `${ hex( key.subarray( 0, 8 ) ).padEnd( 23 ) } → ` +
+    hex( expandKey( key )[ ROUNDS ].subarray( 0, 8 ) )
+  );
 };
