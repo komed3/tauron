@@ -86,3 +86,22 @@ const transform = ( state, roundKey ) => {
 
   return result;
 };
+
+const inverseTransform = ( state, roundKey ) => {
+  const unkeyed = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) unkeyed[ i ] = state[ i ] ^ roundKey[ i ];
+
+  const unpermuted = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) unpermuted[ i ] = unkeyed[ inversePermutation[ i ] ];
+
+  const unrotated = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) unrotated[ i ] = unpermuted[ ( i + 25 ) & 31 ];
+
+  const words = toWords( unrotated );
+  inverseMix( words );
+
+  const bytes = fromWords( words ), result = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) result[ i ] = inverseSubstitute( bytes[ i ] );
+
+  return result;
+};
