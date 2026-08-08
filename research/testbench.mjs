@@ -231,3 +231,27 @@ const testByteDistribution = ( expandKey ) => {
   const deviations = Array.from( counts, count => ( count - expected ) / expected * 100 );
   printStats( 'Byte distribution', deviations, '%' );
 };
+
+const testHammingWeight = ( expandKey ) => {
+  const values = [];
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), output = expandKey( key )[ ROUNDS ];
+    let bits = 0;
+
+    for ( const byte of output ) {
+      let value = byte;
+
+      while ( value ) {
+        bits += value & 1;
+        value >>>= 1;
+      }
+    }
+
+    values.push( bits );
+  }
+
+  const { avg } = stats( values );
+  const deviation = Math.sqrt( values.reduce( ( sum, value ) => sum + ( value - avg ) ** 2, 0 ) / values.length );
+  console.log( `Hamming weight       avg ${ avg.toFixed( 2 ) } dev ${ deviation.toFixed( 2 ) }` );
+};
