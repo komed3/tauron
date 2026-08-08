@@ -129,3 +129,22 @@ const testHammingWeight = ( algo ) => {
     ` dev ${ deviation( weights ).toFixed( 2 ) }`
   );
 };
+
+const testStructuredKeys = ( algo ) => {
+  const keys = [];
+
+  keys.push( new Uint8Array( KEY_SIZE ) );
+  keys.push( new Uint8Array( KEY_SIZE ).fill( 0xff ) );
+
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => 0xff - index ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index & 1 ? 0xff : 0 ) );
+  keys.push( Uint8Array.from( { length: KEY_SIZE }, ( _, index ) => index & 1 ? 0 : 0xff ) );
+
+  console.log( 'Structured keys' );
+
+  for ( const key of keys ) {
+    const result = algo( key )[ ROUNDS ];
+    console.log( `  ${ hex( key ).slice( 0, 23 ).padEnd( 23 ) } → ${ hex( result ).slice( 0, 23 ) }` );
+  }
+};
