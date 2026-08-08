@@ -36,8 +36,6 @@ const section = ( title ) => {
   console.log( `=== ${ title } ===` );
 };
 
-const format = ( value ) => value.toFixed( 1 ).padStart( 5, ' ' );
-
 const stats = ( values ) => {
   let min = Infinity, max = -Infinity, sum = 0;
 
@@ -49,6 +47,8 @@ const stats = ( values ) => {
 
   return { min, avg: sum / values.length, max };
 };
+
+const format = ( value ) => value.toFixed( 1 ).padStart( 5, ' ' );
 
 const printStats = ( name, values, suffix = '' ) => {
   const { min, avg, max } = stats( values );
@@ -141,4 +141,23 @@ const testAvalanche = ( expandKey ) => {
   }
 
   printStats( 'Avalanche', values, '/256 bits' );
+};
+
+const testMultiBitAvalanche = ( expandKey ) => {
+  const counts = [ 1, 2, 4, 8, 16, 32, 64, 128, 256 ];
+
+  for ( const count of counts ) {
+    const values = [];
+
+    for ( let i = 0; i < SAMPLES; i++ ) {
+      const key = randomKey(), changed = flipBits( key, count );
+      const a = expandKey( key ), b = expandKey( changed );
+
+      values.push( hammingDistance( a[ ROUNDS ], b[ ROUNDS ] ) );
+    }
+
+    const { avg } = stats( values );
+
+    console.log( `${ count.toString().padStart( 4 ) } bits → ${ avg.toFixed( 1 ).padStart( 5 ) }` );
+  }
 };
