@@ -115,3 +115,17 @@ const testByteDistribution = ( algo ) => {
     ` max ${ Math.max( ...deviations ).toFixed( 1 ) }%`
   );
 };
+
+const testHammingWeight = ( algo ) => {
+  const weights = [];
+
+  for ( let i = 0; i < TEST_KEYS; i++ ) {
+    const schedule = algo( randomKey() );
+    for ( const byte of schedule[ ROUNDS ] ) weights.push( countBits( byte ) );
+  }
+
+  console.log(
+    `Hamming weight    avg ${ average( weights ).toFixed( 2 ) }` +
+    ` dev ${ deviation( weights ).toFixed( 2 ) }`
+  );
+};
