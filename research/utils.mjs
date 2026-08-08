@@ -3,9 +3,7 @@ import { webcrypto } from 'node:crypto';
 export const KEY_SIZE = 32;
 export const ROUNDS = 16;
 
-export const hex = ( bytes ) => {
-  return Array.from( bytes, byte => byte.toString( 16 ).padStart( 2, '0' ) ).join( ' ' );
-};
+export const hex = ( bytes ) => Array.from( bytes, b => b.toString( 16 ).padStart( 2, '0' ) ).join( ' ' );
 
 export const hammingDistance = ( a, b ) => {
   let bits = 0;
