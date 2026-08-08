@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-import { expandKey_v1 } from './expandKey_v1.mjs';
+import { expandKey_v1 as algo } from './expandKey_v1.mjs';
 import { KEY_SIZE, ROUNDS, hammingDistance } from './utils.mjs';
 
 const randomKey = () => new Uint8Array( crypto.randomBytes( KEY_SIZE ) );
@@ -22,8 +22,8 @@ const compareSchedules = ( a, b ) => Array.from(
 const average = values => values.reduce( ( sum, value ) => sum + value, 0 ) / values.length;
 
 const testCase = ( name, keyA, keyB ) => {
-  const scheduleA = expandKey_v1( keyA );
-  const scheduleB = expandKey_v1( keyB );
+  const scheduleA = algo( keyA );
+  const scheduleB = algo( keyB );
   const values = compareSchedules( scheduleA, scheduleB );
 
   console.log( `${ name.padEnd( 18 ) } ` + values.slice( 1 )
@@ -36,8 +36,8 @@ const avalanche = () => {
   const values = Array.from( { length: ROUNDS + 1 }, () => [] );
 
   for ( let bit = 0; bit < KEY_SIZE * 8; bit++ ) {
-    const original = expandKey_v1( key );
-    const modified = expandKey_v1( flipBit( key, bit ) );
+    const original = algo( key );
+    const modified = algo( flipBit( key, bit ) );
 
     for ( let round = 0; round <= ROUNDS; round++ )
       values[ round ].push( hammingDistance( original[ round ], modified[ round ] ) );
