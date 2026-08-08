@@ -1,6 +1,8 @@
-export const expandKey_v1 = ( key ) => {
-  const substitute = value => ( value * 197 + 23 ) & 0xff;
+export const transform_v1 = ( key, round ) => {
+  // substitution
+  key = ( key * 197 + 23 ) & 0xff;
 
+  // 32 bit words
   const words = new Uint32Array( 8 );
   for ( let i = 0; i < 8; i++ ) {
     words[ i ] = key[ i * 4 ]
@@ -9,12 +11,14 @@ export const expandKey_v1 = ( key ) => {
       | ( key[ i * 4 + 3 ] << 24 );
   }
 
+  // ARX mixing
   const rotl = ( value, bits ) => ( value << bits ) | ( value >>> ( 32 - bits ) );
   for ( let i = 0; i < 8; i += 2 ) {
     words[ i ] = ( words[ i ] + rotl( words[ i + 1 ], 5 ) ) >>> 0;
     words[ i + 1 ] ^= rotl( words[ i ], 13 );
   }
 
+  // cross-word mixing
   for ( let i = 0; i < 8; i++ ) {
     const a = words[ i ];
     const b = words[ ( i + 3 ) & 7 ];
@@ -22,6 +26,7 @@ export const expandKey_v1 = ( key ) => {
     words[ i ] = ( a ^ rotl( b, ( i * 7 + 3 ) % 32 ) ) >>> 0;
   }
 
+  // byte permutation
   const permutation = [
     0, 13, 26, 7, 20, 1, 14, 27,
     8, 21, 2, 15, 28, 9, 22, 3,
@@ -31,4 +36,20 @@ export const expandKey_v1 = ( key ) => {
 
   const result = new Uint8Array( KEY_SIZE );
   for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ permutation[ i ] ];
+
+  // round constant
+  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] ^= ( round * 29 + i * 17 ) & 0xff;
+  return result;
+};
+
+export const expandKey_v1 = key => {
+  const keys = [ new Uint8Array( key ) ];
+  let current = new Uint8Array( key );
+
+  for ( let round = 1; round <= ROUNDS; round++ ) {
+    current = transform_v1( current, round );
+    keys.push( current );
+  }
+
+  return keys;
 };
