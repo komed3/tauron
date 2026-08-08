@@ -46,3 +46,17 @@ const testDeterminism = ( algo ) => {
   const identical = a.every( ( value, index ) => value === b[ index ] );
   console.log( `Determinism       ${ identical ? 'PASS' : 'FAIL' }` );
 };
+
+const testRandomKeys = ( algo ) => {
+  const distances = [];
+  let prev = algo( randomKey() );
+
+  for ( let i = 1; i < TEST_KEYS; i++ ) {
+    const current = algo( randomKey() );
+
+    distances.push( hammingDistance( prev[ ROUNDS ], current[ ROUNDS ] ) );
+    prev = current;
+  }
+
+  console.log( `Random keys       avg ${ average( distances ).toFixed( 2 ) }` );
+};
