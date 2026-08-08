@@ -30,3 +30,17 @@ const equalBytes = ( a, b ) => {
 
   return true;
 };
+
+const format = ( value ) => value.toFixed( 1 ).padStart( 5, ' ' );
+
+const stats = ( values ) => {
+  let min = Infinity, max = -Infinity, sum = 0;
+
+  for ( const value of values ) {
+    if ( value < min ) min = value;
+    if ( value > max ) max = value;
+    sum += value;
+  }
+
+  return { min, avg: sum / values.length, max };
+};
