@@ -16,5 +16,16 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
   // 1. Nonlinear byte substitution
   for ( let i = 0; i < KEY_SIZE; i++ ) bytes[ i ] = substitute( key[ i ] );
 
+  // 2. Convert to 32-bit words
+  const words = new Uint32Array( 8 );
+
+  for ( let i = 0; i < 8; i++ ) {
+    const offset = i * 4;
+    words[ i ] = bytes[ offset ]
+      | ( bytes[ offset + 1 ] << 8 )
+      | ( bytes[ offset + 2 ] << 16 )
+      | ( bytes[ offset + 3 ] << 24 );
+  }
+
   return result;
 } );
