@@ -24,3 +24,18 @@ R13  min 106  avg 127.4  max 146
 R14  min 107  avg 127.7  max 151
 R15  min 109  avg 128.6  max 155
 R16  min 110  avg 127.9  max 148
+
+=== STATISTICAL TESTS ===
+Determinism       FAIL
+Random keys       avg 128.41
+Related keys      avg 128.16
+Bit balance       min 49.42%  avg 50.03%  max 50.69%
+Byte distribution min -22.4%  avg 7.3%  max 20.8%
+Hamming weight    avg 4.01  dev 1.42
+Structured keys
+  00 00 00 00 00 00 00 00 → b7 0c 40 6f 92 bd 44 8a
+  ff ff ff ff ff ff ff ff → 18 23 d7 be ec 62 da 4f
+  00 01 02 03 04 05 06 07 → 51 8b 54 55 20 95 6e 04
+  ff fe fd fc fb fa f9 f8 → d9 30 a1 bc 08 3a 7e 99
+  00 ff 00 ff 00 ff 00 ff → 39 5a 96 64 e9 4a fa bc
+  ff 00 ff 00 ff 00 ff 00 → 3f 3a ed 98 0e 8d ea 2c

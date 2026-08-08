@@ -1,3 +1,4 @@
+import { expandKey_v2 as algo } from './expandKey_v2.mjs';
 import { KEY_SIZE, ROUNDS, hammingDistance, hex } from './utils.mjs';
 
 const TEST_KEYS = 1000;
@@ -37,22 +38,22 @@ const deviation = ( values ) => {
   return Math.sqrt( average( values.map( value => ( value - avg ) ** 2 ) ) );
 };
 
-const testDeterminism = ( algo ) => {
+const testDeterminism = ( expandKey ) => {
   const key = randomKey();
 
-  const a = algo( key );
-  const b = algo( key );
+  const a = expandKey( key );
+  const b = expandKey( key );
 
   const identical = a.every( ( value, index ) => value === b[ index ] );
   console.log( `Determinism       ${ identical ? 'PASS' : 'FAIL' }` );
 };
 
-const testRandomKeys = ( algo ) => {
+const testRandomKeys = ( expandKey ) => {
   const distances = [];
-  let prev = algo( randomKey() );
+  let prev = expandKey( randomKey() );
 
   for ( let i = 1; i < TEST_KEYS; i++ ) {
-    const current = algo( randomKey() );
+    const current = expandKey( randomKey() );
 
     distances.push( hammingDistance( prev[ ROUNDS ], current[ ROUNDS ] ) );
     prev = current;
@@ -61,13 +62,13 @@ const testRandomKeys = ( algo ) => {
   console.log( `Random keys       avg ${ average( distances ).toFixed( 2 ) }` );
 };
 
-const testRelatedKeys = ( algo ) => {
+const testRelatedKeys = ( expandKey ) => {
   const distances = [];
-  let key = randomKey(), prev = algo( key );
+  let key = randomKey(), prev = expandKey( key );
 
   for ( let i = 0; i < TEST_KEYS; i++ ) {
     key = incrementKey( key );
-    const current = algo( key );
+    const current = expandKey( key );
 
     distances.push( hammingDistance( prev[ ROUNDS ], current[ ROUNDS ] ) );
     prev = current;
@@ -76,11 +77,11 @@ const testRelatedKeys = ( algo ) => {
   console.log( `Related keys      avg ${ average( distances ).toFixed( 2 ) }` );
 };
 
-const testBitBalance = ( algo ) => {
+const testBitBalance = ( expandKey ) => {
   const counts = new Uint32Array( 8 );
 
   for ( let i = 0; i < TEST_KEYS; i++ ) {
-    const schedule = algo( randomKey() );
+    const schedule = expandKey( randomKey() );
     const key = schedule[ ROUNDS ];
 
     for ( const byte of key )
@@ -93,16 +94,16 @@ const testBitBalance = ( algo ) => {
 
   console.log(
     `Bit balance       min ${ Math.min( ...values ).toFixed( 2 ) }%` +
-    ` avg ${ average( values ).toFixed( 2 ) }%` +
-    ` max ${ Math.max( ...values ).toFixed( 2 ) }%`
+    `  avg ${ average( values ).toFixed( 2 ) }%` +
+    `  max ${ Math.max( ...values ).toFixed( 2 ) }%`
   );
 };
 
-const testByteDistribution = ( algo ) => {
+const testByteDistribution = ( expandKey ) => {
   const counts = new Uint32Array( 256 );
 
   for ( let i = 0; i < TEST_KEYS; i++ ) {
-    const schedule = algo( randomKey() );
+    const schedule = expandKey( randomKey() );
     for ( const byte of schedule[ ROUNDS ] ) counts[ byte ]++;
   }
 
@@ -111,26 +112,26 @@ const testByteDistribution = ( algo ) => {
 
   console.log(
     `Byte distribution min ${ Math.min( ...deviations ).toFixed( 1 ) }%` +
-    ` avg ${ average( deviations.map( Math.abs ) ).toFixed( 1 ) }%` +
-    ` max ${ Math.max( ...deviations ).toFixed( 1 ) }%`
+    `  avg ${ average( deviations.map( Math.abs ) ).toFixed( 1 ) }%` +
+    `  max ${ Math.max( ...deviations ).toFixed( 1 ) }%`
   );
 };
 
-const testHammingWeight = ( algo ) => {
+const testHammingWeight = ( expandKey ) => {
   const weights = [];
 
   for ( let i = 0; i < TEST_KEYS; i++ ) {
-    const schedule = algo( randomKey() );
+    const schedule = expandKey( randomKey() );
     for ( const byte of schedule[ ROUNDS ] ) weights.push( countBits( byte ) );
   }
 
   console.log(
     `Hamming weight    avg ${ average( weights ).toFixed( 2 ) }` +
-    ` dev ${ deviation( weights ).toFixed( 2 ) }`
+    `  dev ${ deviation( weights ).toFixed( 2 ) }`
   );
 };
 
-const testStructuredKeys = ( algo ) => {
+const testStructuredKeys = ( expandKey ) => {
   const keys = [];
 
   keys.push( new Uint8Array( KEY_SIZE ) );
@@ -144,7 +145,16 @@ const testStructuredKeys = ( algo ) => {
   console.log( 'Structured keys' );
 
   for ( const key of keys ) {
-    const result = algo( key )[ ROUNDS ];
+    const result = expandKey( key )[ ROUNDS ];
     console.log( `  ${ hex( key ).slice( 0, 23 ).padEnd( 23 ) } → ${ hex( result ).slice( 0, 23 ) }` );
   }
 };
+
+console.log( '=== STATISTICAL TESTS ===' );
+testDeterminism( algo );
+testRandomKeys( algo );
+testRelatedKeys( algo );
+testBitBalance( algo );
+testByteDistribution( algo );
+testHammingWeight( algo );
+testStructuredKeys( algo );
