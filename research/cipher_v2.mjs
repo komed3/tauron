@@ -14,5 +14,29 @@ for ( let i = 0; i < BLOCK_SIZE; i++ ) inversePermutation[ permutation[ i ] ] = 
 const rotl = ( value, bits ) => ( ( value << bits ) | ( value >>> ( 32 - bits ) ) ) >>> 0;
 const rotr = ( value, bits ) => ( ( value >>> bits ) | ( value << ( 32 - bits ) ) ) >>> 0;
 
-const substitute = value => ( value * 197 + 23 ) & 0xff;
-const inverseSubstitute = value => ( ( value - 23 ) * 13 ) & 0xff;
+const substitute = ( value ) => ( value * 197 + 23 ) & 0xff;
+const inverseSubstitute = ( value ) => ( ( value - 23 ) * 13 ) & 0xff;
+
+const mix = ( words ) => {
+  for ( let i = 0; i < 8; i += 2 ) {
+    words[ i ] = ( words[ i ] + rotl( words[ i + 1 ], 5 ) ) >>> 0;
+    words[ i + 1 ] = ( words[ i + 1 ] ^ rotl( words[ i ], 13 ) ) >>> 0;
+  }
+
+  for ( let i = 0; i < 8; i++ ) {
+    const other = words[ ( i + 3 ) & 7 ];
+    words[ i ] = ( words[ i ] ^ rotl( other, ( i * 7 + 3 ) & 31 ) ) >>> 0;
+  }
+};
+
+const inverseMix = ( words ) => {
+  for ( let i = 7; i >= 0; i-- ) {
+    const other = words[ ( i + 3 ) & 7 ];
+    words[ i ] = ( words[ i ] ^ rotl( other, ( i * 7 + 3 ) & 31 ) ) >>> 0;
+  }
+
+  for ( let i = 6; i >= 0; i -= 2 ) {
+    words[ i + 1 ] = ( words[ i + 1 ] ^ rotl( words[ i ], 13 ) ) >>> 0;
+    words[ i ] = ( words[ i ] - rotl( words[ i + 1 ], 5 ) ) >>> 0;
+  }
+};
