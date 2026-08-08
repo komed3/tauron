@@ -20,6 +20,15 @@ export const hammingDistance = ( a, b ) => {
   return bits;
 };
 
+const randomKey = () => {
+  const key = new Uint8Array( KEY_SIZE );
+  webcrypto.getRandomValues( key );
+
+  return key;
+};
+
+const cloneKey = ( key ) => new Uint8Array( key );
+
 export const schedule = ( key, fn ) => {
   const keys = [ new Uint8Array( key ) ];
   let current = new Uint8Array( key );
