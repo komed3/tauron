@@ -185,3 +185,22 @@ const testPositionAvalanche = ( expandKey ) => {
     value.avg.toFixed( 1 ).padStart( 7 ) + value.max.toString().padStart( 7 )
   );
 };
+
+const testRelatedKeys = ( expandKey ) => {
+  const values = [];
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), related = cloneKey( key );
+    const changes = 1 + Math.floor( Math.random() * 8 );
+
+    for ( let j = 0; j < changes; j++ ) {
+      const index = Math.floor( Math.random() * KEY_SIZE );
+      related[ index ] ^= Math.floor( Math.random() * 255 ) + 1;
+    }
+
+    const a = expandKey( key ), b = expandKey( related );
+    values.push( hammingDistance( a[ ROUNDS ], b[ ROUNDS ] ) );
+  }
+
+  printStats( 'Related keys', values, '/256 bits' );
+};
