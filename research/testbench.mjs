@@ -96,3 +96,19 @@ const testDeterminism = ( expandKey ) => {
   console.log( `Determinism           ${ pass ? 'PASS' : 'FAIL' }` );
   return pass;
 };
+
+const testRoundZero = ( expandKey ) => {
+  let pass = true;
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), schedule = expandKey( key );
+
+    if ( ! equalBytes( key, schedule[ 0 ] ) ) {
+      pass = false;
+      break;
+    }
+  }
+
+  console.log( `Round 0 preservation  ${ pass ? 'PASS' : 'FAIL' }` );
+  return pass;
+};
