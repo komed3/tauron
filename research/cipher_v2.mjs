@@ -70,3 +70,19 @@ const fromWords = ( words ) => {
 
   return bytes;
 };
+
+const transform = ( state, roundKey ) => {
+  const bytes = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) bytes[ i ] = substitute( state[ i ] );
+
+  const words = toWords( bytes );
+  mix( words );
+
+  const mixed = fromWords( words ), rotated = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) rotated[ i ] = mixed[ ( i + 7 ) & 31 ];
+
+  const result = new Uint8Array( BLOCK_SIZE );
+  for ( let i = 0; i < BLOCK_SIZE; i++ ) result[ i ] = rotated[ permutation[ i ] ] ^ roundKey[ i ];
+
+  return result;
+};
