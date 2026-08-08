@@ -373,3 +373,54 @@ const testPermutationSymmetry = ( expandKey ) => {
   const distance = hammingDistance( a[ ROUNDS ], b[ ROUNDS ] );
   console.log( `Reverse-key distance ${ distance }/256 bits` );
 };
+
+export const runTests = ( expandKey, { samples = SAMPLES, collisionSamples = COLLISION_SAMPLES } = {} ) => {
+  if ( typeof expandKey !== 'function' ) throw new TypeError( 'runTests() expects a key expansion function' );
+
+  console.log( '=== KEY SCHEDULE ANALYSIS ===' );
+  console.log(
+    `Samples: ${ samples.toLocaleString() } | ` +
+    `Collisions: ${ collisionSamples.toLocaleString() }`
+  );
+
+  section( 'STRUCTURAL TESTS' );
+
+  testScheduleFormat( expandKey );
+  testDeterminism( expandKey );
+  testRoundZero( expandKey );
+  testCollisions( expandKey );
+
+  section( 'AVALANCHE TESTS' );
+
+  testAvalanche( expandKey );
+  console.log( 'Multi-bit avalanche' );
+  testMultiBitAvalanche( expandKey );
+
+  console.log( 'Position avalanche' );
+  testPositionAvalanche( expandKey );
+
+  testRelatedKeys( expandKey );
+
+  section( 'STATISTICAL TESTS' );
+
+  testBitBalance( expandKey );
+  testByteDistribution( expandKey );
+  testHammingWeight( expandKey );
+
+  section( 'ROUND STRUCTURE' );
+
+  testRoundUniqueness( expandKey );
+  console.log( 'Round-to-round distance' );
+  testRoundDistances( expandKey );
+
+  testRoundRepetition( expandKey );
+  testRoundCorrelation( expandKey );
+
+  section( 'STRUCTURED INPUTS' );
+
+  testStructuredKeys( expandKey );
+  testZeroPatterns( expandKey );
+  testPermutationSymmetry( expandKey );
+
+  section( 'ANALYSIS COMPLETE' );
+};
