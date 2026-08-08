@@ -128,3 +128,17 @@ const testCollisions = ( expandKey ) => {
   console.log( `Collisions            ${ collisions === 0 ? 'PASS' : `FAIL (${ collisions })` }` );
   return collisions === 0;
 };
+
+const testAvalanche = ( expandKey ) => {
+  const values = [];
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey();
+    const changed = flipBit( key, Math.floor( Math.random() * KEY_SIZE * 8 ) );
+
+    const a = expandKey( key ), b = expandKey( changed );
+    values.push( hammingDistance( a[ ROUNDS ], b[ ROUNDS ] ) );
+  }
+
+  printStats( 'Avalanche', values, '/256 bits' );
+};
