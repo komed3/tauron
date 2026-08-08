@@ -97,3 +97,21 @@ const testBitBalance = ( algo ) => {
     ` max ${ Math.max( ...values ).toFixed( 2 ) }%`
   );
 };
+
+const testByteDistribution = ( algo ) => {
+  const counts = new Uint32Array( 256 );
+
+  for ( let i = 0; i < TEST_KEYS; i++ ) {
+    const schedule = algo( randomKey() );
+    for ( const byte of schedule[ ROUNDS ] ) counts[ byte ]++;
+  }
+
+  const expected = ( TEST_KEYS * KEY_SIZE ) / 256;
+  const deviations = Array.from( counts, count => ( count - expected ) / expected * 100 );
+
+  console.log(
+    `Byte distribution min ${ Math.min( ...deviations ).toFixed( 1 ) }%` +
+    ` avg ${ average( deviations.map( Math.abs ) ).toFixed( 1 ) }%` +
+    ` max ${ Math.max( ...deviations ).toFixed( 1 ) }%`
+  );
+};
