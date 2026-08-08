@@ -255,7 +255,7 @@ const testHammingWeight = ( expandKey ) => {
 
   const { avg } = stats( values );
   const deviation = Math.sqrt( values.reduce( ( sum, value ) => sum + ( value - avg ) ** 2, 0 ) / values.length );
-  console.log( `Hamming weight          avg ${ avg.toFixed( 2 ) } dev ${ deviation.toFixed( 2 ) }` );
+  console.log( `Hamming weight          avg ${ avg.toFixed( 2 ) }  dev ${ deviation.toFixed( 2 ) }` );
 };
 
 const testRoundUniqueness = ( expandKey ) => {
