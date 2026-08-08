@@ -1,3 +1,5 @@
+import { KEY_SIZE, ROUNDS, cloneKey, hammingDistance, hex, randomKey } from './utils.mjs';
+
 const SAMPLES = 10_000;
 const COLLISION_SAMPLES = 10_000;
 
@@ -87,7 +89,7 @@ const testDeterminism = ( expandKey ) => {
     const key = randomKey();
     const a = expandKey( key ), b = expandKey( key );
 
-    if ( a.length !== b.length || a.some( ( round, index ) => !equalBytes( round, b[ index ] ) ) ) {
+    if ( a.length !== b.length || a.some( ( round, index ) => ! equalBytes( round, b[ index ] ) ) ) {
       pass = false;
       break;
     }
