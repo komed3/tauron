@@ -1,3 +1,5 @@
+import { webcrypto } from 'node:crypto';
+
 export const KEY_SIZE = 32;
 export const ROUNDS = 16;
 
