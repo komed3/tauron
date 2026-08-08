@@ -300,3 +300,16 @@ const testRoundDistances = ( expandKey ) => {
     );
   } );
 };
+
+const testRoundRepetition = ( expandKey ) => {
+  const distances = [];
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const schedule = expandKey( randomKey() );
+
+    for ( let a = 0; a < schedule.length; a++ ) for ( let b = a + 1; b < schedule.length; b++ )
+      distances.push( hammingDistance( schedule[ a ], schedule[ b ] ) );
+  }
+
+  printStats( 'Round repetition', distances, '/256 bits' );
+};
