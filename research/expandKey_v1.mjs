@@ -1,3 +1,5 @@
+import { KEY_SIZE, ROUNDS } from './utils.mjs';
+
 export const transform_v1 = ( key, round ) => {
   // substitution
   key = ( key * 197 + 23 ) & 0xff;
@@ -35,7 +37,7 @@ export const transform_v1 = ( key, round ) => {
   ];
 
   const result = new Uint8Array( KEY_SIZE );
-  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ permutation[ i ] ];
+  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = key[ permutation[ i ] ];
 
   // round constant
   for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] ^= ( round * 29 + i * 17 ) & 0xff;
