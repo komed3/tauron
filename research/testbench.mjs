@@ -31,6 +31,11 @@ const equalBytes = ( a, b ) => {
   return true;
 };
 
+const section = ( title ) => {
+  console.log();
+  console.log( `=== ${ title } ===` );
+};
+
 const format = ( value ) => value.toFixed( 1 ).padStart( 5, ' ' );
 
 const stats = ( values ) => {
@@ -43,4 +48,13 @@ const stats = ( values ) => {
   }
 
   return { min, avg: sum / values.length, max };
+};
+
+const printStats = ( name, values, suffix = '' ) => {
+  const { min, avg, max } = stats( values );
+
+  console.log(
+    `${ name.padEnd( 22 ) }  min ${ format( min ) }  avg ${ format( avg ) }  ` +
+    `max ${ format( max ) }${ suffix }`
+  );
 };
