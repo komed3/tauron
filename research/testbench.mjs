@@ -58,3 +58,24 @@ const printStats = ( name, values, suffix = '' ) => {
     `max ${ format( max ) }${ suffix }`
   );
 };
+
+const testScheduleFormat = ( expandKey ) => {
+  let pass = true;
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const key = randomKey(), schedule = expandKey( key );
+
+    if ( ! Array.isArray( schedule ) || schedule.length !== ROUNDS + 1 ) {
+      pass = false;
+      break;
+    }
+
+    if ( schedule.some( round => ! ( round instanceof Uint8Array ) || round.length !== KEY_SIZE ) ) {
+      pass = false;
+      break;
+    }
+  }
+
+  console.log( `Schedule format      ${ pass ? 'PASS' : 'FAIL' }` );
+  return pass;
+};
