@@ -54,5 +54,8 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
   const result = new Uint8Array( KEY_SIZE );
   for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ permutation[ i ] ];
 
+  // 7. Round constant
+  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] ^= ( round * 29 + i * 17 ) & 0xff;
+
   return result;
 } );
