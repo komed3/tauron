@@ -331,3 +331,32 @@ const testStructuredKeys = ( expandKey ) => {
     hex( expandKey( key )[ ROUNDS ].subarray( 0, 8 ) )
   );
 };
+
+const testZeroPatterns = ( expandKey ) => {
+  const patterns = [ new Uint8Array( KEY_SIZE ), new Uint8Array( KEY_SIZE ).fill( 0xff ) ];
+
+  for ( const key of patterns ) {
+    const schedule = expandKey( key );
+    const unique = new Set( schedule.map( hex ) ).size;
+
+    console.log(
+      `${ hex( key.subarray( 0, 4 ) ).padEnd( 14 ) } ` +
+      `${ unique }/${ schedule.length } unique rounds`
+    );
+  }
+};
+
+const testRoundCorrelation = ( expandKey ) => {
+  const values = [];
+
+  for ( let i = 0; i < SAMPLES; i++ ) {
+    const schedule = expandKey( randomKey() );
+
+    for ( let round = 1; round < ROUNDS; round++ ) {
+      const a = schedule[ round ], b = schedule[ round + 1 ];
+      values.push( hammingDistance( a, b ) );
+    }
+  }
+
+  printStats( 'Round correlation', values, '/256 bits' );
+};
