@@ -60,3 +60,18 @@ const testRandomKeys = ( algo ) => {
 
   console.log( `Random keys       avg ${ average( distances ).toFixed( 2 ) }` );
 };
+
+const testRelatedKeys = ( algo ) => {
+  const distances = [];
+  let key = randomKey(), prev = algo( key );
+
+  for ( let i = 0; i < TEST_KEYS; i++ ) {
+    key = incrementKey( key );
+    const current = algo( key );
+
+    distances.push( hammingDistance( prev[ ROUNDS ], current[ ROUNDS ] ) );
+    prev = current;
+  }
+
+  console.log( `Related keys      avg ${ average( distances ).toFixed( 2 ) }` );
+};
