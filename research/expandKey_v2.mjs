@@ -45,10 +45,10 @@ const transform = ( key, round ) => {
 
   for ( let i = 0; i < 8; i++ ) {
     const offset = i * 4;
-    words[ i ] = bytes[ offset ] |
-      ( bytes[ offset + 1 ] << 8 ) |
-      ( bytes[ offset + 2 ] << 16 ) |
-      ( bytes[ offset + 3 ] << 24 );
+    words[ i ] = bytes[ offset ]
+      | ( bytes[ offset + 1 ] << 8 )
+      | ( bytes[ offset + 2 ] << 16 )
+      | ( bytes[ offset + 3 ] << 24 );
   }
 
   // 3. Local ARX mixing
@@ -77,6 +77,10 @@ const transform = ( key, round ) => {
   // 6. Byte permutation
   const result = new Uint8Array( KEY_SIZE );
   for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ permutation[ i ] ];
+
+  // 7. Key-dependent round constant
+  const constant = deriveConstant( result, round );
+  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] ^= constant[ i ];
 
   return result;
 };
