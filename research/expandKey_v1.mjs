@@ -33,5 +33,11 @@ export const expandKey_v1 = ( key ) => schedule( key, ( key, round ) => {
     words[ i + 1 ] = ( words[ i + 1 ] ^ rotl( words[ i ], 13 ) ) >>> 0;
   }
 
+  // 4. Cross-word mixing
+  for ( let i = 0; i < 8; i++ ) {
+    const other = words[ ( i + 3 ) & 7 ];
+    words[ i ] = ( words[ i ] ^ rotl( other, ( i * 7 + 3 ) % 32 ) ) >>> 0;
+  }
+
   return result;
 } );
