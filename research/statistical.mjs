@@ -75,3 +75,25 @@ const testRelatedKeys = ( algo ) => {
 
   console.log( `Related keys      avg ${ average( distances ).toFixed( 2 ) }` );
 };
+
+const testBitBalance = ( algo ) => {
+  const counts = new Uint32Array( 8 );
+
+  for ( let i = 0; i < TEST_KEYS; i++ ) {
+    const schedule = algo( randomKey() );
+    const key = schedule[ ROUNDS ];
+
+    for ( const byte of key )
+      for ( let bit = 0; bit < 8; bit++ )
+        counts[ bit ] += ( byte >>> bit ) & 1;
+  }
+
+  const total = TEST_KEYS * KEY_SIZE;
+  const values = Array.from( counts, count => ( count / total ) * 100 );
+
+  console.log(
+    `Bit balance       min ${ Math.min( ...values ).toFixed( 2 ) }%` +
+    ` avg ${ average( values ).toFixed( 2 ) }%` +
+    ` max ${ Math.max( ...values ).toFixed( 2 ) }%`
+  );
+};
