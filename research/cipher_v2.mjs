@@ -13,3 +13,6 @@ for ( let i = 0; i < BLOCK_SIZE; i++ ) inversePermutation[ permutation[ i ] ] = 
 
 const rotl = ( value, bits ) => ( ( value << bits ) | ( value >>> ( 32 - bits ) ) ) >>> 0;
 const rotr = ( value, bits ) => ( ( value >>> bits ) | ( value << ( 32 - bits ) ) ) >>> 0;
+
+const substitute = value => ( value * 197 + 23 ) & 0xff;
+const inverseSubstitute = value => ( ( value - 23 ) * 13 ) & 0xff;
