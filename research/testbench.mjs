@@ -360,3 +360,16 @@ const testRoundCorrelation = ( expandKey ) => {
 
   printStats( 'Round correlation', values, '/256 bits' );
 };
+
+const testPermutationSymmetry = ( expandKey ) => {
+  const key = new Uint8Array( KEY_SIZE );
+
+  for ( let i = 0; i < KEY_SIZE; i++ ) key[ i ] = i;
+  const a = expandKey( key );
+
+  key.reverse();
+  const b = expandKey( key );
+
+  const distance = hammingDistance( a[ ROUNDS ], b[ ROUNDS ] );
+  console.log( `Reverse-key distance ${ distance }/256 bits` );
+};
