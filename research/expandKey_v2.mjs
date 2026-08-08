@@ -9,7 +9,7 @@ const permutation = [
   24, 5, 18, 31, 12, 19, 6, 25
 ];
 
-const rotl = ( value, bits ) => ( value << bits ) | ( value >>> ( 32 - bits ) );
+const rotl = ( value, bits ) => ( value << bits ) | ( value >>> ( 32 - bits ) ) >>> 0;
 const substitute = value => ( value * 197 + 23 ) & 0xff;
 
 const deriveConstant = ( bytes, round ) => {
