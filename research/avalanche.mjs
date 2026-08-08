@@ -49,9 +49,9 @@ const avalanche = () => {
     const current = values[ round ];
 
     console.log(
-      `R${ round.toString().padStart( 2, '0' ) } ` +
-      `min ${ Math.min( ...current ).toString().padStart( 3 ) } ` +
-      `avg ${ average( current ).toFixed( 1 ).padStart( 5 ) } ` +
+      `R${ round.toString().padStart( 2, '0' ) }  ` +
+      `min ${ Math.min( ...current ).toString().padStart( 3 ) }  ` +
+      `avg ${ average( current ).toFixed( 1 ).padStart( 5 ) }  ` +
       `max ${ Math.max( ...current ).toString().padStart( 3 ) }`
     );
   }
