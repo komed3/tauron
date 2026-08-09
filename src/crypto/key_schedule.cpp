@@ -38,6 +38,18 @@ void toWords( const Key& bytes, Words& words ) noexcept {
     words[ i ] = toWord( bytes, i * 4 );
 }
 
+void fromWord( std::uint32_t word, Key& bytes, std::size_t offset ) noexcept {
+  bytes[ offset ] = static_cast< std::uint8_t >( word );
+  bytes[ offset + 1 ] = static_cast< std::uint8_t >( word >> 8 );
+  bytes[ offset + 2 ] = static_cast< std::uint8_t >( word >> 16 );
+  bytes[ offset + 3 ] = static_cast< std::uint8_t >( word >> 24 );
+}
+
+void fromWords( const Words& words, Key& bytes ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    fromWord( words[ i ], bytes, i * 4 );
+}
+
 void substituteBytes( const Key& key, Key& bytes ) noexcept {
   for ( std::size_t i = 0; i < KEY_SIZE; ++i )
     bytes[ i ] = substitute( key[ i ] );
