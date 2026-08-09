@@ -10,6 +10,14 @@ namespace {
 
 constexpr std::uint32_t NONLINEAR_BASE = 0x9e3779b1;
 
+constexpr std::array< std::array< std::size_t, 2 >, 4 > PAIRS = {{
+  {{ 0, 1 }}, {{ 2, 3 }}, {{ 4, 5 }}, {{ 6, 7 }}
+}};
+
+constexpr std::array< std::array< std::size_t, 2 >, 4 > CROSS = {{
+  {{ 0, 2 }}, {{ 1, 3 }}, {{ 4, 6 }}, {{ 5, 7 }}
+}};
+
 constexpr std::uint32_t inverse32( std::uint32_t value ) noexcept {
   auto result = value;
   for ( int i = 0; i < 5; ++i ) result *= 2 - value * result;
@@ -99,6 +107,14 @@ void inverseDiffuse( Words& words, std::size_t round ) noexcept {
     words[ next ] -= std::rotl( words[ i ], diffusionRotationB( round, i ) );
     words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
   }
+}
+
+void butterfly( Words& words, std::size_t round ) noexcept {
+  for ( const auto& [ a, b ] : PAIRS )
+    mixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
+
+  for ( const auto& [ a, b ] : CROSS )
+    mixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
 }
 
 } // namespace
