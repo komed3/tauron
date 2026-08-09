@@ -13,6 +13,7 @@ add_library(
   tauron
 
   include/tauron/crypto/block_cipher.hpp
+  include/tauron/crypto/constants.hpp
   include/tauron/crypto/key_schedule.hpp
   include/tauron/crypto/words.hpp
 
