@@ -83,6 +83,24 @@ void inverseMixPair( Words& words, std::size_t a, std::size_t b, unsigned r1, un
   words[ a ] ^= std::rotl( words[ b ], r1 );
 }
 
+void diffuse( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    const auto next = ( i + 1 ) & 7;
+
+    words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
+    words[ next ] += std::rotl( words[ i ], diffusionRotationB( round, i ) );
+  }
+}
+
+void inverseDiffuse( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = words.size(); i-- > 0; ) {
+    const auto next = ( i + 1 ) & 7;
+
+    words[ next ] -= std::rotl( words[ i ], diffusionRotationB( round, i ) );
+    words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
+  }
+}
+
 } // namespace
 
 } // namespace tauron::crypto
