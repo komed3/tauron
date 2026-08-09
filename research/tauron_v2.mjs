@@ -40,3 +40,13 @@ const parseBlock = ( block ) => {
 
   return new Uint8Array( data );
 };
+
+const splitBlocks = ( data ) => {
+  if ( data.length === 0 ) return [ createBlock( data ) ];
+  const blocks = [];
+
+  for ( let offset = 0; offset < data.length; offset += PAYLOAD_SIZE )
+    blocks.push( createBlock( data.subarray( offset, Math.min( offset + PAYLOAD_SIZE, data.length ) ) ) );
+
+  return blocks;
+};
