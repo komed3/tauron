@@ -2,6 +2,9 @@
 
 namespace tauron::crypto {
 
-
+class BlockCipher {
+public:
+  //
+};
 
 }
