@@ -50,3 +50,31 @@ const splitBlocks = ( data ) => {
 
   return blocks;
 };
+
+export const encrypt = ( data, passphrase, { rounds = ROUNDS } = {} ) => {
+  const blocks = splitBlocks( data ), output = new Uint8Array( blocks.length * BLOCK_SIZE );
+  const keys = expandKey_v2( deriveKey( passphrase ), rounds );
+
+  for ( let i = 0; i < blocks.length; i++ ) output.set( encryptBlock_v2( blocks[ i ], keys ), i * BLOCK_SIZE );
+  return output;
+};
+
+export const decrypt = ( data, passphrase, { rounds = ROUNDS } = {} ) => {
+  if ( data.length === 0 || data.length % BLOCK_SIZE !== 0 )
+    throw new RangeError( 'Ciphertext length must be a non-zero multiple of block size' );
+
+  const keys = expandKey_v2( deriveKey( passphrase ), rounds ), parts = [];
+
+  for ( let offset = 0; offset < data.length; offset += BLOCK_SIZE )
+    parts.push( parseBlock( decryptBlock_v2( data.subarray( offset, offset + BLOCK_SIZE ), keys ) ) );
+
+  const output = new Uint8Array( parts.reduce( ( total, part ) => total + part.length, 0 ) );
+
+  let offset = 0;
+  for ( const part of parts ) {
+    output.set( part, offset );
+    offset += part.length;
+  }
+
+  return output;
+};
