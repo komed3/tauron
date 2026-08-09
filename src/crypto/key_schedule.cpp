@@ -76,7 +76,7 @@ Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   return result;
 }
 
-Key transform( const Key& key, std::size_t round ) {
+Key transform( const Key& key, std::size_t round ) noexcept {
   Key bytes {};
   substituteBytes( key, bytes );
 
