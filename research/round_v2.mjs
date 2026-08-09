@@ -45,9 +45,6 @@ const fromWords = ( words ) => {
 };
 
 const injectionRotation = ( round, index ) => ( round * 7 + index * 3 ) & 31;
-const tweakRotationA = ( round, index ) => ( round * 5 + index * 7 + 3 ) & 31;
-const tweakRotationB = ( round, index ) => ( round * 3 + index * 11 + 5 ) & 31;
-const tweakInjectionRotation = ( round, index ) => ( round * 11 + index * 5 + 7 ) & 31;
 const diffusionRotationA = ( round, index ) => ( round * 5 + index * 7 + 3 ) & 31;
 const diffusionRotationB = ( round, index ) => ( round * 3 + index * 11 + 5 ) & 31;
 const butterflyRotationA = ( round, index ) => ( round * 3 + index * 5 + 7 ) & 31;
@@ -55,41 +52,6 @@ const butterflyRotationB = ( round, index ) => ( round * 7 + index * 3 + 11 ) & 
 const crossRotationA = ( round, index ) => ( round * 11 + index * 3 + 5 ) & 31;
 const crossRotationB = ( round, index ) => ( round * 13 + index * 7 + 9 ) & 31;
 const multiplier = ( round, index ) => ( NONLINEAR_BASE + round * 2 + index * 2 ) >>> 0;
-
-const deriveTweak = ( keys, round ) => {
-  const tweak = new Uint32Array( keys );
-
-  for ( let i = 0; i < WORDS; i++ ) {
-    const next = ( i + 3 ) & 7, other = ( i + 5 ) & 7;
-
-    tweak[ i ] = add(
-      rotl( tweak[ i ] ^ tweak[ next ], tweakRotationA( round, i ) ),
-      rotl( tweak[ other ], tweakRotationB( round, i ) )
-    );
-  }
-
-  return tweak;
-};
-
-const injectTweak = ( words, tweak, round ) => {
-  for ( let i = 0; i < WORDS; i++ ) {
-    const next = ( i + 1 ) & 7;
-
-    words[ i ] ^= tweak[ i ];
-    words[ i ] >>>= 0;
-    words[ i ] = add( words[ i ], rotl( tweak[ next ], tweakInjectionRotation( round, i ) ) );
-  }
-};
-
-const inverseInjectTweak = ( words, tweak, round ) => {
-  for ( let i = WORDS - 1; i >= 0; i-- ) {
-    const next = ( i + 1 ) & 7;
-
-    words[ i ] = sub( words[ i ], rotl( tweak[ next ], tweakInjectionRotation( round, i ) ) );
-    words[ i ] ^= tweak[ i ];
-    words[ i ] >>>= 0;
-  }
-};
 
 const inject = ( words, keys, round ) => {
   for ( let i = 0; i < WORDS; i++ ) {
@@ -173,13 +135,12 @@ const inverseButterfly = ( words, round ) => {
 export const transform = ( block, key, round ) => {
   const words = toWords( block );
   const keys = toWords( key );
-  const tweak = deriveTweak( keys, round );
 
-  injectTweak( words, tweak, round );
   inject( words, keys, round );
-  nonlinear( words, round );
   diffuse( words, round );
+  nonlinear( words, round );
   butterfly( words, round );
+  nonlinear( words, round );
 
   return fromWords( words );
 };
@@ -187,13 +148,12 @@ export const transform = ( block, key, round ) => {
 export const inverseTransform = ( block, key, round ) => {
   const words = toWords( block );
   const keys = toWords( key );
-  const tweak = deriveTweak( keys, round );
 
-  inverseButterfly( words, round );
-  inverseDiffuse( words, round );
   inverseNonlinear( words, round );
+  inverseButterfly( words, round );
+  inverseNonlinear( words, round );
+  inverseDiffuse( words, round );
   inverseInject( words, keys, round );
-  inverseInjectTweak( words, tweak, round );
 
   return fromWords( words );
 };

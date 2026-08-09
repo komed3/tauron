@@ -1,7 +1,5 @@
 import { KEY_SIZE, schedule } from './utils.mjs';
 
-const WARMUP_ROUNDS = 0;
-
 const permutation = [
   0, 13, 26, 7, 20, 1, 14, 27,
   8, 21, 2, 15, 28, 9, 22, 3,
@@ -87,7 +85,5 @@ const transform = ( key, round ) => {
 
 export const expandKey_v2 = ( key ) => {
   let current = new Uint8Array( key );
-
-  for ( let round = 1; round <= WARMUP_ROUNDS; round++ ) current = transform( current, round );
   return schedule( current, transform );
 };
