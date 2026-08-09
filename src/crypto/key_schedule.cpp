@@ -48,6 +48,15 @@ void localMix( Words& words ) noexcept {
   }
 }
 
+void crossMix( Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    const auto other = words[ ( i + 3 ) & 7 ];
+    const auto rotation = static_cast< unsigned >( ( i * 7 + 3 ) & 31 );
+
+    words[ i ] ^= rotl( other, rotation );
+  }
+}
+
 }
 
 }
