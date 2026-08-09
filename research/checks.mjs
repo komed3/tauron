@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from './tauron.mjs';
+import { encrypt, decrypt } from './tauron_v2.mjs';
 
 
 const passphrase = 'Tauron test passphrase';
