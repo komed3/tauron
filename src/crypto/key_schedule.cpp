@@ -41,6 +41,13 @@ void substituteBytes( const Key& key, Key& bytes ) noexcept {
   for ( std::size_t i = 0; i < KEY_SIZE; ++i ) bytes[ i ] = substitute( key[ i ] );
 }
 
+void localMix( Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); i += 2 ) {
+    words[ i ] += rotl( words[ i + 1 ], 5 );
+    words[ i + 1 ] ^= rotl( words[ i ], 13 );
+  }
+}
+
 }
 
 }
