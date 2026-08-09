@@ -33,6 +33,10 @@ std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
     | ( static_cast< std::uint32_t >( bytes[ offset + 3 ] ) << 24 );
 }
 
+void toWords( const Key& bytes, Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) words[ i ] = toWord( bytes, i * 4 );
+}
+
 }
 
 }
