@@ -92,6 +92,27 @@ Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   return result;
 }
 
+Key transform( const Key& key, std::size_t round ) {
+  Key bytes {};
+  substituteBytes( key, bytes );
+
+  Words words {};
+  toWords( bytes, words );
+
+  localMix( words );
+  crossMix( words );
+
+  fromWords( words, bytes );
+
+  auto result = permut( bytes );
+  const auto constant = deriveConstant( result, round );
+
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i )
+    result[ i ] ^= constant[ i ];
+
+  return result;
+}
+
 }
 
 }
