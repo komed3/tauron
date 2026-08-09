@@ -1,4 +1,4 @@
-import { decryptBlock_v1 as decrypt, encryptBlock_v1 as encrypt } from './round_v1.mjs';
+import { decryptBlock_v2 as decrypt, encryptBlock_v2 as encrypt } from './round_v2.mjs';
 import { hex, KEY_SIZE } from './utils.mjs';
 
 const key = new Uint8Array( KEY_SIZE );
