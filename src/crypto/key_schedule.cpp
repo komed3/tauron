@@ -18,10 +18,6 @@ inline constexpr std::uint32_t ROUND_CONSTANT =       0x9e3779b9;
 
 using Words = std::array< std::uint32_t, 8 >;
 
-constexpr std::uint32_t rotl( std::uint32_t value, unsigned bits ) noexcept {
-  return std::rotl( value, bits );
-}
-
 constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
   return static_cast< std::uint8_t >( value * 197 + 23 );
 }
@@ -57,8 +53,8 @@ void substituteBytes( const Key& key, Key& bytes ) noexcept {
 
 void localMix( Words& words ) noexcept {
   for ( std::size_t i = 0; i < words.size(); i += 2 ) {
-    words[ i ] += rotl( words[ i + 1 ], 5 );
-    words[ i + 1 ] ^= rotl( words[ i ], 13 );
+    words[ i ] += std::rotl( words[ i + 1 ], 5 );
+    words[ i + 1 ] ^= std::rotl( words[ i ], 13 );
   }
 }
 
@@ -67,7 +63,7 @@ void crossMix( Words& words ) noexcept {
     const auto other = words[ ( i + 3 ) & 7 ];
     const auto rotation = static_cast< unsigned >( ( i * 7 + 3 ) & 31 );
 
-    words[ i ] ^= rotl( other, rotation );
+    words[ i ] ^= std::rotl( other, rotation );
   }
 }
 
@@ -86,7 +82,7 @@ Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   for ( std::size_t i = 0; i < KEY_SIZE; ++i ) {
     value ^= bytes[ i ];
     value *= NONLINEAR_CONSTANT_A;
-    value = rotl( value, 13 );
+    value = std::rotl( value, 13 );
   }
 
   Key result {};
@@ -94,7 +90,7 @@ Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   for ( std::size_t i = 0; i < KEY_SIZE; ++i ) {
     value ^= static_cast< std::uint32_t >( i + round );
     value *= NONLINEAR_CONSTANT_B;
-    value = rotl( value, 7 );
+    value = std::rotl( value, 7 );
 
     result[ i ] = static_cast< std::uint8_t >(
       value ^ ( value >> 8 ) ^ ( value >> 16 ) ^ ( value >> 24 )
