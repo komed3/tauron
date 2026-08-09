@@ -59,11 +59,35 @@ void crossMix( Words& words ) noexcept {
   }
 }
 
-Key permut( const Key& bytes ) {
+Key permut( const Key& bytes ) noexcept {
   Key result {};
 
   for ( std::size_t i = 0; i < KEY_SIZE; ++i )
     result[ i ] = bytes[ PERMUTATION[ i ] ];
+
+  return result;
+}
+
+Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
+  auto value = ROUND_CONSTANT ^ static_cast< std::uint32_t >( round );
+
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i ) {
+    value ^= bytes[ i ];
+    value *= NONLINEAR_CONSTANT_A;
+    value = rotl( value, 13 );
+  }
+
+  Key result {};
+
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i ) {
+    value ^= static_cast< std::uint32_t >( i + round );
+    value *= NONLINEAR_CONSTANT_B;
+    value = rotl( value, 7 );
+
+    result[ i ] = static_cast< std::uint8_t >(
+      value ^ ( value >> 8 ) ^ ( value >> 16 ) ^ ( value >> 24 )
+    );
+  }
 
   return result;
 }
