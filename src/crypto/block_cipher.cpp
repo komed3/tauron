@@ -12,9 +12,7 @@ constexpr std::uint32_t NONLINEAR_BASE = 0x9e3779b1;
 
 constexpr std::uint32_t inverse32( std::uint32_t value ) noexcept {
   auto result = value;
-
-  for ( int i = 0; i < 5; ++i )
-    result *= 2 - value * result;
+  for ( int i = 0; i < 5; ++i ) result *= 2 - value * result;
 
   return result;
 }
@@ -49,6 +47,20 @@ constexpr unsigned crossRotationB( std::size_t round, std::size_t index ) noexce
 
 constexpr std::uint32_t multiplier( std::size_t round, std::size_t index ) noexcept {
   return NONLINEAR_BASE + round * 2 + index * 2;
+}
+
+void inject( Words& words, const Words& keys, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] += keys[ i ];
+    words[ i ] ^= std::rotl( keys[ i ], injectionRotation( round, i ) );
+  }
+}
+
+void inverseInject( Words& words, const Words& keys, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] ^= std::rotl( keys[ i ], injectionRotation( round, i ) );
+    words[ i ] -= keys[ i ];
+  }
 }
 
 } // namespace
