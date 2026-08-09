@@ -29,7 +29,6 @@ const toWords = ( bytes ) => {
   return words;
 };
 
-
 const fromWords = ( words ) => {
   const bytes = new Uint8Array( BLOCK_SIZE );
 
@@ -44,7 +43,6 @@ const fromWords = ( words ) => {
 
   return bytes;
 };
-
 
 const injectionRotation = ( round, index ) => ( round * 7 + index * 3 ) & 31;
 const diffusionRotationA = ( round, index ) => ( round * 5 + index * 7 + 3 ) & 31;
