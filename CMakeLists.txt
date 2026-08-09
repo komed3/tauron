@@ -14,6 +14,7 @@ add_library(
 
   include/tauron/crypto/block_cipher.hpp
   include/tauron/crypto/key_schedule.hpp
+  include/tauron/crypto/words.hpp
 
   src/crypto/block_cipher.cpp
   src/crypto/key_schedule.cpp
