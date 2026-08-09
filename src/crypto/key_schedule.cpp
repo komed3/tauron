@@ -22,7 +22,7 @@ constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
   return static_cast< std::uint8_t >( value * 197 + 23 );
 }
 
-std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
+constexpr std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
   return static_cast< std::uint32_t >( bytes[ offset ] )
     | ( static_cast< std::uint32_t >( bytes[ offset + 1 ] ) <<  8 )
     | ( static_cast< std::uint32_t >( bytes[ offset + 2 ] ) << 16 )
@@ -34,7 +34,7 @@ void toWords( const Key& bytes, Words& words ) noexcept {
     words[ i ] = toWord( bytes, i * 4 );
 }
 
-void fromWord( std::uint32_t word, Key& bytes, std::size_t offset ) noexcept {
+constexpr void fromWord( std::uint32_t word, Key& bytes, std::size_t offset ) noexcept {
   bytes[ offset ] = static_cast< std::uint8_t >( word );
   bytes[ offset + 1 ] = static_cast< std::uint8_t >( word >> 8 );
   bytes[ offset + 2 ] = static_cast< std::uint8_t >( word >> 16 );
@@ -125,7 +125,7 @@ Key transform( const Key& key, std::size_t round ) {
 
 RoundKeys KeySchedule::expand( const Key& key, std::size_t rounds ) {
   if ( rounds < MIN_ROUNDS || rounds > MAX_ROUNDS )
-    throw std::invalid_argument( "Rounds must between 2 and 128" );
+    throw std::invalid_argument( "Rounds must be between 2 and 128" );
 
   RoundKeys keys;
   keys.reserve( rounds + 1 );
