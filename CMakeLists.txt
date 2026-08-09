@@ -17,26 +17,12 @@ add_library(
   src/crypto/key_schedule.cpp
 )
 
-target_include_directories(
-  tauron
-  PUBLIC
-  include
-)
+target_include_directories( tauron PUBLIC include )
 
-add_executable(
-  basic
-  test/basic_key.cpp
-)
+add_executable( basic_key test/basic_key.cpp )
+add_executable( bench_key test/bench_key.cpp )
 
-target_link_libraries(
-  basic
-  PRIVATE
-  tauron
-)
+target_link_libraries( basic_key PRIVATE tauron )
+target_link_libraries( bench_key PRIVATE tauron )
 
-target_compile_options(
-  tauron PRIVATE
-    -Wall
-    -Wextra
-    -Wpedantic
-)
+target_compile_options( tauron PRIVATE -Wall -Wextra -Wpedantic )
