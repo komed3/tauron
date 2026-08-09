@@ -126,3 +126,21 @@ const inverseTransform = ( block, roundKey ) => {
 
   return state;
 };
+
+export const encryptBlock_v0 = ( block, key ) => {
+  const keys = expandKey_v2( key );
+
+  let state = new Uint8Array( block );
+  for ( let round = 1; round < keys.length; round++ ) state = transform( state, keys[ round ] );
+
+  return state;
+};
+
+export const decryptBlock_v0 = ( block, key ) => {
+  const keys = expandKey_v2( key );
+
+  let state = new Uint8Array( block );
+  for ( let round = keys.length - 1; round >= 1; round-- ) state = inverseTransform( state, keys[ round ] );
+
+  return state;
+};
