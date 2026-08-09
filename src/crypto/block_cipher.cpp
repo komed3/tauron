@@ -63,6 +63,16 @@ void inverseInject( Words& words, const Words& keys, std::size_t round ) noexcep
   }
 }
 
+void nonlinear( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] *= multiplier( round, i );
+}
+
+void inverseNonlinear( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] *= inverse32( multiplier( round, i ) );
+}
+
 } // namespace
 
 } // namespace tauron::crypto
