@@ -86,3 +86,7 @@ const unmixWords = ( words ) => {
 
   return words;
 };
+
+const xorKey = ( bytes, key ) => {
+  for ( let i = 0; i < KEY_SIZE; i++ ) bytes[ i ] ^= key[ i ];
+};
