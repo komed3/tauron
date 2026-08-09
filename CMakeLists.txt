@@ -12,6 +12,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
+  include/tauron/crypto/cipher.hpp
   include/tauron/crypto/key_schedule.hpp
 
   src/crypto/key_schedule.cpp
