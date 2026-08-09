@@ -117,6 +117,18 @@ void butterfly( Words& words, std::size_t round ) noexcept {
     mixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
 }
 
+void inverseButterfly( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = CROSS.size(); i-- > 0; ) {
+    const auto [ a, b ] = CROSS[ i ];
+    inverseMixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
+  }
+
+  for ( std::size_t i = PAIRS.size(); i-- > 0; ) {
+    const auto [ a, b ] = PAIRS[ i ];
+    inverseMixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
+  }
+}
+
 } // namespace
 
 } // namespace tauron::crypto
