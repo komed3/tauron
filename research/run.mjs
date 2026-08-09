@@ -3,7 +3,6 @@ import { hex } from './utils.mjs';
 
 const key = new Uint8Array( 32 );
 const plaintext = new Uint8Array( 32 );
-
 plaintext[ 0 ] = 1;
 
 const encrypted = encrypt( plaintext, key );
