@@ -90,3 +90,21 @@ const unmixWords = ( words ) => {
 const xorKey = ( bytes, key ) => {
   for ( let i = 0; i < KEY_SIZE; i++ ) bytes[ i ] ^= key[ i ];
 };
+
+const transform = ( block, roundKey ) => {
+  let state = new Uint8Array( block );
+
+  // 1. Round key
+  xorKey( state, roundKey );
+
+  // 2. Nonlinear substitution
+  for ( let i = 0; i < KEY_SIZE; i++ ) state[ i ] = substitute( state[ i ] );
+
+  // 3. Byte rotation
+  state = rotateBytes( state );
+
+  // 4. Word-level ARX mixing
+  state = fromWords( mixWords( toWords( state ) ) );
+
+  return state;
+};
