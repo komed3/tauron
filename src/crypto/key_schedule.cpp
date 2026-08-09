@@ -37,6 +37,10 @@ void toWords( const Key& bytes, Words& words ) noexcept {
   for ( std::size_t i = 0; i < words.size(); ++i ) words[ i ] = toWord( bytes, i * 4 );
 }
 
+void substituteBytes( const Key& key, Key& bytes ) noexcept {
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i ) bytes[ i ] = substitute( key[ i ] );
+}
+
 }
 
 }
