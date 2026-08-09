@@ -26,6 +26,13 @@ constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
   return static_cast< std::uint8_t >( value * 197 + 23 );
 }
 
+std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
+  return static_cast< std::uint32_t >( bytes[ offset ] )
+    | ( static_cast< std::uint32_t >( bytes[ offset + 1 ] ) << 8 )
+    | ( static_cast< std::uint32_t >( bytes[ offset + 2 ] ) << 16 )
+    | ( static_cast< std::uint32_t >( bytes[ offset + 3 ] ) << 24 );
+}
+
 }
 
 }
