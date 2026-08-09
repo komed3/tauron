@@ -1,4 +1,5 @@
 #include "tauron/crypto/key_schedule.hpp"
+#include "tauron/crypto/words.hpp"
 
 #include <bit>
 #include <stdexcept>
@@ -16,34 +17,8 @@ inline constexpr std::uint32_t NONLINEAR_CONSTANT_A = 0x85ebca6b;
 inline constexpr std::uint32_t NONLINEAR_CONSTANT_B = 0xc2b2ae35;
 inline constexpr std::uint32_t ROUND_CONSTANT =       0x9e3779b9;
 
-using Words = std::array< std::uint32_t, 8 >;
-
 constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
   return static_cast< std::uint8_t >( value * 197 + 23 );
-}
-
-constexpr std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
-  return static_cast< std::uint32_t >( bytes[ offset ] )
-    | ( static_cast< std::uint32_t >( bytes[ offset + 1 ] ) <<  8 )
-    | ( static_cast< std::uint32_t >( bytes[ offset + 2 ] ) << 16 )
-    | ( static_cast< std::uint32_t >( bytes[ offset + 3 ] ) << 24 );
-}
-
-void toWords( const Key& bytes, Words& words ) noexcept {
-  for ( std::size_t i = 0; i < words.size(); ++i )
-    words[ i ] = toWord( bytes, i * 4 );
-}
-
-constexpr void fromWord( std::uint32_t word, Key& bytes, std::size_t offset ) noexcept {
-  bytes[ offset ] = static_cast< std::uint8_t >( word );
-  bytes[ offset + 1 ] = static_cast< std::uint8_t >( word >> 8 );
-  bytes[ offset + 2 ] = static_cast< std::uint8_t >( word >> 16 );
-  bytes[ offset + 3 ] = static_cast< std::uint8_t >( word >> 24 );
-}
-
-void fromWords( const Words& words, Key& bytes ) noexcept {
-  for ( std::size_t i = 0; i < words.size(); ++i )
-    fromWord( words[ i ], bytes, i * 4 );
 }
 
 void substituteBytes( const Key& key, Key& bytes ) noexcept {
