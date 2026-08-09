@@ -1,45 +1,39 @@
 import { expandKey_v2 } from './expandKey_v2.mjs';
 import { BLOCK_SIZE } from './utils.mjs';
 
-const rotl = ( value, bits ) => ( value << bits ) | ( value >>> ( 32 - bits ) ) >>> 0;
-const rotr = ( value, bits ) => ( value >>> bits ) | ( value << ( 32 - bits ) ) >>> 0;
+const WORDS = 8;
+const NONLINEAR_BASE = 0x9e3779b1;
 
-const substitute = ( value ) => ( Math.imul( value, 251 ) + 17 ) & 0xff;
-const inverseSubstitute = ( value ) => ( Math.imul( value - 17, 179 ) ) & 0xff;
+const rotl = ( value, bits ) => { bits &= 31; return ( value << bits ) | ( value >>> ( 32 - bits ) ); };
+const add = ( a, b ) => ( a + b ) >>> 0;
+const sub = ( a, b ) => ( a - b ) >>> 0;
+const mul = ( a, b ) => Math.imul( a, b ) >>> 0;
 
-const rotateBytes = ( bytes ) => {
-  const result = new Uint8Array( KEY_SIZE );
+const inverse32 = value => {
+  let result = value;
 
-  for ( let i = 0; i < KEY_SIZE; i++ ) result[ ( i * 7 ) % KEY_SIZE ] = bytes[ i ];
-  return result;
-};
-
-const inverseRotateBytes = ( bytes ) => {
-  const result = new Uint8Array( KEY_SIZE );
-
-  for ( let i = 0; i < KEY_SIZE; i++ ) result[ i ] = bytes[ ( i * 7 ) % KEY_SIZE ];
-  return result;
+  for ( let i = 0; i < 5; i++ ) result = mul( result, 2 - mul( value, result ) );
+  return result >>> 0;
 };
 
 const toWords = ( bytes ) => {
-  const words = new Uint32Array( 8 );
+  const words = new Uint32Array( WORDS );
 
-  for ( let i = 0; i < 8; i++ ) {
+  for ( let i = 0; i < WORDS; i++ ) {
     const offset = i * 4;
 
-    words[ i ] = bytes[ offset ] |
-      ( bytes[ offset + 1 ] << 8 ) |
-      ( bytes[ offset + 2 ] << 16 ) |
-      ( bytes[ offset + 3 ] << 24 );
+    words[ i ] = bytes[ offset ] | ( bytes[ offset + 1 ] << 8 ) |
+      ( bytes[ offset + 2 ] << 16 ) | ( bytes[ offset + 3 ] << 24 );
   }
 
   return words;
 };
 
-const fromWords = ( words ) => {
-  const bytes = new Uint8Array( KEY_SIZE );
 
-  for ( let i = 0; i < 8; i++ ) {
+const fromWords = ( words ) => {
+  const bytes = new Uint8Array( BLOCK_SIZE );
+
+  for ( let i = 0; i < WORDS; i++ ) {
     const offset = i * 4, word = words[ i ];
 
     bytes[ offset ] = word & 0xff;
@@ -51,96 +45,136 @@ const fromWords = ( words ) => {
   return bytes;
 };
 
-const mixWords = ( words ) => {
-  for ( let i = 0; i < 4; i++ ) {
-    const a = i, b = i + 4;
 
-    words[ a ] = ( words[ a ] + rotl( words[ b ], 7 ) ) >>> 0;
-    words[ b ] = ( words[ b ] ^ rotl( words[ a ], 11 ) ) >>> 0;
+const injectionRotation = ( round, index ) => ( round * 7 + index * 3 ) & 31;
+const diffusionRotationA = ( round, index ) => ( round * 5 + index * 7 + 3 ) & 31;
+const diffusionRotationB = ( round, index ) => ( round * 3 + index * 11 + 5 ) & 31;
+const butterflyRotationA = ( round, index ) => ( round * 3 + index * 5 + 7 ) & 31;
+const butterflyRotationB = ( round, index ) => ( round * 7 + index * 3 + 11 ) & 31;
+const crossRotationA = ( round, index ) => ( round * 11 + index * 3 + 5 ) & 31;
+const crossRotationB = ( round, index ) => ( round * 13 + index * 7 + 9 ) & 31;
+const multiplier = ( round, index ) => ( NONLINEAR_BASE + round * 2 + index * 2 ) >>> 0;
+
+const inject = ( words, keys, round ) => {
+  for ( let i = 0; i < WORDS; i++ ) {
+    words[ i ] = add( words[ i ], keys[ i ] );
+    words[ i ] ^= rotl( keys[ i ], injectionRotation( round, i ) );
+    words[ i ] >>>= 0;
+  }
+};
+
+const inverseInject = ( words, keys, round ) => {
+  for ( let i = 0; i < WORDS; i++ ) {
+    words[ i ] ^= rotl( keys[ i ], injectionRotation( round, i ) );
+    words[ i ] = sub( words[ i ], keys[ i ] );
+  }
+};
+
+const nonlinear = ( words, round ) => {
+  for ( let i = 0; i < WORDS; i++ ) words[ i ] = mul( words[ i ], multiplier( round, i ) );
+};
+
+const inverseNonlinear = ( words, round ) => {
+  for ( let i = 0; i < WORDS; i++ ) words[ i ] = mul( words[ i ], inverse32( multiplier( round, i ) ) );
+};
+
+const mixPair = ( words, a, b, r1, r2 ) => {
+  words[ a ] ^= rotl( words[ b ], r1 );
+  words[ a ] >>>= 0;
+  words[ b ] = add( words[ b ], rotl( words[ a ], r2 ) );
+};
+
+
+const inverseMixPair = ( words, a, b, r1, r2 ) => {
+  words[ b ] = sub( words[ b ], rotl( words[ a ], r2 ) );
+  words[ a ] ^= rotl( words[ b ], r1 );
+  words[ a ] >>>= 0;
+};
+
+const diffuse = ( words, round ) => {
+  for ( let i = 0; i < WORDS; i++ ) {
+    const next = ( i + 1 ) & 7;
+
+    words[ i ] ^= rotl( words[ next ], diffusionRotationA( round, i ) );
+    words[ i ] >>>= 0;
+    words[ next ] = add( words[ next ], rotl( words[ i ], diffusionRotationB( round, i ) ) );
+  }
+};
+
+const inverseDiffuse = ( words, round ) => {
+  for ( let i = WORDS - 1; i >= 0; i-- ) {
+    const next = ( i + 1 ) & 7;
+
+    words[ next ] = sub( words[ next ], rotl( words[ i ], diffusionRotationB( round, i ) ) );
+    words[ i ] ^= rotl( words[ next ], diffusionRotationA( round, i ) );
+    words[ i ] >>>= 0;
+  }
+};
+
+const butterfly = ( words, round ) => {
+  const pairs = [ [ 0, 1 ], [ 2, 3 ], [ 4, 5 ], [ 6, 7 ] ];
+  for ( const [ a, b ] of pairs ) mixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
+
+  const cross = [ [ 0, 2 ], [ 1, 3 ], [ 4, 6 ], [ 5, 7 ] ];
+  for ( const [ a, b ] of cross ) mixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
+};
+
+
+const inverseButterfly = ( words, round ) => {
+  const cross = [ [ 0, 2 ], [ 1, 3 ], [ 4, 6 ], [ 5, 7 ] ];
+
+  for ( let i = cross.length - 1; i >= 0; i-- ) {
+    const [ a, b ] = cross[ i ];
+    inverseMixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
   }
 
-  for ( let i = 0; i < 4; i++ ) {
-    const a = i, b = i + 4;
+  const pairs = [ [ 0, 1 ], [ 2, 3 ], [ 4, 5 ], [ 6, 7 ] ];
 
-    words[ a ] = ( words[ a ] ^ rotl( words[ b ], 17 ) ) >>> 0;
-    words[ b ] = ( words[ b ] + rotl( words[ a ], 3 ) ) >>> 0;
+  for ( let i = pairs.length - 1; i >= 0; i-- ) {
+    const [ a, b ] = pairs[ i ];
+    inverseMixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
   }
-
-  return words;
 };
 
-const unmixWords = ( words ) => {
-  for ( let i = 3; i >= 0; i-- ) {
-    const a = i, b = i + 4;
+export const transform = ( block, key, round ) => {
+  const words = toWords( block );
+  const keys = toWords( key );
 
-    words[ b ] = ( words[ b ] - rotl( words[ a ], 3 ) ) >>> 0;
-    words[ a ] = ( words[ a ] ^ rotl( words[ b ], 17 ) ) >>> 0;
-  }
+  inject( words, keys, round );
+  nonlinear( words, round );
+  diffuse( words, round );
+  butterfly( words, round );
 
-  for ( let i = 3; i >= 0; i-- ) {
-    const a = i, b = i + 4;
-
-    words[ b ] = ( words[ b ] ^ rotl( words[ a ], 11 ) ) >>> 0;
-    words[ a ] = ( words[ a ] - rotl( words[ b ], 7 ) ) >>> 0;
-  }
-
-  return words;
+  return fromWords( words );
 };
 
-const xorKey = ( bytes, key ) => {
-  for ( let i = 0; i < KEY_SIZE; i++ ) bytes[ i ] ^= key[ i ];
+
+export const inverseTransform = ( block, key, round ) => {
+  const words = toWords( block );
+  const keys = toWords( key );
+
+  inverseButterfly( words, round );
+  inverseDiffuse( words, round );
+  inverseNonlinear( words, round );
+  inverseInject( words, keys, round );
+
+  return fromWords( words );
 };
 
-const transform = ( block, roundKey ) => {
-  let state = new Uint8Array( block );
-
-  // 1. Round key
-  xorKey( state, roundKey );
-
-  // 2. Nonlinear substitution
-  for ( let i = 0; i < KEY_SIZE; i++ ) state[ i ] = substitute( state[ i ] );
-
-  // 3. Byte rotation
-  state = rotateBytes( state );
-
-  // 4. Word-level ARX mixing
-  state = fromWords( mixWords( toWords( state ) ) );
-
-  return state;
-};
-
-const inverseTransform = ( block, roundKey ) => {
-  let state = new Uint8Array( block );
-
-  // 4. Inverse ARX mixing
-  state = fromWords( unmixWords( toWords( state ) ) );
-
-  // 3. Inverse byte rotation
-  state = inverseRotateBytes( state );
-
-  // 2. Inverse substitution
-  for ( let i = 0; i < KEY_SIZE; i++ ) state[ i ] = inverseSubstitute( state[ i ] );
-
-  // 1. Round key
-  xorKey( state, roundKey );
-
-  return state;
-};
-
-export const encryptBlock_v0 = ( block, key ) => {
+export const encryptBlock_v1 = ( block, key ) => {
   const keys = expandKey_v2( key );
 
   let state = new Uint8Array( block );
-  for ( let round = 1; round < keys.length; round++ ) state = transform( state, keys[ round ] );
+  for ( let round = 1; round < keys.length; round++ ) state = transform( state, keys[ round ], round );
 
   return state;
 };
 
-export const decryptBlock_v0 = ( block, key ) => {
+export const decryptBlock_v1 = ( block, key ) => {
   const keys = expandKey_v2( key );
 
   let state = new Uint8Array( block );
-  for ( let round = keys.length - 1; round >= 1; round-- ) state = inverseTransform( state, keys[ round ] );
+  for ( let round = keys.length - 1; round >= 1; round-- ) state = inverseTransform( state, keys[ round ], round );
 
   return state;
 };
