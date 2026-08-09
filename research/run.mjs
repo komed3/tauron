@@ -1,4 +1,4 @@
-import { decryptBlock_v0, encryptBlock_v0 } from './cipher_v0.mjs';
+import { decryptBlock_v1 as decrypt, encryptBlock_v1 as encrypt } from './round_v1.mjs';
 import { hex } from './utils.mjs';
 
 const key = new Uint8Array( 32 );
@@ -6,8 +6,8 @@ const plaintext = new Uint8Array( 32 );
 
 plaintext[ 0 ] = 1;
 
-const encrypted = encryptBlock_v0( plaintext, key );
-const decrypted = decryptBlock_v0( encrypted, key );
+const encrypted = encrypt( plaintext, key );
+const decrypted = decrypt( encrypted, key );
 
 console.log( 'PLAIN  ', hex( plaintext ) );
 console.log( 'ENCRYPT', hex( encrypted ) );
