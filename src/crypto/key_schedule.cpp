@@ -12,6 +12,10 @@ inline constexpr std::array< std::size_t, KEY_SIZE > PERMUTATION = {
   16, 29, 10, 23,  4, 17, 30, 11, 24,  5, 18, 31, 12, 19,  6, 25
 };
 
+inline constexpr std::uint32_t NONLINEAR_CONSTANT_A = 0x85ebca6b;
+inline constexpr std::uint32_t NONLINEAR_CONSTANT_B = 0xc2b2ae35;
+inline constexpr std::uint32_t ROUND_CONSTANT = 0x9e3779b9;
+
 }
 
 }
