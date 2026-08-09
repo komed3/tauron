@@ -28,17 +28,19 @@ constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
 
 std::uint32_t toWord( const Key& bytes, std::size_t offset ) noexcept {
   return static_cast< std::uint32_t >( bytes[ offset ] )
-    | ( static_cast< std::uint32_t >( bytes[ offset + 1 ] ) << 8 )
+    | ( static_cast< std::uint32_t >( bytes[ offset + 1 ] ) <<  8 )
     | ( static_cast< std::uint32_t >( bytes[ offset + 2 ] ) << 16 )
     | ( static_cast< std::uint32_t >( bytes[ offset + 3 ] ) << 24 );
 }
 
 void toWords( const Key& bytes, Words& words ) noexcept {
-  for ( std::size_t i = 0; i < words.size(); ++i ) words[ i ] = toWord( bytes, i * 4 );
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] = toWord( bytes, i * 4 );
 }
 
 void substituteBytes( const Key& key, Key& bytes ) noexcept {
-  for ( std::size_t i = 0; i < KEY_SIZE; ++i ) bytes[ i ] = substitute( key[ i ] );
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i )
+    bytes[ i ] = substitute( key[ i ] );
 }
 
 void localMix( Words& words ) noexcept {
@@ -55,6 +57,15 @@ void crossMix( Words& words ) noexcept {
 
     words[ i ] ^= rotl( other, rotation );
   }
+}
+
+Key permut( const Key& bytes ) {
+  Key result {};
+
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i )
+    result[ i ] = bytes[ PERMUTATION[ i ] ];
+
+  return result;
 }
 
 }
