@@ -50,3 +50,39 @@ const fromWords = ( words ) => {
 
   return bytes;
 };
+
+const mixWords = ( words ) => {
+  for ( let i = 0; i < 4; i++ ) {
+    const a = i, b = i + 4;
+
+    words[ a ] = ( words[ a ] + rotl( words[ b ], 7 ) ) >>> 0;
+    words[ b ] = ( words[ b ] ^ rotl( words[ a ], 11 ) ) >>> 0;
+  }
+
+  for ( let i = 0; i < 4; i++ ) {
+    const a = i, b = i + 4;
+
+    words[ a ] = ( words[ a ] ^ rotl( words[ b ], 17 ) ) >>> 0;
+    words[ b ] = ( words[ b ] + rotl( words[ a ], 3 ) ) >>> 0;
+  }
+
+  return words;
+};
+
+const unmixWords = ( words ) => {
+  for ( let i = 3; i >= 0; i-- ) {
+    const a = i, b = i + 4;
+
+    words[ b ] = ( words[ b ] - rotl( words[ a ], 3 ) ) >>> 0;
+    words[ a ] = ( words[ a ] ^ rotl( words[ b ], 17 ) ) >>> 0;
+  }
+
+  for ( let i = 3; i >= 0; i-- ) {
+    const a = i, b = i + 4;
+
+    words[ b ] = ( words[ b ] ^ rotl( words[ a ], 11 ) ) >>> 0;
+    words[ a ] = ( words[ a ] - rotl( words[ b ], 7 ) ) >>> 0;
+  }
+
+  return words;
+};
