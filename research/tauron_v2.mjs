@@ -7,3 +7,8 @@ const LENGTH_SIZE = 1;
 const PAYLOAD_SIZE = BLOCK_SIZE - CHECKSUM_SIZE - LENGTH_SIZE;
 
 const checksum = ( data ) => createHash( 'sha256' ).update( data ).digest().subarray( 0, CHECKSUM_SIZE );
+
+export const deriveKey = ( passphrase ) => {
+  if ( typeof passphrase !== 'string' ) throw new TypeError( 'Passphrase must be a string' );
+  return new Uint8Array( createHash( 'sha256' ).update( passphrase, 'utf8' ).digest().subarray( 0, KEY_SIZE ) );
+};
