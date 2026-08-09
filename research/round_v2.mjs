@@ -1,6 +1,7 @@
 import { expandKey_v2 } from './expandKey_v2.mjs';
 import { BLOCK_SIZE } from './utils.mjs';
 
+
 const WORDS = 8;
 const NONLINEAR_BASE = 0x9e3779b1;
 
@@ -170,6 +171,20 @@ export const encryptBlock_v2 = ( block, key ) => {
 export const decryptBlock_v2 = ( block, key ) => {
   const keys = expandKey_v2( key );
 
+  let state = new Uint8Array( block );
+  for ( let round = keys.length - 1; round >= 1; round-- ) state = inverseTransform( state, keys[ round ], round );
+
+  return state;
+};
+
+export const encrypt_v2 = ( block, keys ) => {
+  let state = new Uint8Array( block );
+  for ( let round = 1; round < keys.length; round++ ) state = transform( state, keys[ round ], round );
+
+  return state;
+};
+
+export const decrypt_v2 = ( block, keys ) => {
   let state = new Uint8Array( block );
   for ( let round = keys.length - 1; round >= 1; round-- ) state = inverseTransform( state, keys[ round ], round );
 
