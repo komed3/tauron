@@ -13,6 +13,8 @@ add_library(
   tauron
 
   include/tauron/crypto/key_schedule.hpp
+
+  src/crypto/key_schedule.cpp
 )
 
 target_include_directories(
