@@ -1,4 +1,4 @@
-import { encryptBlock_v1 } from './round_v1.mjs';
+import { encryptBlock_v2 } from './round_v2.mjs';
 import { BLOCK_SIZE, hammingDistance, hex } from './utils.mjs';
 
 const SAMPLES = 10_000;
@@ -65,7 +65,7 @@ console.log();
 console.log( `=== ${ title } ===` );
 };
 
-const createEncryptTest = ( plaintext, key ) => ( input ) => encryptBlock_v1( plaintext ? input : input, key );
+const createEncryptTest = ( plaintext, key ) => ( input ) => encryptBlock_v2( plaintext ? input : input, key );
 
 const testDeterminism = ( encrypt, name = 'Determinism' ) => {
 let pass = true;
@@ -387,11 +387,11 @@ const key = new Uint8Array( BLOCK_SIZE );
 plaintext[ 0 ] = 1;
 key[ 0 ] = 1;
 
-runInputTests( input => encryptBlock_v1( input, key ), 'PLAINTEXT ANALYSIS' );
+runInputTests( input => encryptBlock_v2( input, key ), 'PLAINTEXT ANALYSIS' );
 
 section( 'KEY ANALYSIS' );
 
-testKeyAvalanche( input => encryptBlock_v1( plaintext, input ) );
-testKeyPositionAvalanche( input => encryptBlock_v1( plaintext, input ) );
+testKeyAvalanche( input => encryptBlock_v2( plaintext, input ) );
+testKeyPositionAvalanche( input => encryptBlock_v2( plaintext, input ) );
 
 section( 'ANALYSIS COMPLETE' );
