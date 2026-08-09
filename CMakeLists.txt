@@ -12,9 +12,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
-  include/tauron/node/identity.hpp
-  include/tauron/node/secret.hpp
-  include/tauron/node/state.hpp
+  include/tauron/crypto/key_schedule.hpp
 )
 
 target_include_directories(
