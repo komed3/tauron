@@ -1,8 +1,9 @@
 #include "tauron/crypto/key_schedule.hpp"
-#include "tauron/crypto/words.hpp"
 
 #include <bit>
 #include <stdexcept>
+
+#include "tauron/crypto/words.hpp"
 
 namespace tauron::crypto {
 
