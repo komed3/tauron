@@ -31,3 +31,15 @@ await writeFile( restoredPath, decrypted );
 
 const originalHash = hash( original );
 const decryptedHash = hash( decrypted );
+
+console.log( 'FILE ROUNDTRIP' );
+console.log( '---------------' );
+console.log( 'Input       ', name );
+console.log( 'Original    ', original.length, 'bytes' );
+console.log( 'Encrypted   ', encrypted.length, 'bytes' );
+console.log( 'Decrypted   ', decrypted.length, 'bytes' );
+console.log( 'SHA-256     ', originalHash );
+console.log( 'SHA-256     ', decryptedHash );
+console.log( 'ROUNDTRIP   ', originalHash === decryptedHash ? 'PASS' : 'FAIL' );
+console.log( 'ENCRYPTED   ', encryptedPath );
+console.log( 'RESTORED    ', restoredPath );
