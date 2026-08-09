@@ -13,8 +13,8 @@ using Block = std::array< std::uint8_t, BLOCK_SIZE >;
 
 class BlockCipher {
 public:
-  [[nodiscard]] static Block encrypt( const Block& block, const RoundKeys& keys );
-  [[nodiscard]] static Block decrypt( const Block& block, const RoundKeys& keys );
+  [[nodiscard]] static Block encrypt( const Block& block, const RoundKeys& keys ) noexcept;
+  [[nodiscard]] static Block decrypt( const Block& block, const RoundKeys& keys ) noexcept;
 };
 
 }
