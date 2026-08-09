@@ -148,6 +148,25 @@ Block transform( const Block& block, const Key& key, std::size_t round ) noexcep
   return result;
 }
 
+Block inverseTransform( const Block& block, const Key& key, std::size_t round ) noexcept {
+  Words words {};
+  Words keys {};
+
+  toWords( block, words );
+  toWords( key, keys );
+
+  inverseNonlinear( words, round );
+  inverseButterfly( words, round );
+  inverseNonlinear( words, round );
+  inverseDiffuse( words, round );
+  inverseInject( words, keys, round );
+
+  Block result {};
+  fromWords( words, result );
+
+  return result;
+}
+
 } // namespace
 
 } // namespace tauron::crypto
