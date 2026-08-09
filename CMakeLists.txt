@@ -25,7 +25,7 @@ target_include_directories(
 
 add_executable(
   basic
-  examples/basic.cpp
+  test/basic_key.cpp
 )
 
 target_link_libraries(
