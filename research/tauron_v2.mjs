@@ -24,3 +24,19 @@ const createBlock = ( data ) => {
 
   return block;
 };
+
+const parseBlock = ( block ) => {
+  if ( block.length !== BLOCK_SIZE ) throw new RangeError( `Block must contain exactly ${ BLOCK_SIZE } bytes` );
+
+  const length = block[ 0 ];
+  if ( length > PAYLOAD_SIZE ) throw new Error( `Invalid payload length: ${ length }` );
+
+  const stored = block.subarray( LENGTH_SIZE, LENGTH_SIZE + CHECKSUM_SIZE );
+  const data = block.subarray( LENGTH_SIZE + CHECKSUM_SIZE, LENGTH_SIZE + CHECKSUM_SIZE + length );
+  const expected = checksum( data );
+
+  for ( let i = 0; i < CHECKSUM_SIZE; i++ ) if ( stored[ i ] !== expected[ i ] )
+    throw new Error( 'Checksum verification failed' );
+
+  return new Uint8Array( data );
+};
