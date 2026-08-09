@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "tauron/crypto/constants.hpp"
 #include "tauron/crypto/key_schedule.hpp"
-#include "tauron/crypto/parameters.hpp"
 
 namespace tauron::crypto {
 

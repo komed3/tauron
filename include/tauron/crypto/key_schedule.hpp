@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "tauron/crypto/parameters.hpp"
+#include "tauron/crypto/constants.hpp"
 
 namespace tauron::crypto {
 
