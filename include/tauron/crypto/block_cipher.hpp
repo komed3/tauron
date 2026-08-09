@@ -5,10 +5,9 @@
 #include <cstdint>
 
 #include "tauron/crypto/key_schedule.hpp"
+#include "tauron/crypto/parameters.hpp"
 
 namespace tauron::crypto {
-
-inline constexpr std::size_t BLOCK_SIZE = 32;
 
 using Block = std::array< std::uint8_t, BLOCK_SIZE >;
 
