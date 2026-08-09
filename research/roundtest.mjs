@@ -1,7 +1,6 @@
 import { encryptBlock_v1 } from './round_v1.mjs';
-import { hammingDistance, hex } from './utils.mjs';
+import { BLOCK_SIZE, hammingDistance, hex } from './utils.mjs';
 
-const BLOCK_SIZE = 32;
 const SAMPLES = 10_000;
 const COLLISION_SAMPLES = 10_000;
 const POSITION_SAMPLES = 100;
