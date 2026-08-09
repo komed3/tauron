@@ -18,6 +18,10 @@ inline constexpr std::uint32_t ROUND_CONSTANT =       0x9e3779b9;
 
 using Words = std::array< std::uint32_t, 8 >;
 
+constexpr std::uint32_t rotl( std::uint32_t value, unsigned bits ) noexcept {
+  return std::rotl( value, bits );
+}
+
 constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
   return static_cast< std::uint8_t >( value * 197 + 23 );
 }
