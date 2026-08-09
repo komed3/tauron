@@ -178,4 +178,13 @@ Block BlockCipher::encrypt( const Block& block, const RoundKeys& keys ) noexcept
   return state;
 }
 
+Block BlockCipher::decrypt( const Block& block, const RoundKeys& keys ) noexcept {
+  Block state = block;
+
+  for ( std::size_t round = keys.size(); round-- > 1; )
+    state = inverseTransform( state, keys[ round ], round );
+
+  return state;
+}
+
 } // namespace tauron::crypto
