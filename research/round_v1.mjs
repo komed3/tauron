@@ -108,3 +108,21 @@ const transform = ( block, roundKey ) => {
 
   return state;
 };
+
+const inverseTransform = ( block, roundKey ) => {
+  let state = new Uint8Array( block );
+
+  // 4. Inverse ARX mixing
+  state = fromWords( unmixWords( toWords( state ) ) );
+
+  // 3. Inverse byte rotation
+  state = inverseRotateBytes( state );
+
+  // 2. Inverse substitution
+  for ( let i = 0; i < KEY_SIZE; i++ ) state[ i ] = inverseSubstitute( state[ i ] );
+
+  // 1. Round key
+  xorKey( state, roundKey );
+
+  return state;
+};
