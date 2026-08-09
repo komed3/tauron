@@ -24,4 +24,20 @@ constexpr void fromWord( std::uint32_t word, std::uint8_t* bytes ) noexcept {
   bytes[ 3 ] = static_cast< std::uint8_t >( word >> 24 );
 }
 
+template< typename Bytes >
+constexpr Words toWords( const Bytes& bytes ) noexcept {
+  Words words {};
+
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] = toWord( bytes.data() + i * 4 );
+
+  return words;
+}
+
+template< typename Bytes >
+constexpr void fromWords( const Words& words, Bytes& bytes ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    fromWord( words[ i ], bytes.data() + i * 4 );
+}
+
 }
