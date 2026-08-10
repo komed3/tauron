@@ -38,4 +38,12 @@ int main() {
   }
 
   const auto end = Clock::now();
+  const auto elapsed = std::chrono::duration_cast< std::chrono::microseconds >( end - start );
+
+  const double seconds = elapsed.count() / 1'000'000.0;
+  const double bytes = static_cast< double >( BLOCKS * BLOCK_SIZE );
+
+  const double megabytes = bytes / ( 1024.0 * 1024.0 );
+  const double throughput = megabytes / seconds;
+  const double blocksPerSecond = BLOCKS / seconds;
 }
