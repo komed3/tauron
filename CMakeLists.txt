@@ -33,4 +33,7 @@ target_link_libraries( bench_key PRIVATE tauron )
 target_link_libraries( basic_block PRIVATE tauron )
 target_link_libraries( bench_block PRIVATE tauron )
 
-target_compile_options( tauron PRIVATE -Wall -Wextra -Wpedantic )
+target_compile_options(
+  tauron PRIVATE -Wall -Wextra -Wpedantic
+  -std=c++20 -O3 -march=native -mtune=native
+)
