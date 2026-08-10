@@ -147,4 +147,17 @@ void inverseTransform( Words& words, const Words& key, std::size_t round ) noexc
 
 } // namespace
 
+Block BlockCipher::encrypt( const Block& block, const RoundKeys& keys ) noexcept {
+  Words state {};
+  toWords( block, state );
+
+  for ( std::size_t round = 0; round < keys.size(); ++round )
+    transform( state, keys[ round ], round );
+
+  Block result {};
+  fromWords( state, result );
+
+  return result;
+}
+
 } // namespace tauron::crypto
