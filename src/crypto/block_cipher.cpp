@@ -18,6 +18,13 @@ constexpr std::array< std::array< std::size_t, 2 >, 4 > CROSS = {{
   {{ 0, 2 }}, {{ 1, 3 }}, {{ 4, 6 }}, {{ 5, 7 }}
 }};
 
+constexpr std::uint32_t inverse32( std::uint32_t value ) noexcept {
+  auto result = value;
+  for ( int i = 0; i < 5; ++i ) result *= 2 - value * result;
+
+  return result;
+}
+
 } // namespace
 
 } // namespace tauron::crypto
