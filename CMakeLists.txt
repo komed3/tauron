@@ -39,9 +39,11 @@ endif()
 target_include_directories( tauron PUBLIC include )
 
 
+add_executable( key_schedule_test test/key_schedule_test.cpp )
 add_executable( nonce_test test/nonce_test.cpp )
 add_executable( passphrase_test test/passphrase_test.cpp )
 
+target_link_libraries( key_schedule_test PRIVATE tauron )
 target_link_libraries( nonce_test PRIVATE tauron )
 target_link_libraries( passphrase_test PRIVATE tauron )
 
