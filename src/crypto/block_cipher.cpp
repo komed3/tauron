@@ -81,6 +81,16 @@ void inverseNonlinear( Words& words, std::size_t round ) noexcept {
     words[ i ] *= inverse32( multiplier( round, i ) );
 }
 
+void mixPairs( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
+  words[ a ] ^= std::rotl( words[ b ], r1 );
+  words[ b ] += std::rotl( words[ a ], r2 );
+}
+
+void inverseMixPair( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
+  words[ b ] -= std::rotl( words[ a ], r2 );
+  words[ a ] ^= std::rotl( words[ b ], r1 );
+}
+
 } // namespace
 
 } // namespace tauron::crypto
