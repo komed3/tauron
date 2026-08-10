@@ -9,7 +9,7 @@
 using namespace tauron::crypto;
 
 int main() {
-  constexpr std::size_t ROUNDS = 128;
+  constexpr std::size_t ROUNDS = 16;
   constexpr std::size_t ITERATIONS = 1'000'000;
 
   Key key {};
