@@ -30,4 +30,25 @@ int main() {
   const auto decrypted1 = BlockCipher::decrypt( encrypted1, keys1 );
 
   const auto encrypted2 = BlockCipher::encrypt( block, keys2 );
+
+  const bool encrypted = encrypted1 != block;
+  const bool decrypted = decrypted1 == block;
+  const bool nonceAffectsCiphertext = encrypted1 != encrypted2;
+
+  std::cout << "Block size: "
+            << block.size()
+            << '\n';
+
+  std::cout << "Encrypted differs: "
+            << std::boolalpha
+            << encrypted
+            << '\n';
+
+  std::cout << "Decrypt restores block: "
+            << decrypted
+            << '\n';
+
+  std::cout << "Different nonce: "
+            << nonceAffectsCiphertext
+            << '\n';
 }
