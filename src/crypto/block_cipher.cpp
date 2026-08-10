@@ -172,8 +172,8 @@ Block inverseTransform( const Block& block, const Key& key, std::size_t round ) 
 Block BlockCipher::encrypt( const Block& block, const RoundKeys& keys ) noexcept {
   Block state = block;
 
-  for ( std::size_t round = 1; round < keys.size(); ++round )
-    state = transform( state, keys[ round ], round );
+  /*for ( std::size_t round = 1; round < keys.size(); ++round )
+    state = transform( state, keys[ round ], round );*/
 
   return state;
 }
@@ -181,8 +181,8 @@ Block BlockCipher::encrypt( const Block& block, const RoundKeys& keys ) noexcept
 Block BlockCipher::decrypt( const Block& block, const RoundKeys& keys ) noexcept {
   Block state = block;
 
-  for ( std::size_t round = keys.size(); round-- > 1; )
-    state = inverseTransform( state, keys[ round ], round );
+  /*for ( std::size_t round = keys.size(); round-- > 1; )
+    state = inverseTransform( state, keys[ round ], round );*/
 
   return state;
 }
