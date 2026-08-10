@@ -9,4 +9,9 @@ namespace tauron::crypto {
 
 using Nonce = std::array< std::uint8_t, NONCE_SIZE >;
 
+class NonceGenerator {
+public:
+  static Nonce generate();
+};
+
 }
