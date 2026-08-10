@@ -51,4 +51,6 @@ int main() {
   std::cout << "Different nonce: "
             << nonceAffectsCiphertext
             << '\n';
+
+  return ( encrypted && decrypted && nonceAffectsCiphertext ) ? 0 : 1;
 }
