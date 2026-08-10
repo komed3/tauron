@@ -21,6 +21,7 @@ add_library(
 
   src/crypto/block_cipher.cpp
   src/crypto/key_schedule.cpp
+  src/crypto/master_key_generator.cpp
   src/crypto/nonce_generator.cpp
 )
 
