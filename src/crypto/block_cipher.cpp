@@ -81,16 +81,6 @@ void inverseNonlinear( Words& words, std::size_t round ) noexcept {
     words[ i ] *= inverse32( multiplier( round, i ) );
 }
 
-void mixPairs( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
-  words[ a ] ^= std::rotl( words[ b ], r1 );
-  words[ b ] += std::rotl( words[ a ], r2 );
-}
-
-void inverseMixPair( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
-  words[ b ] -= std::rotl( words[ a ], r2 );
-  words[ a ] ^= std::rotl( words[ b ], r1 );
-}
-
 void diffuse( Words& words, std::size_t round ) noexcept {
   for ( std::size_t i = 0; i < words.size(); ++i ) {
     const auto next = ( i + 1 ) & 7;
@@ -106,6 +96,36 @@ void inverseDiffuse( Words& words, std::size_t round ) noexcept {
 
     words[ next ] -= std::rotl( words[ i ], diffusionRotationB( round, i ) );
     words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
+  }
+}
+
+void mixPair( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
+  words[ a ] ^= std::rotl( words[ b ], r1 );
+  words[ b ] += std::rotl( words[ a ], r2 );
+}
+
+void butterfly( Words& words, std::size_t round ) noexcept {
+  for ( const auto& [ a, b ] : PAIRS )
+    mixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
+
+  for ( const auto& [ a, b ] : CROSS )
+    mixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
+}
+
+void inverseMixPair( Words& words, std::size_t a, std::size_t b, unsigned r1, unsigned r2 ) noexcept {
+  words[ b ] -= std::rotl( words[ a ], r2 );
+  words[ a ] ^= std::rotl( words[ b ], r1 );
+}
+
+void inverseButterfly( Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = CROSS.size(); i-- > 0; ) {
+    const auto [ a, b ] = CROSS[ i ];
+    inverseMixPair( words, a, b, crossRotationA( round, a ), crossRotationB( round, b ) );
+  }
+
+  for ( std::size_t i = PAIRS.size(); i-- > 0; ) {
+    const auto [ a, b ] = PAIRS[ i ];
+    inverseMixPair( words, a, b, butterflyRotationA( round, a ), butterflyRotationB( round, b ) );
   }
 }
 
