@@ -18,5 +18,11 @@ int main () {
   const auto key2 = MasterKeyGenerator::generate( passphrase, salt2 );
   const auto key3 = MasterKeyGenerator::generate( "Different passphrase", salt1 );
 
-  
+  const bool sameSaltSameKey = key1 == key1Again;
+  const bool differentSaltDifferentKey = key1 != key2;
+  const bool differentPassphraseDifferentKey = key1 != key3;
+
+  const bool allZero = std::all_of( key1.begin(), key1.end(), [] ( const auto byte ) {
+    return byte == 0;
+  } );
 }
