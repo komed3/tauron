@@ -40,4 +40,9 @@ int main() {
   std::cout << "First round differs: "
             << firstRoundDiffers
             << '\n';
+
+  return (
+    keys1.size() == rounds && keys1Again.size() == rounds && keys2.size() == rounds &&
+    sameNonceSameKeys && differentNonceDifferentKeys && firstRoundDiffers
+  ) ? 0 : 1;
 }
