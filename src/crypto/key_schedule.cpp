@@ -16,6 +16,15 @@ inline constexpr std::uint32_t NONLINEAR_CONSTANT_A = 0x85ebca6b;
 inline constexpr std::uint32_t NONLINEAR_CONSTANT_B = 0xc2b2ae35;
 inline constexpr std::uint32_t ROUND_CONSTANT = 0x9e3779b9;
 
+constexpr std::uint8_t substitute( std::uint8_t value ) noexcept {
+  return static_cast< std::uint8_t >( value * 197 + 23 );
+}
+
+void substituteBytes( const Key& key, const Nonce& nonce, Key& bytes ) noexcept {
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i )
+    bytes[ i ] = substitute( key[ i ] ^ nonce[ i ] );
+}
+
 } // namespace
 
 } // namespace tauron::crypto
