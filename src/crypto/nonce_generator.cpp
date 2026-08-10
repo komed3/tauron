@@ -1,4 +1,4 @@
-#include "tauron/crypto/nonce.hpp"
+#include "tauron/crypto/nonce_generator.hpp"
 
 #include <stdexcept>
 
