@@ -54,5 +54,5 @@ target_link_libraries( passphrase_test PRIVATE tauron )
 
 target_compile_options(
   tauron PRIVATE -Wall -Wextra -Wpedantic
-  -std=c++20 -O3 -march=native -mtune=native
+  -std=c++20 -O3 -march=native -mtune=native -flto
 )
