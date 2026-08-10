@@ -46,4 +46,9 @@ int main () {
   std::cout << "Key all zero: "
             << allZero
             << '\n';
+
+  return (
+    key1.size() == KEY_SIZE && sameSaltSameKey && differentSaltDifferentKey &&
+    differentPassphraseDifferentKey && ! allZero
+  ) ? 0 : 1;
 }
