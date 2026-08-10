@@ -7,8 +7,6 @@
 #include <windows.h>
 #include <bcrypt.h>
 
-#pragma comment( lib, "bcrypt.lib" )
-
 #else
 
 #include <sys/random.h>
@@ -27,13 +25,18 @@ Nonce NonceGenerator::generate() {
     );
 
     if ( status != 0 )
-      throw std::runtime_error( "Faild to generate cryptographically secure nonce" );
+      throw std::runtime_error( "Failed to generate cryptographically secure nonce" );
 
   #else
-    const auto result = getrandom( nonce.data(), nonce.size(), 0 );
+    std::size_t offset = 0;
 
-    if ( result != static_cast< ssize_t >( nonce.size() ) )
-      throw std::runtime_error( "Faild to generate cryptographically secure nonce" );
+    while ( offset < nonce.size() )
+      const auto result = getrandom( nonce.data() + offset, nonce.size() - offset, 0 );
+
+    if ( result < 0 )
+      throw std::runtime_error( "Failed to generate cryptographically secure nonce" );
+
+    offset += static_cast< std::size_t >( result );
 
   #endif
 
