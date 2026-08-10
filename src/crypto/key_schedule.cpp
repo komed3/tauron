@@ -41,6 +41,15 @@ void crossMix( Words& words ) noexcept {
   }
 }
 
+Key permut( const Key& bytes ) noexcept {
+  Key result {};
+
+  for ( std::size_t i = 0; i < KEY_SIZE; ++i )
+    result[ i ] = bytes[ PERMUTATION[ i ] ];
+
+  return result;
+}
+
 } // namespace
 
 } // namespace tauron::crypto
