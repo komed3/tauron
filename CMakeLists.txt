@@ -20,6 +20,7 @@ add_library(
 
   src/crypto/block_cipher.cpp
   src/crypto/key_schedule.cpp
+  src/crypto/nonce.cpp
 )
 
 target_include_directories( tauron PUBLIC include )
