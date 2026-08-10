@@ -46,4 +46,32 @@ int main() {
   const double megabytes = bytes / ( 1024.0 * 1024.0 );
   const double throughput = megabytes / seconds;
   const double blocksPerSecond = BLOCKS / seconds;
+
+  std::cout << std::fixed << std::setprecision( 2 );
+
+  std::cout << "Blocks: "
+            << BLOCKS
+            << '\n';
+
+  std::cout << "Rounds: "
+            << ROUNDS
+            << '\n';
+
+  std::cout << "Time: "
+            << seconds
+            << " s\n";
+
+  std::cout << "Blocks/s: "
+            << blocksPerSecond
+            << '\n';
+
+  std::cout << "Throughput: "
+            << throughput
+            << " MiB/s\n";
+
+  std::cout << "Sink: "
+            << static_cast< unsigned >( sink )
+            << '\n';
+
+  return 0;
 }
