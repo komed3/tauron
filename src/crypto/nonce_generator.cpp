@@ -30,13 +30,14 @@ Nonce NonceGenerator::generate() {
   #else
     std::size_t offset = 0;
 
-    while ( offset < nonce.size() )
+    while ( offset < nonce.size() ) {
       const auto result = getrandom( nonce.data() + offset, nonce.size() - offset, 0 );
 
-    if ( result < 0 )
-      throw std::runtime_error( "Failed to generate cryptographically secure nonce" );
+      if ( result < 0 )
+        throw std::runtime_error( "Failed to generate cryptographically secure nonce" );
 
-    offset += static_cast< std::size_t >( result );
+      offset += static_cast< std::size_t >( result );
+    }
 
   #endif
 
