@@ -39,11 +39,13 @@ endif()
 target_include_directories( tauron PUBLIC include )
 
 
+add_executable( block_cipher_performance test/block_cipher_performance.cpp )
 add_executable( block_cipher_test test/block_cipher_test.cpp )
 add_executable( key_schedule_test test/key_schedule_test.cpp )
 add_executable( nonce_test test/nonce_test.cpp )
 add_executable( passphrase_test test/passphrase_test.cpp )
 
+target_link_libraries( block_cipher_performance PRIVATE tauron )
 target_link_libraries( block_cipher_test PRIVATE tauron )
 target_link_libraries( key_schedule_test PRIVATE tauron )
 target_link_libraries( nonce_test PRIVATE tauron )
