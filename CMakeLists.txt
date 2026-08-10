@@ -9,6 +9,7 @@ project(
 set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
+
 add_library(
   tauron
 
@@ -25,23 +26,33 @@ add_library(
   src/crypto/nonce_generator.cpp
 )
 
+find_path( SODIUM_INCLUDE_DIR sodium.h REQUIRED )
+find_library( SODIUM_LIBRARY sodium REQUIRED )
+
+target_include_directories( tauron PRIVATE ${SODIUM_INCLUDE_DIR} )
+target_link_libraries( tauron PRIVATE ${SODIUM_LIBRARY} )
+
+if ( WIN32 )
+  target_link_libraries( tauron PRIVATE bcrypt )
+endif()
+
 target_include_directories( tauron PUBLIC include )
+
 
 add_executable( basic_key test/basic_key.cpp )
 add_executable( bench_key test/bench_key.cpp )
 add_executable( basic_block test/basic_block.cpp )
 add_executable( bench_block test/bench_block.cpp )
 add_executable( nonce_test test/nonce_test.cpp )
+add_executable( passphrase_test test/passphrase_test.cpp )
 
 target_link_libraries( basic_key PRIVATE tauron )
 target_link_libraries( bench_key PRIVATE tauron )
 target_link_libraries( basic_block PRIVATE tauron )
 target_link_libraries( bench_block PRIVATE tauron )
 target_link_libraries( nonce_test PRIVATE tauron )
+target_link_libraries( passphrase_test PRIVATE tauron )
 
-if ( WIN32 )
-  target_link_libraries( nonce_test PRIVATE bcrypt )
-endif()
 
 target_compile_options(
   tauron PRIVATE -Wall -Wextra -Wpedantic
