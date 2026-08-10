@@ -15,4 +15,8 @@ int main () {
 
   const auto key1 = MasterKeyGenerator::generate( passphrase, salt1 );
   const auto key1Again = MasterKeyGenerator::generate( passphrase, salt1 );
+  const auto key2 = MasterKeyGenerator::generate( passphrase, salt2 );
+  const auto key3 = MasterKeyGenerator::generate( "Different passphrase", salt1 );
+
+  
 }
