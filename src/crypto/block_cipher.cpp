@@ -57,6 +57,20 @@ constexpr std::uint32_t multiplier( std::size_t round, std::size_t index ) noexc
   return NONLINEAR_BASE + round * 2 + index * 2;
 }
 
+void inject( Words& words, const Words& key, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] += key[ i ];
+    words[ i ] ^= std::rotl( key[ i ], injectionRotation( round, i ) );
+  }
+}
+
+void inverseInject( Words& words, const Words& key, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] ^= std::rotl( key[ i ], injectionRotation( round, i ) );
+    words[ i ] -= key[ i ];
+  }
+}
+
 } // namespace
 
 } // namespace tauron::crypto
