@@ -22,4 +22,20 @@ int main() {
 
   const auto nonce = NonceGenerator::generate();
   const auto keys = KeySchedule::expand( key, nonce, ROUNDS );
+
+  std::vector< Block > blocks( BLOCKS );
+
+  for ( std::size_t i = 0; i < BLOCKS; ++i )
+    for ( std::size_t j = 0; j < BLOCK_SIZE; ++j )
+      blocks[ i ][ j ] = static_cast< std::uint8_t >( i + j );
+
+  volatile std::uint8_t sink = 0;
+  const auto start = Clock::now();
+
+  for ( auto& block : blocks ) {
+    block = BlockCipher::encrypt( block, keys );
+    sink ^= block[ 0 ];
+  }
+
+  const auto end = Clock::now();
 }
