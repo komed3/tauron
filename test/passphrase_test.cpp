@@ -25,4 +25,25 @@ int main () {
   const bool allZero = std::all_of( key1.begin(), key1.end(), [] ( const auto byte ) {
     return byte == 0;
   } );
+
+  std::cout << "Key size: "
+            << key1.size()
+            << "\n";
+
+  std::cout << "Same salt + passphrase: "
+            << std::boolalpha
+            << sameSaltSameKey
+            << '\n';
+
+  std::cout << "Different salt: "
+            << differentSaltDifferentKey
+            << '\n';
+
+  std::cout << "Different passphrase: "
+            << differentPassphraseDifferentKey
+            << '\n';
+
+  std::cout << "Key all zero: "
+            << allZero
+            << '\n';
 }
