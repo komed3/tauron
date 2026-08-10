@@ -160,4 +160,17 @@ Block BlockCipher::encrypt( const Block& block, const RoundKeys& keys ) noexcept
   return result;
 }
 
+Block BlockCipher::decrypt( const Block& block, const RoundKeys& keys ) noexcept {
+  Words state {};
+  toWords( block, state );
+
+  for ( std::size_t round = keys.size(); round-- > 0; )
+    inverseTransform( state, keys[ round ], round );
+
+  Block result {};
+  fromWords( state, result );
+
+  return result;
+}
+
 } // namespace tauron::crypto
