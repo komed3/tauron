@@ -1,0 +1,27 @@
+# nonce_test
+
+Nonce size: 32
+Nonce 1 == Nonce 2: false
+Nonce 1 all zero: false
+
+# passphrase_test
+
+Key size: 32
+Same salt + passphrase: true
+Different salt: true
+Different passphrase: true
+Key all zero: false
+
+# key_schedule_test
+
+Round keys: 16
+Same key + nonce: true
+Different nonce: true
+First round differs: true
+
+# block_cipher_test
+
+Block size: 32
+Encrypted differs: true
+Decrypt restores block: true
+Different nonce: true

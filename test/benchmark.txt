@@ -1,0 +1,39 @@
+# block_cipher_performance // -O0 // Win11, R9-5900XT
+
+Blocks: 1000000
+Rounds: 16
+Time: 12.59 s
+Blocks/s: 79434.77
+Throughput: 2.42 MiB/s
+Sink: 51
+
+# block_cipher_performance // -O2 // Win11, R9-5900XT
+
+Blocks: 1000000
+Rounds: 16
+Time: 0.76 s
+Blocks/s: 1318047.50
+Throughput: 40.22 MiB/s
+Sink: 218
+
+# block_cipher_performance // -O3 -march=native -mtune=native // Win11, R9-5900XT
+
+Blocks: 1000000
+Rounds: 16
+Time: 0.23 s
+Blocks/s: 4338921.86
+Throughput: 132.41 MiB/s
+Sink: 118
+
+# block_cipher_performance // -O3 -march=native -mtune=native -flto // Win11, R9-5900XT
+
+Blocks: 1000000
+Rounds: 16
+Time: 0.23 s
+Blocks/s: 4339411.40
+Throughput: 132.43 MiB/s
+Sink: 208
+
+# block_cipher_performance // -O3 -march=native -mtune=native -flto // Linux, 4415U @ 2,3GHz
+
+
