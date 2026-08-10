@@ -36,4 +36,9 @@ Sink: 208
 
 # block_cipher_performance // -O3 -march=native -mtune=native -flto // Linux, 4415U @ 2,3GHz
 
-
+Blocks: 1000000
+Rounds: 16
+Time: 0.67 s
+Blocks/s: 1499293.08
+Throughput: 45.75 MiB/s
+Sink: 221
