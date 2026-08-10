@@ -129,6 +129,22 @@ void inverseButterfly( Words& words, std::size_t round ) noexcept {
   }
 }
 
+void transform( Words& words, const Words& key, std::size_t round ) noexcept {
+  inject( words, key, round );
+  diffuse( words, round );
+  nonlinear( words, round );
+  butterfly( words, round );
+  nonlinear( words, round );
+}
+
+void inverseTransform( Words& words, const Words& key, std::size_t round ) noexcept {
+  inverseNonlinear( words, round );
+  inverseButterfly( words, round );
+  inverseNonlinear( words, round );
+  inverseDiffuse( words, round );
+  inverseInject( words, key, round );
+}
+
 } // namespace
 
 } // namespace tauron::crypto
