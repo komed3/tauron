@@ -97,4 +97,25 @@ Key transform( const Key& key, const Nonce& nonce, std::size_t round ) noexcept 
 
 } // namespace
 
+RoundKeys KeySchedule::expand( const Key& key, const Nonce& nonce, std::size_t rounds ) {
+  if ( rounds < MIN_ROUNDS || rounds > MAX_ROUNDS )
+    throw std::invalid_argument( "Rounds must be between 2 and 128" );
+
+  RoundKeys keys;
+  keys.reserve( rounds );
+
+  auto current = key;
+
+  for ( std::size_t round = 0; round < rounds; ++round ) {
+    current = transform( current, nonce, round );
+
+    Words words {};
+    toWords( current, words );
+
+    keys.push_back( words );
+  }
+
+  return keys;
+}
+
 } // namespace tauron::crypto
