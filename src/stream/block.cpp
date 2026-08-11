@@ -29,6 +29,10 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
       block[ 2 + i ] = padding[ i - payload.size() ];
   }
 
+  const auto checksum = Checksum::calculate( std::span< const std::uint8_t >{ block }.subspan( 2, 28 ) );
+  block[ 30 ] = static_cast< std::uint8_t >( checksum >> 8 );
+  block[ 31 ] = static_cast< std::uint8_t >( checksum & 0xFF );
+
   return block;
 }
 
