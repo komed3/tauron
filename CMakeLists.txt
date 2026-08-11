@@ -27,6 +27,8 @@ add_library(
   src/crypto/key_schedule.cpp
   src/crypto/master_key_generator.cpp
   src/crypto/nonce_generator.cpp
+
+  src/stream/checksum.cpp
 )
 
 find_path( SODIUM_INCLUDE_DIR sodium.h REQUIRED )
