@@ -215,4 +215,26 @@ int main() {
             << "\n\n";
 
   allPassed &= modifiedCiphertextPassed;
+
+  /*
+   * Wrong nonce
+   *
+   * Decrypting with a different nonce must not recover the
+   * original plaintext.
+   */
+
+  const auto wrongNonce = NonceGenerator::generate();
+  const auto wrongNonceKeys = KeySchedule::expand( key, wrongNonce, 16 );
+  const auto wrongNonceDecrypted = BlockCipher::decrypt( encrypted, wrongNonceKeys );
+  const bool wrongNoncePassed = wrongNonceDecrypted != block;
+
+  std::cout << "[9] Wrong nonce during decryption\n";
+  std::cout << "    Original plaintext recovered: "
+            << ( wrongNoncePassed ? "NO" : "YES" )
+            << "\n";
+  std::cout << "    Result: "
+            << ( wrongNoncePassed ? "PASS" : "FAIL" )
+            << "\n\n";
+
+  allPassed &= wrongNoncePassed;
 }
