@@ -1,5 +1,6 @@
 #include "tauron/utils/random.hpp"
 
+#include <memory>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -58,8 +59,20 @@ std::vector< std::uint8_t > Random::generate( std::size_t length ) {
   #endif
 }
 
-Nonce Random::nonce() {}
+Nonce Random::nonce() {
+  Nonce result {};
 
-Salt Random::salt() {}
+  const auto data = generate( NONCE_SIZE );
+  std::copy( data.begin(), data.end(), result.begin() );
 
+  return result;
+}
+
+Salt Random::salt() {
+  Salt result {};
+
+  const auto data = generate( SALT_SIZE );
+  std::copy( data.begin(), data.end(), result.begin() );
+
+  return result;
 }
