@@ -34,20 +34,20 @@ bool testPipeline(
   const bool passed = encryptionValid && decryptionValid;
 
   std::cout << name << "\n";
-  std::cout << "  Ciphertext: ";
+  std::cout << "    Ciphertext: ";
   printHex( encrypted );
 
-  std::cout << "  Ciphertext "
+  std::cout << "    Ciphertext "
             << ( expectDifferent ? "changed" : "stable" )
             << ": "
             << ( encryptionValid ? "PASS" : "FAIL" )
             << '\n';
 
-  std::cout << "  Decryption: "
+  std::cout << "    Decryption: "
             << ( decryptionValid ? "PASS" : "FAIL" )
             << '\n';
 
-  std::cout << "  Result: "
+  std::cout << "    Result: "
             << ( passed ? "PASS" : "FAIL" )
             << "\n\n";
 
@@ -65,7 +65,7 @@ int main() {
   for ( std::size_t i = 0; i < block.size(); ++i )
     block[ i ] = static_cast< std::uint8_t >( i );
 
-  std::cout << "Plaintext: ";
+  std::cout << "    Plaintext:  ";
   printHex( block );
   std::cout << "\n";
 
@@ -82,10 +82,10 @@ int main() {
   bool allPassed = baselinePassed;
 
   std::cout << "[1] Baseline\n";
-  std::cout << "  Ciphertext: ";
+  std::cout << "    Ciphertext: ";
   printHex( encrypted );
 
-  std::cout << "  Decryption: "
+  std::cout << "    Decryption: "
             << ( baselinePassed ? "PASS" : "FAIL" )
             << "\n\n";
 }
