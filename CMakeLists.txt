@@ -30,6 +30,7 @@ add_library(
   src/crypto/master_key_generator.cpp
   src/crypto/nonce_generator.cpp
 
+  src/stream/block.cpp
   src/stream/checksum.cpp
 )
 
