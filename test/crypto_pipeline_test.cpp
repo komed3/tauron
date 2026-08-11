@@ -26,6 +26,15 @@ bool equal( const auto& a, const auto& b ) {
   return a == b;
 }
 
+bool testPipeline(
+  const std::string& name, const auto& block, const auto& key, const auto& nonce,
+  const auto& expectedCiphertext, bool expectDifferent
+) {
+  const auto keys = KeySchedule::expand( key, block, 16 );
+  const auto encrypted = BlockCipher::encrypt( block, keys );
+  const auto decrypted = BlockCipher::decrypt( encrypted, keys );
+}
+
 }
 
 int main() {}
