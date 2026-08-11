@@ -35,7 +35,7 @@ bool testPipeline(
   const auto decrypted = BlockCipher::decrypt( encrypted, keys );
 
   std::cout << name << "\n";
-  std::cout << "  Ciphertext: ";
+  std::cout << " Ciphertext: ";
   printHex( encrypted );
 
   const bool decryptedCorrect = equal( decrypted, block );
@@ -67,5 +67,7 @@ int main() {
   for ( std::size_t i = 0; i < block.size(); ++i )
     block[ i ] = static_cast< std::uint8_t >( i );
 
-  
+  std::cout << "Plaintext: ";
+  printHex( block );
+  std::cout << "\n\n";
 }
