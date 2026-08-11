@@ -68,4 +68,16 @@ int main() {
   std::cout << "Plaintext: ";
   printHex( block );
   std::cout << "\n";
+
+  // Baseline
+
+  const auto salt = NonceGenerator::generate();
+  const auto nonce = NonceGenerator::generate();
+  const auto key = MasterKeyGenerator::generate( passphrase, salt );
+  const auto keys = KeySchedule::expand( key, nonce, 16 );
+  const auto encrypted = BlockCipher::encrypt( block, keys );
+  const auto decrypted = BlockCipher::decrypt( encrypted, keys );
+
+  const bool baselinePassed = decrypted == block;
+  bool allPassed = baselinePassed;
 }
