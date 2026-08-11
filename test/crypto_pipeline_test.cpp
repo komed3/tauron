@@ -24,7 +24,10 @@ bool testPipeline(
   const std::string& name, const std::string& passphrase, const auto& salt, const auto& nonce,
     const auto& block, const auto& referenceCiphertext, bool expectDifferent
 ) {
-  //
+  const auto key = MasterKeyGenerator::generate( passphrase, salt );
+  const auto keys = KeySchedule::expand( key, nonce, 16 );
+  const auto encrypted = BlockCipher::encrypt( block, keys );
+  const auto decrypted = BlockCipher::decrypt( encrypted, keys );
 }
 
 } // namespace
