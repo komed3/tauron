@@ -88,4 +88,21 @@ int main() {
   std::cout << "    Decryption: "
             << ( baselinePassed ? "PASS" : "FAIL" )
             << "\n\n";
+
+  // Determinism
+
+  const auto repeatedKeys = KeySchedule::expand( key, nonce, 16 );
+  const auto repeatedCiphertext = BlockCipher::encrypt( block, repeatedKeys );
+
+  const bool deterministicPassed = repeatedCiphertext == encrypted;
+  allPassed &= deterministicPassed;
+
+  std::cout << "[2] Determinism\n";
+  std::cout << "    Ciphertext: ";
+  printHex( repeatedCiphertext );
+
+  std::cout
+        << "    Identical input -> identical ciphertext: "
+        << ( deterministicPassed ? "PASS" : "FAIL" )
+        << "\n\n";
 }
