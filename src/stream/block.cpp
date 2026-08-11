@@ -9,7 +9,7 @@
 namespace tauron::stream {
 
 crypto::Block Block::build( const std::uint8_t id, const std::span< const std::uint8_t > payload ) {
-  if ( payload.size() > 28 )
+  if ( payload.size() > PAYLOAD_SIZE )
     throw std::invalid_argument( "Block payload exceeds 28 bytes" );
 
   if ( id == 0xFF && ! payload.empty() )
@@ -22,16 +22,16 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
   for ( std::size_t i = 0; i < payload.size(); ++i )
     block[ 2 + i ] = payload[ i ];
 
-  if ( payload.size() < 28 ) {
+  if ( payload.size() < PAYLOAD_SIZE ) {
     const auto padding = crypto::NonceGenerator::generate();
 
-    for ( std::size_t i = payload.size(); i < 28; ++i )
+    for ( std::size_t i = payload.size(); i < PAYLOAD_SIZE; ++i )
       block[ 2 + i ] = padding[ i - payload.size() ];
   }
 
   const auto checksum = Checksum::calculate( std::span< const std::uint8_t >{ block }.subspan( 2, 28 ) );
-  block[ 30 ] = static_cast< std::uint8_t >( checksum >> 8 );
-  block[ 31 ] = static_cast< std::uint8_t >( checksum & 0xFF );
+  block[ crypto::BLOCK_SIZE - 2 ] = static_cast< std::uint8_t >( checksum >> 8 );
+  block[ crypto::BLOCK_SIZE - 1 ] = static_cast< std::uint8_t >( checksum & 0xFF );
 
   return block;
 }
