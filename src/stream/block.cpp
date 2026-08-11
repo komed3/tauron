@@ -36,4 +36,12 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
   return block;
 }
 
+ParsedBlock Block::parse( crypto::Block block, std::uint8_t sequenceSize ) {
+  ParsedBlock result{
+    .id = block[ 0 ],
+    .payload = {},
+    .flag = BlockFlag::PASSED
+  };
+}
+
 }
