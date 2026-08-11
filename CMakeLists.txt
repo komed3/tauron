@@ -22,6 +22,7 @@ add_library(
 
   include/tauron/stream/block.hpp
   include/tauron/stream/checksum.hpp
+  include/tauron/stream/constants.hpp
 
 
   src/crypto/block_cipher.cpp
