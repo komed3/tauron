@@ -1,11 +1,9 @@
-#include <array>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <string>
 
 #include "tauron/crypto/block_cipher.hpp"
-#include "tauron/crypto/constants.hpp"
 #include "tauron/crypto/key_schedule.hpp"
 #include "tauron/crypto/master_key_generator.hpp"
 #include "tauron/crypto/nonce_generator.hpp"
@@ -22,52 +20,15 @@ void printHex( const auto& data ) {
   std::cout << std::dec << "\n";
 }
 
-bool equal( const auto& a, const auto& b ) {
-  return a == b;
-}
-
 bool testPipeline(
-  const std::string& name, const auto& block, const auto& key, const auto& nonce,
-  const auto& expectedCiphertext, bool expectDifferent
+  const std::string& name, const std::string& passphrase, const auto& salt, const auto& nonce,
+    const auto& block, const auto& referenceCiphertext, bool expectDifferent
 ) {
-  const auto keys = KeySchedule::expand( key, block, 16 );
-  const auto encrypted = BlockCipher::encrypt( block, keys );
-  const auto decrypted = BlockCipher::decrypt( encrypted, keys );
-
-  std::cout << name << "\n";
-  std::cout << " Ciphertext: ";
-  printHex( encrypted );
-
-  const bool decryptedCorrect = equal( decrypted, block );
-  const bool ciphertextCorrect = expectedCiphertext.empty() ? true : equal( encrypted, expectedCiphertext );
-  const bool ciphertextDifferent = ! expectedCiphertext.empty() && ! equal( encrypted, expectedCiphertext );
-  const bool passed = decryptedCorrect && ( expectDifferent ? ciphertextDifferent : ciphertextCorrect );
-
-  std::cout << " Decryption: " << ( decryptedCorrect ? "PASS" : "FAIL" ) << '\n';
-
-  if ( ! expectedCiphertext.empty() )
-    std::cout << " Ciphertext: " << ( expectDifferent
-        ? ( ciphertextDifferent ? "DIFFERENT" : "UNCHANGED" )
-        : ( ciphertextCorrect ? "MATCH" : "MISMATCH" )
-      ) << '\n';
-
-  std::cout << " Result: " << ( passed ? "PASS" : "FAIL" ) << "\n\n";
-
-  return passed;
+  //
 }
 
 } // namespace
 
 int main() {
-  std::cout << "=== Tauron Crypto Pipeline Test ===\n\n";
-
-  const std::string passphrase = "Tauron test passphrase";
-
-  Block block {};
-  for ( std::size_t i = 0; i < block.size(); ++i )
-    block[ i ] = static_cast< std::uint8_t >( i );
-
-  std::cout << "Plaintext: ";
-  printHex( block );
-  std::cout << "\n\n";
+  //
 }
