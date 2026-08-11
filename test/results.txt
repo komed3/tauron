@@ -25,3 +25,62 @@ Block size: 32
 Encrypted differs: true
 Decrypt restores block: true
 Different nonce: true
+
+# crypto_pipeline_test
+
+Plaintext:  00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+
+[ 1] Baseline
+     Ciphertext: 4c ab 04 28 d9 f9 76 57 09 e2 18 34 f6 2b d8 ac 63 c8 f9 de 99 a1 7a 7d 62 38 a3 b3 4a a5 df b7 
+     Decryption: PASS
+
+[ 2] Determinism
+     Ciphertext: 4c ab 04 28 d9 f9 76 57 09 e2 18 34 f6 2b d8 ac 63 c8 f9 de 99 a1 7a 7d 62 38 a3 b3 4a a5 df b7 
+     Identical input -> identical ciphertext: PASS
+
+[ 3] Changed nonce
+     Ciphertext: b4 a9 20 f0 9a 9c 9c 64 1f 56 11 af a2 ad 8b 5e 7c c2 fe 48 1c 5b cb 25 a1 9c de 6f b3 8c 74 33 
+     Ciphertext changed: PASS
+     Decryption: PASS
+     Result: PASS
+
+[ 4] Changed salt
+     Ciphertext: 98 78 13 d7 17 6a e3 d5 df e6 75 ec 2c 01 c0 60 7b 2e 49 2f 87 4e 12 7a 0e 8e e2 eb 43 0c c7 eb 
+     Ciphertext changed: PASS
+     Decryption: PASS
+     Result: PASS
+
+[ 5] Changed passphrase
+     Ciphertext: 7d b0 ff f5 1d 91 83 5b 98 59 d9 f8 e4 b7 d8 57 80 84 5a ba 40 a6 63 b1 03 ff eb cf 06 27 5f 9d 
+     Ciphertext changed: PASS
+     Decryption: PASS
+     Result: PASS
+
+[ 6] Changed plaintext
+     Ciphertext: 5b 0b e1 48 08 9f b7 2d f1 ad 9e fa b5 05 5b 1c 7d 40 ac 5a b8 87 8e e0 fb 29 37 cf 74 16 6f 16 
+     Ciphertext changed: PASS
+     Decryption: PASS
+     Result: PASS
+
+[ 7] Changed plaintext (last byte)
+     Ciphertext: 86 c4 a4 c8 32 12 e5 87 19 18 db b5 12 5d b8 3d ce c4 18 5e 44 a2 95 35 0b 7f 0c d5 24 83 c1 98 
+     Ciphertext changed: PASS
+     Decryption: PASS
+     Result: PASS
+
+[ 8] Modified ciphertext
+     Ciphertext: 4d ab 04 28 d9 f9 76 57 09 e2 18 34 f6 2b d8 ac 63 c8 f9 de 99 a1 7a 7d 62 38 a3 b3 4a a5 df b7 
+     Original plaintext recovered: NO
+     Result: PASS
+
+[ 9] Wrong nonce during decryption
+     Ciphertext: d6 b1 a0 ab 4f 9c b2 77 05 15 36 89 bb 92 b6 3b 9e cd 14 6a 42 ae 9d 46 00 27 df 25 d3 d5 fc d1 
+     Original plaintext recovered: NO
+     Result: PASS
+
+[10] Wrong passphrase during decryption
+     Ciphertext: 85 7a dc 83 81 80 c7 bd cb 34 46 cd 5a 5e 9f 28 d0 e5 f8 70 b0 11 51 7c 96 13 3a cf 5f f7 5c 97 
+     Original plaintext recovered: NO
+     Result: PASS
+
+Crypto Pipeline: PASS
