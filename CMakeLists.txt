@@ -39,3 +39,9 @@ target_include_directories( tauron PUBLIC include )
 add_executable( block_test test/block_test.cpp )
 
 target_link_libraries( block_test PRIVATE tauron )
+
+
+target_compile_options(
+  tauron PRIVATE -Wall -Wextra -Wpedantic
+  -std=c++20 -O3 -march=native -mtune=native -flto
+)
