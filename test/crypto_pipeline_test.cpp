@@ -80,4 +80,12 @@ int main() {
 
   const bool baselinePassed = decrypted == block;
   bool allPassed = baselinePassed;
+
+  std::cout << "[1] Baseline\n";
+  std::cout << "  Ciphertext: ";
+  printHex( encrypted );
+
+  std::cout << "  Decryption: "
+            << ( baselinePassed ? "PASS" : "FAIL" )
+            << "\n\n";
 }
