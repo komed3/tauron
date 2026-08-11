@@ -189,4 +189,30 @@ int main() {
     "[7] Changed plaintext (last byte)", passphrase, salt,
     nonce, changedBlockEnd, encrypted, true
   );
+
+  /*
+   * Ciphertext modification
+   *
+   * A modified ciphertext must not decrypt to the original
+   * plaintext with the original key schedule.
+   */
+
+  auto modifiedCiphertext = encrypted;
+  modifiedCiphertext[ 0 ] ^= 0x01;
+
+  const auto modifiedDecrypted = BlockCipher::decrypt( modifiedCiphertext, keys );
+  const bool modifiedCiphertextPassed = modifiedDecrypted != block;
+
+  std::cout << "[8] Modified ciphertext\n";
+  std::cout << "    Ciphertext: ";
+  printHex( modifiedCiphertext );
+
+  std::cout << "    Original plaintext recovered: "
+            << ( modifiedCiphertextPassed ? "NO" : "YES" )
+            << "\n";
+  std::cout << "    Result: "
+            << ( modifiedCiphertextPassed ? "PASS" : "FAIL" )
+            << "\n\n";
+
+  allPassed &= modifiedCiphertextPassed;
 }
