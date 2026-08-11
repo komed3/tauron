@@ -159,4 +159,34 @@ int main() {
     "[5] Changed passphrase", "Different Tauron test passphrase",
     salt, nonce, block, encrypted, true
   );
+
+  /*
+   * Different plaintext
+   *
+   * Same cryptographic parameters, different plaintext must
+   * produce different ciphertext.
+   */
+
+  auto changedBlock = block;
+  changedBlock[ 0 ] ^= 0x01;
+
+  allPassed &= testPipeline(
+    "[6] Changed plaintext", passphrase, salt, nonce,
+    changedBlock, encrypted, true
+  );
+
+  /*
+   * Multiple plaintext changes
+   *
+   * Check that changes at different positions are propagated
+   * through the complete encryption pipeline.
+   */
+
+  auto changedBlockEnd = block;
+  changedBlockEnd[ changedBlockEnd.size() - 1 ] ^= 0x01;
+
+  allPassed &= testPipeline(
+    "[7] Changed plaintext (last byte)", passphrase, salt,
+    nonce, changedBlockEnd, encrypted, true
+  );
 }
