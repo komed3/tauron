@@ -14,6 +14,12 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
 
   if ( id == 0xFF && ! payload.empty() )
     throw std::invalid_argument( "Random block cannot contain payload" );
+
+  crypto::Block block {};
+  block[ 0 ] = id;
+  block[ 1 ] = static_cast< std::uint8_t >( payload.size() );
+
+  return block;
 }
 
 }
