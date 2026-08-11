@@ -42,6 +42,24 @@ ParsedBlock Block::parse( crypto::Block block, std::uint8_t sequenceSize ) {
     .payload = {},
     .flag = BlockFlag::PASSED
   };
+
+  const auto id = block[ 0 ];
+  const auto length = block[ 1 ];
+
+  if ( sequenceSize < MIN_SEQ_BLOCKS ) {
+    result.flag = BlockFlag::INVALID_ID;
+    return result;
+  }
+
+  if ( id != 0xFF && id >= sequenceSize ) {
+    result.flag = BlockFlag::INVALID_ID;
+    return result;
+  }
+
+  if ( length > 28 ) {
+    result.flag = BlockFlag::INVALID_LENGTH;
+    return result;
+  }
 }
 
 }
