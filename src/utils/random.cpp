@@ -15,7 +15,48 @@
 
 namespace tauron::utils {
 
-std::vector< std::uint8_t > Random::generate( std::size_t length ) {}
+std::vector< std::uint8_t > Random::generate( std::size_t length ) {
+  std::vector< std::uint8_t > result( length );
+  if ( length == 0 ) return result;
+
+  #ifdef _WIN32
+
+    std::size_t offset = 0;
+
+    while ( offset < length ) {
+      const auto chunk = static_cast< ULONG >(
+        std::min( length - offset, static_cast< std::size_t >( ULONG_MAX ) )
+      );
+
+      const auto status = BCryptGenRandom(
+        nullptr, result.data() + offset, chunk,
+        BCRYPT_USE_SYSTEM_PREFERRED_RNG
+      );
+
+      if ( status != 0 )
+        throw std::runtime_error( "Failed to generate cryptographically secure random data" );
+
+      offset += chunk;
+    }
+
+  #else
+
+    std::size_t offset = 0;
+
+    while ( offset < length ) {
+      const auto generated = getrandom( result.data() + offset, length - offset, 0 );
+
+      if ( generated < 0 )
+        throw std::runtime_error( "Failed to generate cryptographically secure random data" );
+
+      if ( generated == 0 )
+        throw std::runtime_error( "Cryptographically secure random generator returned no data" );
+
+      offset += static_cast< std::size_t >( generated );
+    }
+
+  #endif
+}
 
 Nonce Random::nonce() {}
 
