@@ -34,3 +34,8 @@ if ( WIN32 )
 endif()
 
 target_include_directories( tauron PUBLIC include )
+
+
+add_executable( block_test test/block_test.cpp )
+
+target_link_libraries( block_test PRIVATE tauron )
