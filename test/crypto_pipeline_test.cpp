@@ -147,4 +147,16 @@ int main() {
     "[4] Changed salt", passphrase, changedSalt, nonce,
     block, encrypted, true
   );
+
+  /*
+   * Different passphrase
+   *
+   * Same salt, nonce and plaintext, different passphrase must
+   * result in a different master key and ciphertext.
+   */
+
+  allPassed &= testPipeline(
+    "[5] Changed passphrase", "Different Tauron test passphrase",
+    salt, nonce, block, encrypted, true
+  );
 }
