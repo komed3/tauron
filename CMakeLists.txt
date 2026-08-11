@@ -22,3 +22,15 @@ add_library(
   src/utils/checksum.cpp
   src/utils/random.cpp
 )
+
+find_path( SODIUM_INCLUDE_DIR sodium.h REQUIRED )
+find_library( SODIUM_LIBRARY sodium REQUIRED )
+
+target_include_directories( tauron PRIVATE ${SODIUM_INCLUDE_DIR} )
+target_link_libraries( tauron PRIVATE ${SODIUM_LIBRARY} )
+
+if ( WIN32 )
+  target_link_libraries( tauron PRIVATE bcrypt )
+endif()
+
+target_include_directories( tauron PUBLIC include )
