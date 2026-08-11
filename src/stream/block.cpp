@@ -10,7 +10,7 @@ namespace tauron::stream {
 
 crypto::Block Block::build( const std::uint8_t id, const std::span< const std::uint8_t > payload ) {
   if ( payload.size() > PAYLOAD_SIZE )
-    throw std::invalid_argument( "Block payload exceeds 28 bytes" );
+    throw std::invalid_argument( "Block payload exceeds maximum bytes" );
 
   if ( id == 0xFF && ! payload.empty() )
     throw std::invalid_argument( "Random block cannot contain payload" );
