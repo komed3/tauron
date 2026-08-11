@@ -28,6 +28,10 @@ bool testPipeline(
   const auto keys = KeySchedule::expand( key, nonce, 16 );
   const auto encrypted = BlockCipher::encrypt( block, keys );
   const auto decrypted = BlockCipher::decrypt( encrypted, keys );
+
+  const bool encryptionValid = expectDifferent ? encrypted != referenceCiphertext : encrypted == referenceCiphertext;
+  const bool decryptionValid = decrypted == block;
+  const bool passed = encryptionValid && decryptionValid;
 }
 
 } // namespace
