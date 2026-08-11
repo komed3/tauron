@@ -29,7 +29,7 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
       block[ 2 + i ] = padding[ i - payload.size() ];
   }
 
-  const auto checksum = Checksum::calculate( std::span< const std::uint8_t >{ block }.subspan( 2, 28 ) );
+  const auto checksum = Checksum::calculate( std::span< const std::uint8_t >{ block }.subspan( 2, PAYLOAD_SIZE ) );
   block[ crypto::BLOCK_SIZE - 2 ] = static_cast< std::uint8_t >( checksum >> 8 );
   block[ crypto::BLOCK_SIZE - 1 ] = static_cast< std::uint8_t >( checksum & 0xFF );
 
@@ -60,6 +60,21 @@ ParsedBlock Block::parse( crypto::Block block, std::uint8_t sequenceSize ) {
     result.flag = BlockFlag::INVALID_LENGTH;
     return result;
   }
+
+  const auto payload = std::span< const std::uint8_t >{ block }.subspan( 2, PAYLOAD_SIZE );
+  const auto checksum = Checksum::calculate( payload );
+
+  const auto storedChecksum =
+    static_cast< std::uint16_t >( block[ crypto::BLOCK_SIZE - 2 ] ) << 8 |
+    static_cast< std::uint16_t >( block[ crypto::BLOCK_SIZE - 1 ] );
+
+  if ( checksum != storedChecksum ) {
+    result.flag = BlockFlag::INVALID_CHECKSUM;
+    return result;
+  }
+
+  if ( id != 0xFF ) result.payload.assign( payload.begin(), payload.begin() + length );
+  return result;
 }
 
 }
