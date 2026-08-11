@@ -105,4 +105,13 @@ int main() {
         << "    Identical input -> identical ciphertext: "
         << ( deterministicPassed ? "PASS" : "FAIL" )
         << "\n\n";
+
+  // Different nonce
+
+  const auto changedNonce = NonceGenerator::generate();
+
+  allPassed &= testPipeline(
+    "[3] Changed nonce", passphrase, salt, changedNonce,
+    block, encrypted, true
+  );
 }
