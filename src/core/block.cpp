@@ -36,6 +36,16 @@ ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {
   const auto id = block[ 0 ];
   const auto length = block[ 1 ];
 
+  if ( id != 0xFF && id >= sequenceSize ) {
+    result.flag = BlockFlag::INVALID_ID;
+    return result;
+  }
+
+  if ( length > BLOCK_PAYLOAD ) {
+    result.flag = BlockFlag::INVALID_LENGTH;
+    return result;
+  }
+
   return result;
 }
 
