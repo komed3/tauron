@@ -24,7 +24,10 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   if ( payload.size() < BLOCK_PAYLOAD )
     utils::Random::fill( std::span( block.begin() + 4 + payload.size(), block.end() ) );
 
-  const auto checksum = utils::Checksum::calculate( std::span< const std::uint8_t >( block ).subspan( 4 ) );
+  const auto checksum = utils::Checksum::calculate(
+    std::span< const std::uint8_t >( block ).subspan( 4 )
+  );
+
   block[ 2 ] = static_cast< std::uint8_t >( checksum >> 8 );
   block[ 3 ] = static_cast< std::uint8_t >( checksum & 0xFF );
 
@@ -45,6 +48,21 @@ ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {
     result.flag = BlockFlag::INVALID_LENGTH;
     return result;
   }
+
+  const auto expectedChecksum =
+    static_cast< std::uint16_t >( block[ 2 ] ) << 8 |
+    static_cast< std::uint16_t >( block[ 3 ] );
+
+  const auto checksum = utils::Checksum::calculate(
+    std::span< const std::uint8_t >( block ).subspan( 4 )
+  );
+
+  if ( checksum != expectedChecksum ) {
+    result.flag = BlockFlag::INVALID_CHECKSUM;
+    return result;
+  }
+
+  result.payload.assign( block.begin() + 4, block.begin() + 4 + length );
 
   return result;
 }
