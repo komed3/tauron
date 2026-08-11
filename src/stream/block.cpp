@@ -19,6 +19,16 @@ crypto::Block Block::build( const std::uint8_t id, const std::span< const std::u
   block[ 0 ] = id;
   block[ 1 ] = static_cast< std::uint8_t >( payload.size() );
 
+  for ( std::size_t i = 0; i < payload.size(); ++i )
+    block[ 2 + i ] = payload[ i ];
+
+  if ( payload.size() < 28 ) {
+    const auto padding = crypto::NonceGenerator::generate();
+
+    for ( std::size_t i = payload.size(); i < 28; ++i )
+      block[ 2 + i ] = padding[ i - payload.size() ];
+  }
+
   return block;
 }
 
