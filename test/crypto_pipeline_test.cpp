@@ -33,6 +33,10 @@ bool testPipeline(
   const auto keys = KeySchedule::expand( key, block, 16 );
   const auto encrypted = BlockCipher::encrypt( block, keys );
   const auto decrypted = BlockCipher::decrypt( encrypted, keys );
+
+  std::cout << name << "\n";
+  std::cout << "  Ciphertext: ";
+  printHex( encrypted );
 }
 
 }
