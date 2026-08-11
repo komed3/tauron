@@ -20,6 +20,9 @@ add_library(
   include/tauron/crypto/nonce_generator.hpp
   include/tauron/crypto/words.hpp
 
+  include/tauron/stream/checksum.hpp
+
+
   src/crypto/block_cipher.cpp
   src/crypto/key_schedule.cpp
   src/crypto/master_key_generator.cpp
