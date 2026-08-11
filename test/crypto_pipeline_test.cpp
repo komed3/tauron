@@ -114,4 +114,13 @@ int main() {
     "[3] Changed nonce", passphrase, salt, changedNonce,
     block, encrypted, true
   );
+
+  // Different salt
+
+  const auto changedSalt = NonceGenerator::generate();
+
+  allPassed &= testPipeline(
+    "[4] Changed salt", passphrase, changedSalt, nonce,
+    block, encrypted, true
+  );
 }
