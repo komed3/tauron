@@ -76,3 +76,5 @@ Salt Random::salt() {
 
   return result;
 }
+
+}
