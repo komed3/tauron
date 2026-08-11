@@ -69,7 +69,17 @@ int main() {
   printHex( block );
   std::cout << "\n";
 
-  // Baseline
+  /*
+   * Baseline
+   *
+   * Passphrase
+   *  -> Salt
+   *  -> Master Key
+   *  -> Nonce
+   *  -> Key Schedule
+   *  -> Encryption
+   *  -> Decryption
+   */
 
   const auto salt = NonceGenerator::generate();
   const auto nonce = NonceGenerator::generate();
@@ -89,7 +99,11 @@ int main() {
             << ( baselinePassed ? "PASS" : "FAIL" )
             << "\n\n";
 
-  // Determinism
+  /*
+   * Determinism
+   *
+   * Identical inputs must produce identical ciphertext.
+   */
 
   const auto repeatedKeys = KeySchedule::expand( key, nonce, 16 );
   const auto repeatedCiphertext = BlockCipher::encrypt( block, repeatedKeys );
@@ -106,7 +120,12 @@ int main() {
         << ( deterministicPassed ? "PASS" : "FAIL" )
         << "\n\n";
 
-  // Different nonce
+  /*
+   * Different nonce
+   *
+   * Same key and plaintext, different nonce must produce
+   * different ciphertext while remaining decryptable.
+   */
 
   const auto changedNonce = NonceGenerator::generate();
 
@@ -115,7 +134,12 @@ int main() {
     block, encrypted, true
   );
 
-  // Different salt
+  /*
+   * Different salt
+   *
+   * Same passphrase, nonce and plaintext, different salt must
+   * result in a different master key and ciphertext.
+   */
 
   const auto changedSalt = NonceGenerator::generate();
 
