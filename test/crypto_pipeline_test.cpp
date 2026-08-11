@@ -57,5 +57,15 @@ bool testPipeline(
 } // namespace
 
 int main() {
-  //
+  std::cout << "=== Tauron Crypto Pipeline ===\n\n";
+
+  const std::string passphrase = "Tauron test passphrase";
+  Block block{};
+
+  for ( std::size_t i = 0; i < block.size(); ++i )
+    block[ i ] = static_cast< std::uint8_t >( i );
+
+  std::cout << "Plaintext: ";
+  printHex( block );
+  std::cout << "\n";
 }
