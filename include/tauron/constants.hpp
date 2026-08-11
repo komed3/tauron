@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-namespace tauron::core {
+namespace tauron {
 
 inline constexpr std::size_t BLOCK_SIZE = 32;
 inline constexpr std::size_t BLOCK_PAYLOAD = 28;
