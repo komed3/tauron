@@ -20,6 +20,15 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   block[ 1 ] = static_cast< std::uint8_t >( payload.size() );
 
   std::copy( payload.begin(), payload.end(), block.begin() + 4 );
+
+  if ( payload.size() < BLOCK_PAYLOAD )
+    utils::Random::fill( std::span( block.begin() + 4 + payload.size(), block.end() ) );
+
+  const auto checksum = utils::Checksum::calculate( std::span< const std::uint8_t >( block ).subspan( 4 ) );
+  block[ 2 ] = static_cast< std::uint8_t >( checksum >> 8 );
+  block[ 3 ] = static_cast< std::uint8_t >( checksum & 0xFF );
+
+  return block;
 }
 
 ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {}
