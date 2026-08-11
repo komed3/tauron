@@ -32,6 +32,26 @@ bool testPipeline(
   const bool encryptionValid = expectDifferent ? encrypted != referenceCiphertext : encrypted == referenceCiphertext;
   const bool decryptionValid = decrypted == block;
   const bool passed = encryptionValid && decryptionValid;
+
+  std::cout << name << "\n";
+  std::cout << "  Ciphertext: ";
+  printHex( encrypted );
+
+  std::cout << "  Ciphertext "
+            << ( expectDifferent ? "changed" : "stable" )
+            << ": "
+            << ( encryptionValid ? "PASS" : "FAIL" )
+            << '\n';
+
+  std::cout << "  Decryption: "
+            << ( decryptionValid ? "PASS" : "FAIL" )
+            << '\n';
+
+  std::cout << "  Result: "
+            << ( passed ? "PASS" : "FAIL" )
+            << "\n\n";
+
+  return passed;
 }
 
 } // namespace
