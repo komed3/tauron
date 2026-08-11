@@ -14,7 +14,7 @@ using Salt = std::array< std::uint8_t, SALT_SIZE >;
 
 class Random {
 public:
-  static std::span< std::int8_t > generate( std::size_t length );
+  static std::span< std::uint8_t > generate( std::size_t length );
   static Nonce nonce();
   static Salt salt();
 };
