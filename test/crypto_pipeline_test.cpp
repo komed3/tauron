@@ -34,20 +34,20 @@ bool testPipeline(
   const bool passed = encryptionValid && decryptionValid;
 
   std::cout << name << "\n";
-  std::cout << "    Ciphertext: ";
+  std::cout << "     Ciphertext: ";
   printHex( encrypted );
 
-  std::cout << "    Ciphertext "
+  std::cout << "     Ciphertext "
             << ( expectDifferent ? "changed" : "stable" )
             << ": "
             << ( encryptionValid ? "PASS" : "FAIL" )
             << '\n';
 
-  std::cout << "    Decryption: "
+  std::cout << "     Decryption: "
             << ( decryptionValid ? "PASS" : "FAIL" )
             << '\n';
 
-  std::cout << "    Result: "
+  std::cout << "     Result: "
             << ( passed ? "PASS" : "FAIL" )
             << "\n\n";
 
@@ -65,7 +65,7 @@ int main() {
   for ( std::size_t i = 0; i < block.size(); ++i )
     block[ i ] = static_cast< std::uint8_t >( i );
 
-  std::cout << "    Plaintext:  ";
+  std::cout << "     Plaintext:  ";
   printHex( block );
   std::cout << "\n";
 
@@ -91,11 +91,11 @@ int main() {
   const bool baselinePassed = decrypted == block;
   bool allPassed = baselinePassed;
 
-  std::cout << "[1] Baseline\n";
-  std::cout << "    Ciphertext: ";
+  std::cout << "[ 1] Baseline\n";
+  std::cout << "     Ciphertext: ";
   printHex( encrypted );
 
-  std::cout << "    Decryption: "
+  std::cout << "     Decryption: "
             << ( baselinePassed ? "PASS" : "FAIL" )
             << "\n\n";
 
@@ -111,14 +111,13 @@ int main() {
   const bool deterministicPassed = repeatedCiphertext == encrypted;
   allPassed &= deterministicPassed;
 
-  std::cout << "[2] Determinism\n";
-  std::cout << "    Ciphertext: ";
+  std::cout << "[ 2] Determinism\n";
+  std::cout << "     Ciphertext: ";
   printHex( repeatedCiphertext );
 
-  std::cout
-        << "    Identical input -> identical ciphertext: "
-        << ( deterministicPassed ? "PASS" : "FAIL" )
-        << "\n\n";
+  std::cout << "     Identical input -> identical ciphertext: "
+            << ( deterministicPassed ? "PASS" : "FAIL" )
+            << "\n\n";
 
   /*
    * Different nonce
@@ -130,7 +129,7 @@ int main() {
   const auto changedNonce = NonceGenerator::generate();
 
   allPassed &= testPipeline(
-    "[3] Changed nonce", passphrase, salt, changedNonce,
+    "[ 3] Changed nonce", passphrase, salt, changedNonce,
     block, encrypted, true
   );
 
@@ -144,7 +143,7 @@ int main() {
   const auto changedSalt = NonceGenerator::generate();
 
   allPassed &= testPipeline(
-    "[4] Changed salt", passphrase, changedSalt, nonce,
+    "[ 4] Changed salt", passphrase, changedSalt, nonce,
     block, encrypted, true
   );
 
@@ -156,7 +155,7 @@ int main() {
    */
 
   allPassed &= testPipeline(
-    "[5] Changed passphrase", "Different Tauron test passphrase",
+    "[ 5] Changed passphrase", "Different Tauron test passphrase",
     salt, nonce, block, encrypted, true
   );
 
@@ -171,7 +170,7 @@ int main() {
   changedBlock[ 0 ] ^= 0x01;
 
   allPassed &= testPipeline(
-    "[6] Changed plaintext", passphrase, salt, nonce,
+    "[ 6] Changed plaintext", passphrase, salt, nonce,
     changedBlock, encrypted, true
   );
 
@@ -186,7 +185,7 @@ int main() {
   changedBlockEnd[ changedBlockEnd.size() - 1 ] ^= 0x01;
 
   allPassed &= testPipeline(
-    "[7] Changed plaintext (last byte)", passphrase, salt,
+    "[ 7] Changed plaintext (last byte)", passphrase, salt,
     nonce, changedBlockEnd, encrypted, true
   );
 
@@ -203,14 +202,14 @@ int main() {
   const auto modifiedDecrypted = BlockCipher::decrypt( modifiedCiphertext, keys );
   const bool modifiedCiphertextPassed = modifiedDecrypted != block;
 
-  std::cout << "[8] Modified ciphertext\n";
-  std::cout << "    Ciphertext: ";
+  std::cout << "[ 8] Modified ciphertext\n";
+  std::cout << "     Ciphertext: ";
   printHex( modifiedCiphertext );
 
-  std::cout << "    Original plaintext recovered: "
+  std::cout << "     Original plaintext recovered: "
             << ( modifiedCiphertextPassed ? "NO" : "YES" )
             << "\n";
-  std::cout << "    Result: "
+  std::cout << "     Result: "
             << ( modifiedCiphertextPassed ? "PASS" : "FAIL" )
             << "\n\n";
 
@@ -226,15 +225,44 @@ int main() {
   const auto wrongNonce = NonceGenerator::generate();
   const auto wrongNonceKeys = KeySchedule::expand( key, wrongNonce, 16 );
   const auto wrongNonceDecrypted = BlockCipher::decrypt( encrypted, wrongNonceKeys );
-  const bool wrongNoncePassed = wrongNonceDecrypted != block;
 
-  std::cout << "[9] Wrong nonce during decryption\n";
-  std::cout << "    Original plaintext recovered: "
+  const bool wrongNoncePassed = wrongNonceDecrypted != block;
+  allPassed &= wrongNoncePassed;
+
+  std::cout << "[ 9] Wrong nonce during decryption\n";
+  std::cout << "     Ciphertext: ";
+  printHex( wrongNonceDecrypted );
+
+  std::cout << "     Original plaintext recovered: "
             << ( wrongNoncePassed ? "NO" : "YES" )
             << "\n";
-  std::cout << "    Result: "
+  std::cout << "     Result: "
             << ( wrongNoncePassed ? "PASS" : "FAIL" )
             << "\n\n";
 
-  allPassed &= wrongNoncePassed;
+  /*
+   * Wrong passphrase / key
+   *
+   * Decrypting with a key generated from another passphrase
+   * must not recover the original plaintext.
+   */
+
+  const auto wrongKey = MasterKeyGenerator::generate( "Wrong Tauron test passphrase", salt );
+  const auto wrongKeyKeys = KeySchedule::expand( wrongKey, nonce, 16 );
+  const auto wrongKeyDecrypted = BlockCipher::decrypt( encrypted, wrongKeyKeys );
+
+  const bool wrongKeyPassed = wrongKeyDecrypted != block;
+  allPassed &= wrongKeyPassed;
+
+  std::cout << "[10] Wrong passphrase during decryption\n";
+  std::cout << "     Ciphertext: ";
+  printHex( wrongKeyDecrypted );
+
+  std::cout << "     Original plaintext recovered: "
+            << ( wrongKeyPassed ? "NO" : "YES" )
+            << '\n';
+  std::cout << "     Result: "
+            << ( wrongKeyPassed ? "PASS" : "FAIL" )
+            << "\n\n";
+
 }
