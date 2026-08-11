@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 #include "tauron/constants.hpp"
+#include "tauron/utils/checksum.hpp"
+#include "tauron/utils/random.hpp"
 
 namespace tauron::core {
 
@@ -16,6 +18,8 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   DataBlock block {};
   block[ 0 ] = id;
   block[ 1 ] = static_cast< std::uint8_t >( payload.size() );
+
+  std::copy( payload.begin(), payload.end(), block.begin() + 4 );
 }
 
 ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {}
