@@ -15,7 +15,7 @@
 
 namespace tauron::utils {
 
-std::span< std::uint8_t > Random::generate( std::size_t length ) {}
+std::vector< std::uint8_t > Random::generate( std::size_t length ) {}
 
 Nonce Random::nonce() {}
 

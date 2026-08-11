@@ -3,7 +3,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <span>
+#include <vector>
 
 #include "tauron/constants.hpp"
 
@@ -14,7 +14,7 @@ using Salt = std::array< std::uint8_t, SALT_SIZE >;
 
 class Random {
 public:
-  static std::span< std::uint8_t > generate( std::size_t length );
+  static std::vector< std::uint8_t > generate( std::size_t length );
   static Nonce nonce();
   static Salt salt();
 };
