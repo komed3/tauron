@@ -9,7 +9,7 @@
 
 namespace tauron::core {
 
-using DataBlock = std::array< std::int8_t, BLOCK_SIZE >;
+using DataBlock = std::array< std::uint8_t, BLOCK_SIZE >;
 
 enum class BlockFlag {
   PASSED,
