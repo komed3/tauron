@@ -37,6 +37,11 @@ bool testPipeline(
   std::cout << name << "\n";
   std::cout << "  Ciphertext: ";
   printHex( encrypted );
+
+  const bool decryptedCorrect = equal( decrypted, block );
+  const bool ciphertextCorrect = expectedCiphertext.empty() ? true : equal( encrypted, expectedCiphertext );
+  const bool ciphertextDifferent = ! expectedCiphertext.empty() && ! equal( encrypted, expectedCiphertext );
+  const bool passed = decryptedCorrect && ( expectDifferent ? ciphertextDifferent : ciphertextCorrect );
 }
 
 }
