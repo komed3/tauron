@@ -260,9 +260,16 @@ int main() {
 
   std::cout << "     Original plaintext recovered: "
             << ( wrongKeyPassed ? "NO" : "YES" )
-            << '\n';
+            << "\n";
   std::cout << "     Result: "
             << ( wrongKeyPassed ? "PASS" : "FAIL" )
             << "\n\n";
 
+  std::cout << "========================================\n"
+            << "Crypto Pipeline: "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << "\n"
+            << "========================================\n";
+
+  return allPassed ? 0 : 1;
 }
