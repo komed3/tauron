@@ -42,6 +42,18 @@ bool testPipeline(
   const bool ciphertextCorrect = expectedCiphertext.empty() ? true : equal( encrypted, expectedCiphertext );
   const bool ciphertextDifferent = ! expectedCiphertext.empty() && ! equal( encrypted, expectedCiphertext );
   const bool passed = decryptedCorrect && ( expectDifferent ? ciphertextDifferent : ciphertextCorrect );
+
+  std::cout << " Decryption: " << ( decryptedCorrect ? "PASS" : "FAIL" ) << '\n';
+
+  if ( ! expectedCiphertext.empty() )
+    std::cout << " Ciphertext: " << ( expectDifferent
+        ? ( ciphertextDifferent ? "DIFFERENT" : "UNCHANGED" )
+        : ( ciphertextCorrect ? "MATCH" : "MISMATCH" )
+      ) << '\n';
+
+  std::cout << " Result: " << ( passed ? "PASS" : "FAIL" ) << "\n\n";
+
+  return passed;
 }
 
 }
