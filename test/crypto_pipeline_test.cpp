@@ -22,6 +22,10 @@ void printHex( const auto& data ) {
   std::cout << std::dec << "\n";
 }
 
+bool equal( const auto& a, const auto& b ) {
+  return a == b;
+}
+
 }
 
 int main() {}
