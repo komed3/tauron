@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 
 namespace tauron::core {
 
@@ -15,5 +16,7 @@ inline constexpr std::size_t SALT_SIZE = 16;
 
 inline constexpr std::size_t MIN_ROUNDS = 2;
 inline constexpr std::size_t MAX_ROUNDS = 128;
+
+inline constexpr std::uint8_t KEY_PERMUT_DOMAIN = 0x01;
 
 }
