@@ -25,4 +25,7 @@ int main() {
 
   const auto keys1 = KeyGen::expand( key, nonce1, 16 );
   const auto keys2 = KeyGen::expand( key, nonce2, 16 );
+
+  const auto encrypted1 = Cipher::encrypt( block, keys1 );
+  const auto decrypted1 = Cipher::decrypt( encrypted1, keys1 );
 }
