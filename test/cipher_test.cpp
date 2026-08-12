@@ -65,4 +65,12 @@ int main() {
   printResult( "Encrypted differs plaintext", encrypted );
   printResult( "Decrypt restores block", decrypted );
   printResult( "Nonce affects cipher text", nonceAffectsCiphertext );
+
+  bool allPassed = encrypted && decrypted && nonceAffectsCiphertext;
+
+  std::cout << "\nResult:  "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << "\n";
+
+  return allPassed ? 0 : 1;
 }
