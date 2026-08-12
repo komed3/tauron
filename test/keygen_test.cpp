@@ -24,6 +24,8 @@ void printHex( const auto& data ) {
 int main() {
   bool allPassed = true;
 
+  // 1. Key derivation
+
   const std::string passphrase = "Tauron test passphrase";
   const auto salt1 = Random::salt();
   const auto salt2 = Random::salt();
@@ -55,6 +57,30 @@ int main() {
   printResult( "Different salt -> different key", diffSaltDiffKey );
   printResult( "Different passphrase -> different key", diffPassphraseDiffKey );
   printResult( "Key not all zero", notAllZero );
+
+  // 2. Key expansion
+
+  const auto nonce1 = Random::nonce();
+  const auto nonce2 = Random::nonce();
+
+  const auto keys1 = KeyGen::expand( key1, nonce1, 16 );
+  const auto keys1Again = KeyGen::expand( key1, nonce1, 16 );
+  const auto keys2 = KeyGen::expand( key1, nonce2, 16 );
+  const auto keys3 = KeyGen::expand( key2, nonce1, 16 );
+  const auto keys4 = KeyGen::expand( key3, nonce1, 16 );
+
+  const bool sameNonceSameKeys = keys1 == keys1Again;
+  const bool diffNonceDiffKeys = keys1 != keys2;
+  const bool diffMasterDiffKeys = keys1 != keys3;
+  const bool diffPassphraseDiffKeys = keys1 != keys4;
+
+  bool allRoundsDiff = true;
+
+  for ( std::size_t r = 1; r <= 16; ++r ) {
+    allRoundsDiff &=
+      keys1[ r ] != keys2[ r ] && keys1[ r ] != keys3[ r ] && keys1[ r ] != keys4[ r ] &&
+      keys2[ r ] != keys3[ r ] && keys2[ r ] != keys4[ r ] && keys3[ r ] != keys4[ r ];
+  }
 
   std::cout << "\nResult:     "
             << ( allPassed ? "PASS" : "FAIL" )
