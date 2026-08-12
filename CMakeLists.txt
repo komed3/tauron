@@ -44,11 +44,15 @@ target_include_directories( tauron PUBLIC include )
 
 
 add_executable( block_test test/block_test.cpp )
+add_executable( cipher_perf test/cipher_perf.cpp )
 add_executable( cipher_test test/cipher_test.cpp )
+add_executable( keygen_perf test/keygen_perf.cpp )
 add_executable( keygen_test test/keygen_test.cpp )
 
 target_link_libraries( block_test PRIVATE tauron )
+target_link_libraries( cipher_perf PRIVATE tauron )
 target_link_libraries( cipher_test PRIVATE tauron )
+target_link_libraries( keygen_perf PRIVATE tauron )
 target_link_libraries( keygen_test PRIVATE tauron )
 
 
