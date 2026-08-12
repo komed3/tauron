@@ -172,5 +172,9 @@ int main() {
     allPassed &= threw;
   }
 
+  std::cout << "\nResult:  "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << "\n";
+
   return allPassed ? 0 : 1;
 }
