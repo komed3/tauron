@@ -54,14 +54,14 @@ PermutCtx derivePermutCtx( const Key& key, const utils::Nonce& nonce, std::size_
   return context;
 }
 
-/*Key permut( const Key& bytes ) noexcept {
+Key permut( const Key& bytes, const std::vector< std::size_t >& permutation ) noexcept {
   Key result {};
 
   for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
-    result[ i ] = bytes[ PERMUTATION[ i ] ];
+    result[ i ] = bytes[ permutation[ i ] ];
 
   return result;
-}*/
+}
 
 Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   auto value = ROUND_CONSTANT ^static_cast< std::uint32_t >( round );
