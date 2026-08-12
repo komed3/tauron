@@ -19,4 +19,9 @@ inline constexpr std::uint32_t toWord( const Bytes& bytes, std::size_t offset ) 
     ( static_cast< std::uint32_t >( bytes[ offset + 3 ] ) << 24 );
 }
 
+inline void toWords( const Bytes& bytes, Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] = toWord( bytes, i * 4 );
+}
+
 }
