@@ -43,8 +43,6 @@ int main() {
     return byte != 0;
   } );
 
-  allPassed &= sameSaltSameKey && diffSaltDiffKey && diffPassphraseDiffKey && notAllZero;
-
   std::cout << "Salt:       ";
   printHex( salt1 );
 
@@ -57,6 +55,8 @@ int main() {
   printResult( "Different salt -> different key", diffSaltDiffKey );
   printResult( "Different passphrase -> different key", diffPassphraseDiffKey );
   printResult( "Key not all zero", notAllZero );
+
+  allPassed &= sameSaltSameKey && diffSaltDiffKey && diffPassphraseDiffKey && notAllZero;
 
   // 2. Key expansion
 
@@ -74,17 +74,23 @@ int main() {
   const bool diffMasterDiffKeys = keys1 != keys3;
   const bool diffPassphraseDiffKeys = keys1 != keys4;
 
-  bool allRoundsDiff = true;
+  bool allRoundsDiffer = true;
 
   for ( std::size_t r = 0; r < 16; ++r ) {
-    allRoundsDiff &=
+    allRoundsDiffer &=
       keys1[ r ] != keys2[ r ] && keys1[ r ] != keys3[ r ] && keys1[ r ] != keys4[ r ] &&
       keys2[ r ] != keys3[ r ] && keys2[ r ] != keys4[ r ] && keys3[ r ] != keys4[ r ];
   }
 
+  printResult( "Same nonce + master key -> same keys", sameNonceSameKeys );
+  printResult( "Different nonce -> different keys", diffNonceDiffKeys);
+  printResult( "Different master key -> different keys", diffMasterDiffKeys );
+  printResult( "Different passphrase -> different keys", diffPassphraseDiffKeys );
+  printResult( "All round keys differ", allRoundsDiffer );
+
   allPassed &=
     sameNonceSameKeys && diffNonceDiffKeys && diffMasterDiffKeys &&
-    diffPassphraseDiffKeys && allRoundsDiff;
+    diffPassphraseDiffKeys && allRoundsDiffer;
 
   std::cout << "\nResult:     "
             << ( allPassed ? "PASS" : "FAIL" )
