@@ -33,6 +33,11 @@ std::uint64_t seed( std::span< const std::uint8_t > context ) noexcept {
   return mix( state ^ context.size() );
 }
 
+std::uint64_t next( std::uint64_t state ) noexcept {
+  state += SEED_CONSTANT;
+  return mix( state );
+}
+
 } // namespace
 
 }
