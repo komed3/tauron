@@ -64,6 +64,16 @@ void inverseInject( utils::Words& words, const utils::Words& key, std::size_t ro
   }
 }
 
+void nonlinear( utils::Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] *= multiplier( round, i );
+}
+
+void inverseNonlinear( utils::Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    words[ i ] *= inverse32( multiplier( round, i ) );
+}
+
 } // namespace
 
 core::Block Cipher::encrypt( const core::Block& block, const RoundKeys& keys ) noexcept {}
