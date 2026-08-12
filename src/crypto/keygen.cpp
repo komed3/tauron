@@ -9,7 +9,7 @@ namespace tauron::crypto {
 
 namespace {
 
-using PermutCtx = std::array< std::uint8_t, core::KEY_SIZE + core::NONCE_SIZE + sizeof( std::uint32_t ) >;
+using PermutCtx = std::array< std::uint8_t, 1 + core::KEY_SIZE + core::NONCE_SIZE + 1 >;
 
 constexpr std::uint32_t NONLINEAR_CONSTANT_A = 0x85ebca6b;
 constexpr std::uint32_t NONLINEAR_CONSTANT_B = 0xc2b2ae35;
@@ -42,16 +42,12 @@ void crossMix( utils::Words& words ) noexcept {
 
 PermutCtx derivePermutCtx( const Key& key, const utils::Nonce& nonce, std::size_t round ) noexcept {
   PermutCtx context {};
+  context[ 0 ] = core::KEY_PERMUT_DOMAIN;
 
-  std::copy( key.begin(), key.end(), context.begin() );
-  std::copy( nonce.begin(), nonce.end(), context.begin() + key.size() );
+  std::copy( key.begin(), key.end(), context.begin() + 1 );
+  std::copy( nonce.begin(), nonce.end(), context.begin() + 1 + key.size() );
 
-  const auto offset = key.size() + nonce.size();
-
-  context[ offset ] = static_cast< std::uint8_t >( round );
-  context[ offset + 1 ] = static_cast< std::uint8_t >( round >>  8 );
-  context[ offset + 2 ] = static_cast< std::uint8_t >( round >> 16 );
-  context[ offset + 3 ] = static_cast< std::uint8_t >( round >> 24 );
+  context.back() = static_cast< std::uint8_t >( round );
 
   return context;
 }
