@@ -50,6 +50,20 @@ constexpr std::uint32_t multiplier( std::size_t round, std::size_t index ) noexc
   return NONLINEAR_BASE + ( round + index ) * 2;
 }
 
+void inject( utils::Words& words, const utils::Words& key, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] += key[ i ];
+    words[ i ] ^= std::rotl( key[ i ], injectionRotation( round, i ) );
+  }
+}
+
+void inverseInject( utils::Words& words, const utils::Words& key, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    words[ i ] ^= std::rotl( key[ i ], injectionRotation( round, i ) );
+    words[ i ] -= key[ i ];
+  }
+}
+
 } // namespace
 
 core::Block Cipher::encrypt( const core::Block& block, const RoundKeys& keys ) noexcept {}
