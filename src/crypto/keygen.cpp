@@ -7,6 +7,8 @@ namespace tauron::crypto {
 
 namespace {
 
+using PermutCtx = std::array< std::uint8_t, core::KEY_SIZE + core::NONCE_SIZE + sizeof( std::uint32_t ) >;
+
 constexpr std::array< std::size_t, core::KEY_SIZE > PERMUTATION = {
    0, 13, 26,  7, 20,  1, 14, 27,  8, 21,  2, 15, 28,  9, 22,  3,
   16, 29, 10, 23,  4, 17, 30, 11, 24,  5, 18, 31, 12, 19,  6, 25
