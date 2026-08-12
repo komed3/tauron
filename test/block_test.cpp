@@ -30,7 +30,7 @@ int main() {
   // 1. Normal block
   {
     const auto block = Block::build( 0x2B, payload );
-    const auto parsed = Block::parse( block, 32 );
+    const auto parsed = Block::parse( block, 255 );
     const bool passed = parsed.flag == BlockFlag::PASSED && parsed.id == 0x2B && parsed.payload == payload;
 
     std::cout << "Payload: ";
@@ -47,4 +47,6 @@ int main() {
     printResult( "Normal block roundtrip", passed );
     allPassed &= passed;
   }
+
+  return allPassed ? 0 : 1;
 }
