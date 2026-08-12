@@ -1,0 +1,33 @@
+Salt:       29 cf 81 d8 50 da ca 4c 44 6c b1 ca 5d ab 2c 81 
+Master key: 58 c3 80 dc a7 41 7f d3 ed 3c b5 80 ab 69 20 04 dd 3d 34 7c 63 ec db b4 07 ad 40 38 a1 44 cd a8 
+
+[PASS] Same salt + passphrase -> same key
+[PASS] Different salt -> different key
+[PASS] Different passphrase -> different key
+[PASS] Key not all zero
+
+
+Round  1:   15 73 0d aa d7 cf b6 04 f1 ae b1 e8 4f 22 52 21 8e 5a e5 21 64 0a 26 02 f9 c4 b5 13 39 25 e2 cf 
+Round  2:   d6 3a e7 86 96 d1 92 50 65 64 9b 75 de ea f7 e4 90 51 7f 30 27 fb a3 4b ee 6f b7 59 37 30 d0 a1 
+Round  3:   b9 44 d4 b0 f7 51 ea 0d 87 82 6b c3 94 8a 6b af 15 4b dc 9c b7 e9 cb f8 ac 43 84 2e 9f be 8e 1e 
+Round  4:   83 7b c9 da 58 44 52 7b cd 89 33 90 2d 3a 21 16 47 06 e0 24 61 1a b1 4b e8 e5 a4 2c 54 e2 37 0b 
+Round  5:   48 bf e7 20 3e ca 6d 01 27 c3 b0 db 3d cc fd fb a3 c9 5f 26 7e 51 d7 c3 cc 87 e3 13 88 fb 34 3d 
+Round  6:   9e 9b 15 f8 83 32 a1 61 ee a6 6a 90 e7 60 20 74 4a ab d1 d6 8f 2b e0 63 51 2c 99 3b f8 41 ea 58 
+Round  7:   dd 72 11 ce 73 6a 0d 01 12 d0 7a b9 31 b9 b5 4e 6c c4 c8 fb c4 00 b6 34 a8 46 32 77 58 1b a7 3a 
+Round  8:   3c a4 75 68 d3 63 c6 f0 8e 39 a7 6d 86 e7 70 b1 91 67 18 f4 9e af 04 ab 90 83 89 9a f5 c1 48 73 
+Round  9:   1d 33 18 cf 51 a7 eb 6c e1 3f 00 6d 85 90 e9 da 06 0e 4a 00 fa c7 7c 45 2d 66 19 64 73 34 bf 4f 
+Round 10:   59 c7 4a ca 28 19 ff 42 d8 1b 79 36 d0 05 85 47 0b fc e6 0f 1b 47 75 c2 63 ff c4 f0 6d 47 1e b5 
+Round 11:   72 0c 9c 53 9b 2e 72 01 a0 00 f4 5f 6d de 5b f0 f9 52 28 3e 58 1a 69 0a 63 e6 3e a6 68 15 ff 2f 
+Round 12:   f5 49 e7 bb f6 b7 d5 ed 94 9d 62 6b 9d e4 b2 ca 90 99 d1 5d 48 f2 e5 0e 5a 08 a9 e0 80 ae d9 2a 
+Round 13:   2d 00 75 d6 6e 88 ed c2 9b 24 00 a1 0c 3d 2a 3f c9 fd 51 82 33 e9 c6 de 23 97 8f 5a 56 39 7a 4a 
+Round 14:   d5 62 f1 a9 55 a7 5c 8c 8f 69 b9 ea f8 45 e5 af f5 ad 4a 7b 74 4f 01 37 66 0b 3a 77 06 9d 5c 60 
+Round 15:   eb 36 fd 78 69 4b 63 f4 26 0d 67 22 ea 35 78 74 1a 19 99 44 c8 cc d0 8c eb d7 db 87 b0 49 3b ca 
+Round 16:   7d 44 80 81 af c9 4e 45 3b 7a bb 8e 87 bf d2 5c d9 2b 3a e2 67 55 29 6e 05 35 cb e6 4c 32 18 3a 
+
+[PASS] Same nonce + master key -> same keys
+[PASS] Different nonce -> different keys
+[PASS] Different master key -> different keys
+[PASS] Different passphrase -> different keys
+[PASS] All round keys differ
+
+Result:     PASS
