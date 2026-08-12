@@ -5,6 +5,7 @@
 
 #include "tauron/crypto/keygen.hpp"
 #include "tauron/utils/random.hpp"
+#include "tauron/utils/word.hpp"
 
 using namespace tauron::crypto;
 using namespace tauron::utils;
@@ -76,11 +77,23 @@ int main() {
 
   bool allRoundsDiffer = true;
 
-  for ( std::size_t r = 0; r < 16; ++r ) {
+  for ( std::size_t r = 0; r < keys1.size(); ++r ) {
     allRoundsDiffer &=
       keys1[ r ] != keys2[ r ] && keys1[ r ] != keys3[ r ] && keys1[ r ] != keys4[ r ] &&
       keys2[ r ] != keys3[ r ] && keys2[ r ] != keys4[ r ] && keys3[ r ] != keys4[ r ];
   }
+
+  std::cout << "\n\n";
+
+  for ( std::size_t r = 0; r < keys1.size(); ++r ) {
+    std::cout << "Round " << std::setfill( ' ' ) << std::setw( 2 ) << ( r + 1 ) << ":   ";
+
+    Bytes bytes {};
+    fromWords( keys1[ r ], bytes );
+    printHex( bytes );
+  }
+
+  std::cout << "\n";
 
   printResult( "Same nonce + master key -> same keys", sameNonceSameKeys );
   printResult( "Different nonce -> different keys", diffNonceDiffKeys);
