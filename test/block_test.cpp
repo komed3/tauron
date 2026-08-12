@@ -149,5 +149,28 @@ int main() {
     allPassed &= passed;
   }
 
+  // 11. Payload > maximum
+  {
+    bool threw = false;
+    const std::vector< std::uint8_t > oversized( BLOCK_PAYLOAD + 1, 0xAA );
+
+    try { Block::build( 0x00, oversized ); }
+    catch ( const std::invalid_argument& ) { threw = true; }
+
+    printResult( "Payload > 28 bytes rejected", threw );
+    allPassed &= threw;
+  }
+
+  // 12. Random block with payload
+  {
+    bool threw = false;
+
+    try { Block::build( 0xFF, payload ); }
+    catch ( const std::invalid_argument& ) { threw = true; }
+
+    printResult( "Random block with payload rejected", threw );
+    allPassed &= threw;
+  }
+
   return allPassed ? 0 : 1;
 }
