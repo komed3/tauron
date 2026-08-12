@@ -120,6 +120,15 @@ RoundKeys KeyGen::expand( const Key& key, const utils::Nonce& nonce, std::size_t
 
   auto state = key;
 
+  for ( std::size_t round = 0; round < rounds; ++round ) {
+    state = transform( state, nonce, round );
+
+    utils::Words words {};
+    utils::toWords( state, words );
+
+    keys.push_back( words );
+  }
+
   return keys;
 }
 
