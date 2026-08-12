@@ -1,0 +1,6 @@
+Blocks:     10000000
+Rounds:     16
+Time:       2.32 s
+Blocks/s:   4302374.31
+Throughput: 131.30 MiB/s
+Sink:       61
