@@ -111,4 +111,11 @@ Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
   return key;
 }
 
+RoundKeys KeyGen::expand( const Key& key, const utils::Nonce& nonce, std::size_t rounds ) {
+  if ( rounds < core::MIN_ROUNDS || rounds > core::MAX_ROUNDS )
+    throw std::invalid_argument( "Rounds must be between 2 and 128" );
+
+  
+}
+
 }
