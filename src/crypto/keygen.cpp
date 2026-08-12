@@ -41,6 +41,15 @@ void crossMix( utils::Words& words ) noexcept {
   }
 }
 
+Key permut( const Key& bytes ) noexcept {
+  Key result {};
+
+  for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
+    result[ i ] = bytes[ PERMUTATION[ i ] ];
+
+  return result;
+}
+
 } // namespace
 
 Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
