@@ -13,6 +13,9 @@ Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
     crypto_pwhash_OPSLIMIT_MODERATE, crypto_pwhash_MEMLIMIT_MODERATE, crypto_pwhash_ALG_ARGON2ID13
   );
 
+  if ( result != 0 )
+    throw std::runtime_error( "Failed to derive master key" );
+
   return key;
 }
 
