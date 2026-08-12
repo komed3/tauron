@@ -19,6 +19,7 @@ add_library(
   include/tauron/crypto/keygen.hpp
   include/tauron/utils/checksum.hpp
   include/tauron/utils/random.hpp
+  include/tauron/utils/word.hpp
 
   src/core/block.cpp
   src/crypto/cipher.cpp
