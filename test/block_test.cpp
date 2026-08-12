@@ -4,10 +4,9 @@
 #include <span>
 #include <vector>
 
-#include "tauron/constants.hpp"
 #include "tauron/core/block.hpp"
+#include "tauron/core/constants.hpp"
 
-using namespace tauron;
 using namespace tauron::core;
 
 static void printResult( const char* name, const bool passed ) {
