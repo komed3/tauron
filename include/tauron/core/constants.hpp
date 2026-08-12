@@ -7,6 +7,8 @@ namespace tauron::core {
 inline constexpr std::size_t BLOCK_SIZE = 32;
 inline constexpr std::size_t BLOCK_PAYLOAD = 28;
 
+inline constexpr std::size_t WORDS = 8;
+
 inline constexpr std::size_t KEY_SIZE = 32;
 inline constexpr std::size_t NONCE_SIZE = 32;
 inline constexpr std::size_t SALT_SIZE = 16;
