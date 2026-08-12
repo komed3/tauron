@@ -40,4 +40,13 @@ std::uint64_t next( std::uint64_t state ) noexcept {
 
 } // namespace
 
+std::vector< std::size_t > Permutation::generate(
+  const std::span< const std::uint8_t > context,
+  const std::size_t size
+) {
+  std::vector< std::size_t > result( size );
+
+  return result;
+}
+
 }
