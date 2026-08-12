@@ -115,7 +115,12 @@ RoundKeys KeyGen::expand( const Key& key, const utils::Nonce& nonce, std::size_t
   if ( rounds < core::MIN_ROUNDS || rounds > core::MAX_ROUNDS )
     throw std::invalid_argument( "Rounds must be between 2 and 128" );
 
-  
+  RoundKeys keys;
+  keys.reserve( rounds );
+
+  auto state = key;
+
+  return keys;
 }
 
 }
