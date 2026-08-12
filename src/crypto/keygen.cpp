@@ -74,6 +74,27 @@ Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   return result;
 }
 
+Key transform( const Key& key, const utils::Nonce& nonce, std::size_t round ) noexcept {
+  Key bytes {};
+  substituteBytes( key, nonce, bytes );
+
+  utils::Words words {};
+  utils::toWords( bytes, words );
+
+  localMix( words );
+  crossMix( words );
+
+  utils::fromWords( words, bytes );
+
+  auto result = permut( bytes );
+  const auto constant = deriveConstant( result, round );
+
+  for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
+    result[ i ] ^= constant[ i ];
+
+  return result;
+}
+
 } // namespace
 
 Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
