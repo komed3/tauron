@@ -18,6 +18,7 @@ add_library(
   include/tauron/crypto/cipher.hpp
   include/tauron/crypto/keygen.hpp
   include/tauron/utils/checksum.hpp
+  include/tauron/utils/permutation.hpp
   include/tauron/utils/random.hpp
   include/tauron/utils/word.hpp
 
@@ -25,6 +26,7 @@ add_library(
   src/crypto/cipher.cpp
   src/crypto/keygen.cpp
   src/utils/checksum.cpp
+  src/utils/permutation.cpp
   src/utils/random.cpp
 )
 
