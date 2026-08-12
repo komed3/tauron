@@ -48,5 +48,9 @@ int main() {
   printResult( "Different passphrase -> different key", diffPassphraseDiffKey );
   printResult( "Key not all zero", notAllZero );
 
+  std::cout << "\nResult:  "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << "\n";
+
   return allPassed ? 0 : 1;
 }
