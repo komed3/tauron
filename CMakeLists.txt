@@ -15,10 +15,14 @@ add_library(
 
   include/tauron/constants.hpp
   include/tauron/core/block.hpp
+  include/tauron/crypto/cipher.hpp
+  include/tauron/crypto/keygen.hpp
   include/tauron/utils/checksum.hpp
   include/tauron/utils/random.hpp
 
   src/core/block.cpp
+  src/crypto/cipher.cpp
+  src/crypto/keygen.cpp
   src/utils/checksum.cpp
   src/utils/random.cpp
 )
