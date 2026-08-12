@@ -4,8 +4,10 @@
 #include <span>
 #include <vector>
 
+#include "tauron/constants.hpp"
 #include "tauron/core/block.hpp"
 
+using namespace tauron;
 using namespace tauron::core;
 
 static void printResult( const char* name, const bool passed ) {
@@ -45,6 +47,28 @@ int main() {
     std::cout << "\n";
 
     printResult( "Normal block roundtrip", passed );
+    allPassed &= passed;
+  }
+
+  // 2. Empty payload
+  {
+    const std::vector< std::uint8_t > empty;
+    const auto block = Block::build( 0x09, empty );
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::PASSED && parsed.id == 0x09 && parsed.payload.empty();
+
+    printResult( "Empty payload", passed );
+    allPassed &= passed;
+  }
+
+  // 3. Maximum payload
+  {
+    const std::vector< std::uint8_t > maximum( BLOCK_PAYLOAD, 0xAA );
+    const auto block = Block::build( 0x1F, maximum );
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::PASSED && parsed.id == 0x1F && parsed.payload == maximum;
+
+    printResult( "Maximum payload", passed );
     allPassed &= passed;
   }
 
