@@ -33,7 +33,7 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   return block;
 }
 
-ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) noexcept {
+ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {
   ParsedBlock result { .id = block[ 0 ], .payload = {}, .flag = BlockFlag::PASSED };
   const auto id = block[ 0 ];
   const auto length = block[ 1 ];
