@@ -1,0 +1,6 @@
+Key sets:   1000000
+Rounds:     16
+Time:       8.19 s
+Key sets/s: 122074.69
+Throughput: 59.61 MiB/s
+Sink:       203
