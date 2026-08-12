@@ -113,5 +113,41 @@ int main() {
     allPassed &= passed;
   }
 
+  // 8. Invalid length
+  {
+    auto block = Block::build( 0x00, payload );
+    block[ 1 ] = BLOCK_PAYLOAD + 1;
+
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::INVALID_LENGTH;
+
+    printResult( "Invalid payload length", passed );
+    allPassed &= passed;
+  }
+
+  // 9. Invalid checksum
+  {
+    auto block = Block::build( 0x00, payload );
+    block[ 2 ] ^= 0x01;
+
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::INVALID_CHECKSUM;
+
+    printResult( "Modified payload", passed );
+    allPassed &= passed;
+  }
+
+  // 10. Invalid checksum in random padding
+  {
+    auto block = Block::build( 0x00, payload );
+    block[ 2 + payload.size() ] ^= 0x01;
+
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::INVALID_CHECKSUM;
+
+    printResult( "Modified random padding", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
