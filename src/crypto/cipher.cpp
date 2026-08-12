@@ -155,6 +155,17 @@ core::DataBlock Cipher::encrypt( const core::DataBlock& block, const RoundKeys& 
   return result;
 }
 
-core::DataBlock Cipher::decrypt( const core::DataBlock& block, const RoundKeys& keys ) noexcept {}
+core::DataBlock Cipher::decrypt( const core::DataBlock& block, const RoundKeys& keys ) noexcept {
+  utils::Words state {};
+  utils::toWords( block, state );
+
+  for ( std::size_t round = keys.size(); round-- > 0; )
+    inverseTransform( state, keys[ round ], round );
+
+  core::DataBlock result {};
+  utils::fromWords( state, result );
+
+  return result;
+}
 
 }
