@@ -48,4 +48,15 @@ int main() {
 
   const auto encrypted1 = Cipher::encrypt( block, keys1 );
   const auto decrypted1 = Cipher::decrypt( encrypted1, keys1 );
+  const auto encrypted2 = Cipher::encrypt( block, keys2 );
+
+  std::cout << "Encrypted:  ";
+  printHex( encrypted1 );
+
+  std::cout << "Decrypted:  ";
+  printHex( decrypted1 );
+
+  const bool encrypted = encrypted1 != block;
+  const bool decrypted = decrypted1 == block;
+  const bool nonceAffectsCiphertext = encrypted1 != encrypted2;
 }
