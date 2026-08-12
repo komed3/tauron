@@ -13,8 +13,8 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 add_library(
   tauron
 
-  include/tauron/constants.hpp
   include/tauron/core/block.hpp
+  include/tauron/core/constants.hpp
   include/tauron/crypto/cipher.hpp
   include/tauron/crypto/keygen.hpp
   include/tauron/utils/checksum.hpp
