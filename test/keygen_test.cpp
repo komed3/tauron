@@ -43,12 +43,20 @@ int main() {
 
   allPassed &= sameSaltSameKey && diffSaltDiffKey && diffPassphraseDiffKey && notAllZero;
 
+  std::cout << "Salt:       ";
+  printHex( salt1 );
+
+  std::cout << "Master key: ";
+  printHex( key1 );
+
+  std::cout << "\n";
+
   printResult( "Same salt + passphrase -> same key", sameSaltSameKey );
   printResult( "Different salt -> different key", diffSaltDiffKey );
   printResult( "Different passphrase -> different key", diffPassphraseDiffKey );
   printResult( "Key not all zero", notAllZero );
 
-  std::cout << "\nResult:  "
+  std::cout << "\nResult:     "
             << ( allPassed ? "PASS" : "FAIL" )
             << "\n";
 
