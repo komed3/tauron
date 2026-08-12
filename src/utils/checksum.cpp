@@ -4,7 +4,7 @@
 
 namespace tauron::utils {
 
-std::uint16_t Checksum::calculate( std::span< const std::uint8_t > payload ) {
+std::uint16_t Checksum::calculate( std::span< const std::uint8_t > payload ) noexcept {
   std::uint16_t checksum = 0xFFFF;
 
   for ( const auto byte : payload ) {
