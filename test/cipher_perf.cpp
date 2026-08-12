@@ -4,10 +4,12 @@
 #include <iostream>
 #include <vector>
 
+#include "tauron/core/block.hpp"
 #include "tauron/crypto/cipher.hpp"
 #include "tauron/crypto/keygen.hpp"
 #include "tauron/utils/random.hpp"
 
+using namespace tauron::core;
 using namespace tauron::crypto;
 using namespace tauron::utils;
 
@@ -24,4 +26,23 @@ int main() {
 
   const auto nonce = Random::nonce();
   const auto keys = KeyGen::expand( key, nonce, ROUNDS );
+
+  std::vector< DataBlock > blocks( BLOCKS );
+
+  for ( std::size_t i = 0; i < BLOCKS; ++i )
+    for ( std::size_t j = 0; j < BLOCK_SIZE; ++j )
+      blocks[ i ][ j ] = static_cast< std::uint8_t >( i + j );
+
+  volatile std::uint8_t sink = 0;
+  const auto start = Clock::now();
+
+  for ( auto& block : blocks ) {
+    block = Cipher::encrypt( block, keys );
+    sink ^= block[ 0 ];
+  }
+
+  const auto end = Clock::now();
+  const auto elapsed = std::chrono::duration_cast< std::chrono::microseconds >( end - start );
+
+  return 0;
 }
