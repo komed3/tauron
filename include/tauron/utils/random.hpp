@@ -6,12 +6,12 @@
 #include <span>
 #include <vector>
 
-#include "tauron/constants.hpp"
+#include "tauron/core/constants.hpp"
 
 namespace tauron::utils {
 
-using Nonce = std::array< std::uint8_t, NONCE_SIZE >;
-using Salt = std::array< std::uint8_t, SALT_SIZE >;
+using Nonce = std::array< std::uint8_t, core::NONCE_SIZE >;
+using Salt = std::array< std::uint8_t, core::SALT_SIZE >;
 
 class Random {
 public:

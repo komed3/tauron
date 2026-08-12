@@ -2,7 +2,6 @@
 
 #include <stdexcept>
 
-#include "tauron/constants.hpp"
 #include "tauron/utils/checksum.hpp"
 #include "tauron/utils/random.hpp"
 

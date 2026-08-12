@@ -5,7 +5,7 @@
 #include <span>
 #include <vector>
 
-#include "tauron/constants.hpp"
+#include "tauron/core/constants.hpp"
 
 namespace tauron::core {
 
