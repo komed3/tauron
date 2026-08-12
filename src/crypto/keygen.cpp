@@ -3,6 +3,8 @@
 #include <sodium.h>
 #include <stdexcept>
 
+#include "tauron/utils/permutation.hpp"
+
 namespace tauron::crypto {
 
 namespace {
@@ -99,13 +101,16 @@ Key transform( const Key& key, const utils::Nonce& nonce, std::size_t round ) no
 
   utils::fromWords( words, bytes );
 
-  /*auto result = permut( bytes );
+  auto context = derivePermutCtx( bytes, nonce, round );
+  auto permutation = utils::Permutation::generate( context, core::KEY_SIZE );
+
+  auto result = permut( bytes, permutation );
   const auto constant = deriveConstant( result, round );
 
   for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
-    result[ i ] ^= constant[ i ];*/
+    result[ i ] ^= constant[ i ];
 
-  //return result;
+  return result;
 }
 
 } // namespace
