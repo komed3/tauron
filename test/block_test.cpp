@@ -72,5 +72,46 @@ int main() {
     allPassed &= passed;
   }
 
+  // 4. Random block
+  {
+    const std::vector< std::uint8_t > empty;
+    const auto block = Block::build( 0xFF, empty );
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::PASSED && parsed.id == 0xFF && parsed.payload.empty();
+
+    printResult( "Random block", passed );
+    allPassed &= passed;
+  }
+
+  // 5. ID at sequence boundary
+  {
+    const auto block = Block::build( 0x1F, payload );
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::PASSED;
+
+    printResult( "Maximum valid ID for 32-block sequence", passed );
+    allPassed &= passed;
+  }
+
+  // 6. ID outside sequence
+  {
+    const auto block = Block::build( 0x20, payload );
+    const auto parsed = Block::parse( block, 32 );
+    const bool passed = parsed.flag == BlockFlag::INVALID_ID;
+
+    printResult( "ID outside sequence", passed );
+    allPassed &= passed;
+  }
+
+  // 7. Sequence size 255
+  {
+    const auto block = Block::build( 0xFE, payload );
+    const auto parsed = Block::parse( block, 255 );
+    const bool passed = parsed.flag == BlockFlag::PASSED && parsed.id == 0xFE;
+
+    printResult( "Maximum sequence size", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
