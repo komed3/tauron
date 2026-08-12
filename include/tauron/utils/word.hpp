@@ -24,4 +24,16 @@ inline void toWords( const Bytes& bytes, Words& words ) noexcept {
     words[ i ] = toWord( bytes, i * 4 );
 }
 
+inline constexpr void fromWord( std::uint32_t word, Bytes& bytes, std::size_t offset ) noexcept {
+  bytes[ offset ] = static_cast< std::uint8_t >( word );
+  bytes[ offset + 1 ] = static_cast< std::uint8_t >( word >>  8 );
+  bytes[ offset + 2 ] = static_cast< std::uint8_t >( word >> 16 );
+  bytes[ offset + 3 ] = static_cast< std::uint8_t >( word >> 24 );
+}
+
+inline void fromWords( const Words& words, Bytes& bytes ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i )
+    fromWord( words[ i ], bytes, i * 4 );
+}
+
 }
