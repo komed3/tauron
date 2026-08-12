@@ -25,6 +25,13 @@ void substituteBytes( const Key& key, const utils::Nonce& nonce, Key& bytes ) no
     bytes[ i ] = substitute( key[ i ] ^ nonce[ i ] );
 }
 
+void localMix( utils::Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); i += 2 ) {
+    words[ i ] += std::rotl( words[ i + 1 ], 5 );
+    words[ i + 1 ] ^= std::rotl( words[ i ], 13 );
+  }
+}
+
 } // namespace
 
 Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
