@@ -1,7 +1,6 @@
 #include "tauron/utils/permutation.hpp"
 
 #include <algorithm>
-#include <limits>
 
 namespace tauron::utils {
 
@@ -33,17 +32,14 @@ std::uint64_t seed( std::span< const std::uint8_t > context ) noexcept {
   return mix( state ^ context.size() );
 }
 
-std::uint64_t next( std::uint64_t state ) noexcept {
+std::uint64_t next( std::uint64_t& state ) noexcept {
   state += SEED_CONSTANT;
   return mix( state );
 }
 
 } // namespace
 
-std::vector< std::size_t > Permutation::generate(
-  const std::span< const std::uint8_t > context,
-  const std::size_t size
-) {
+std::vector< std::size_t > Permutation::generate( std::span< const std::uint8_t > context, std::size_t size ) {
   std::vector< std::size_t > result( size );
 
   for ( std::size_t i = 0; i < size; ++i )
