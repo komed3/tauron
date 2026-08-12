@@ -9,7 +9,7 @@ namespace tauron::utils {
 
 class Permutation {
 public:
-  static std::vector< std::size_t > generate( std::span< const std::uint8_t> context, std::size_t size );
+  static std::vector< std::size_t > generate( std::span< const std::uint8_t > context, std::size_t size );
 };
 
 }
