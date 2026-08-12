@@ -46,6 +46,14 @@ std::vector< std::size_t > Permutation::generate(
 ) {
   std::vector< std::size_t > result( size );
 
+  for ( std::size_t i = 0; i < size; ++i )
+    result[ i ] = i;
+
+  auto state = seed( context );
+
+  for ( std::size_t i = size; i > 1; --i )
+    std::swap( result[ i - 1 ], result[ next( state ) % i ] );
+
   return result;
 }
 
