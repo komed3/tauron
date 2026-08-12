@@ -74,6 +74,24 @@ void inverseNonlinear( utils::Words& words, std::size_t round ) noexcept {
     words[ i ] *= inverse32( multiplier( round, i ) );
 }
 
+void diffuse( utils::Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    const auto next = ( i + 1 ) & 7;
+
+    words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
+    words[ next ] += std::rotl( words[ i ], diffusionRotationB( round, i ) );
+  }
+}
+
+void inverseDiffuse( utils::Words& words, std::size_t round ) noexcept {
+  for ( std::size_t i = words.size(); i-- > 0; ) {
+    const auto next = ( i + 1 ) & 7;
+
+    words[ next ] -= std::rotl( words[ i ], diffusionRotationB( round, i ) );
+    words[ i ] ^= std::rotl( words[ next ], diffusionRotationA( round, i ) );
+  }
+}
+
 } // namespace
 
 core::Block Cipher::encrypt( const core::Block& block, const RoundKeys& keys ) noexcept {}
