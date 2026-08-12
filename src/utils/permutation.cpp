@@ -6,9 +6,9 @@ namespace tauron::utils {
 
 namespace {
 
-inline constexpr std::uint64_t MIX_CONSTANT_A = 0xbf58476d1ce4e5b9ULL;
-inline constexpr std::uint64_t MIX_CONSTANT_B = 0x94d049bb133111ebULL;
-inline constexpr std::uint64_t SEED_CONSTANT =  0x9e3779b97f4a7c15ULL;
+constexpr std::uint64_t MIX_CONSTANT_A = 0xbf58476d1ce4e5b9ULL;
+constexpr std::uint64_t MIX_CONSTANT_B = 0x94d049bb133111ebULL;
+constexpr std::uint64_t SEED_CONSTANT =  0x9e3779b97f4a7c15ULL;
 
 std::uint64_t mix( std::uint64_t value ) noexcept {
   value ^= value >> 30;
