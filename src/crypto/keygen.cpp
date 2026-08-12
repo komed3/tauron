@@ -32,6 +32,15 @@ void localMix( utils::Words& words ) noexcept {
   }
 }
 
+void crossMix( utils::Words& words ) noexcept {
+  for ( std::size_t i = 0; i < words.size(); ++i ) {
+    const auto other = words[ ( i + 3 ) & 7 ];
+    const auto rotation = static_cast< unsigned >( ( i * 7 + 3 ) & 31 );
+
+    words[ i ] ^= std::rotl( other, rotation );
+  }
+}
+
 } // namespace
 
 Key KeyGen::derive( std::string_view passphrase, const utils::Salt& salt ) {
