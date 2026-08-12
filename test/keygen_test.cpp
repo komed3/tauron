@@ -76,11 +76,15 @@ int main() {
 
   bool allRoundsDiff = true;
 
-  for ( std::size_t r = 1; r <= 16; ++r ) {
+  for ( std::size_t r = 0; r < 16; ++r ) {
     allRoundsDiff &=
       keys1[ r ] != keys2[ r ] && keys1[ r ] != keys3[ r ] && keys1[ r ] != keys4[ r ] &&
       keys2[ r ] != keys3[ r ] && keys2[ r ] != keys4[ r ] && keys3[ r ] != keys4[ r ];
   }
+
+  allPassed &=
+    sameNonceSameKeys && diffNonceDiffKeys && diffMasterDiffKeys &&
+    diffPassphraseDiffKeys && allRoundsDiff;
 
   std::cout << "\nResult:     "
             << ( allPassed ? "PASS" : "FAIL" )
