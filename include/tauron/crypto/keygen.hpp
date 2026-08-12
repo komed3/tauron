@@ -17,6 +17,7 @@ using RoundKeys = std::vector< utils::Words >;
 class KeyGen {
 public:
   static Key deriveMaster( std::string_view passphrase, const utils::Salt& salt );
+  static RoundKeys expand( const Key& key, const utils::Nonce& nonce, std::size_t rounds );
 };
 
 }
