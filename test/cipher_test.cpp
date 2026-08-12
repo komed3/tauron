@@ -50,13 +50,19 @@ int main() {
   const auto decrypted1 = Cipher::decrypt( encrypted1, keys1 );
   const auto encrypted2 = Cipher::encrypt( block, keys2 );
 
+  const bool encrypted = encrypted1 != block;
+  const bool decrypted = decrypted1 == block;
+  const bool nonceAffectsCiphertext = encrypted1 != encrypted2;
+
   std::cout << "Encrypted:  ";
   printHex( encrypted1 );
 
   std::cout << "Decrypted:  ";
   printHex( decrypted1 );
 
-  const bool encrypted = encrypted1 != block;
-  const bool decrypted = decrypted1 == block;
-  const bool nonceAffectsCiphertext = encrypted1 != encrypted2;
+  std::cout << "\n";
+
+  printResult( "Encrypted differs plaintext", encrypted );
+  printResult( "Decrypt restores block", decrypted );
+  printResult( "Nonce affects cipher text", nonceAffectsCiphertext );
 }
