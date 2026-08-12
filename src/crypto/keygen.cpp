@@ -9,11 +9,6 @@ namespace {
 
 using PermutCtx = std::array< std::uint8_t, core::KEY_SIZE + core::NONCE_SIZE + sizeof( std::uint32_t ) >;
 
-constexpr std::array< std::size_t, core::KEY_SIZE > PERMUTATION = {
-   0, 13, 26,  7, 20,  1, 14, 27,  8, 21,  2, 15, 28,  9, 22,  3,
-  16, 29, 10, 23,  4, 17, 30, 11, 24,  5, 18, 31, 12, 19,  6, 25
-};
-
 constexpr std::uint32_t NONLINEAR_CONSTANT_A = 0x85ebca6b;
 constexpr std::uint32_t NONLINEAR_CONSTANT_B = 0xc2b2ae35;
 constexpr std::uint32_t ROUND_CONSTANT =       0x9e3779b9;
@@ -43,14 +38,30 @@ void crossMix( utils::Words& words ) noexcept {
   }
 }
 
-Key permut( const Key& bytes ) noexcept {
+PermutCtx derivePermutCtx( const Key& key, const utils::Nonce& nonce, std::size_t round ) noexcept {
+  PermutCtx context {};
+
+  std::copy( key.begin(), key.end(), context.begin() );
+  std::copy( nonce.begin(), nonce.end(), context.begin() + key.size() );
+
+  const auto offset = key.size() + nonce.size();
+
+  context[ offset ] = static_cast< std::uint8_t >( round );
+  context[ offset + 1 ] = static_cast< std::uint8_t >( round >>  8 );
+  context[ offset + 2 ] = static_cast< std::uint8_t >( round >> 16 );
+  context[ offset + 3 ] = static_cast< std::uint8_t >( round >> 24 );
+
+  return context;
+}
+
+/*Key permut( const Key& bytes ) noexcept {
   Key result {};
 
   for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
     result[ i ] = bytes[ PERMUTATION[ i ] ];
 
   return result;
-}
+}*/
 
 Key deriveConstant( const Key& bytes, std::size_t round ) noexcept {
   auto value = ROUND_CONSTANT ^static_cast< std::uint32_t >( round );
@@ -88,13 +99,13 @@ Key transform( const Key& key, const utils::Nonce& nonce, std::size_t round ) no
 
   utils::fromWords( words, bytes );
 
-  auto result = permut( bytes );
+  /*auto result = permut( bytes );
   const auto constant = deriveConstant( result, round );
 
   for ( std::size_t i = 0; i < core::KEY_SIZE; ++i )
-    result[ i ] ^= constant[ i ];
+    result[ i ] ^= constant[ i ];*/
 
-  return result;
+  //return result;
 }
 
 } // namespace
