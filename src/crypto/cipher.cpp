@@ -142,8 +142,19 @@ void inverseTransform( utils::Words& words, const utils::Words& key, std::size_t
 
 } // namespace
 
-core::Block Cipher::encrypt( const core::Block& block, const RoundKeys& keys ) noexcept {}
+core::DataBlock Cipher::encrypt( const core::DataBlock& block, const RoundKeys& keys ) noexcept {
+  utils::Words state {};
+  utils::toWords( block, state );
 
-core::Block Cipher::decrypt( const core::Block& block, const RoundKeys& keys ) noexcept {}
+  for ( std::size_t round = 0; round < keys.size(); ++round )
+    transform( state, keys[ round ], round );
+
+  core::DataBlock result {};
+  utils::fromWords( state, result );
+
+  return result;
+}
+
+core::DataBlock Cipher::decrypt( const core::DataBlock& block, const RoundKeys& keys ) noexcept {}
 
 }
