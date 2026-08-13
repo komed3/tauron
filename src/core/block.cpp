@@ -11,9 +11,6 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   if ( payload.size() > BLOCK_PAYLOAD )
     throw std::invalid_argument( "Block payload exceeds maximum bytes" );
 
-  if ( id == 0xFF && ! payload.empty() )
-    throw std::invalid_argument( "Random block cannot contain payload" );
-
   DataBlock block {};
   block[ 0 ] = id;
   block[ 1 ] = static_cast< std::uint8_t >( payload.size() );
@@ -33,15 +30,10 @@ DataBlock Block::build( const std::uint8_t id, const std::span< const std::uint8
   return block;
 }
 
-ParsedBlock Block::parse( DataBlock block, std::uint8_t sequenceSize ) {
+ParsedBlock Block::parse( DataBlock block ) {
   ParsedBlock result { .id = block[ 0 ], .payload = {}, .flag = BlockFlag::PASSED };
   const auto id = block[ 0 ];
   const auto length = block[ 1 ];
-
-  if ( id != 0xFF && id >= sequenceSize ) {
-    result.flag = BlockFlag::INVALID_ID;
-    return result;
-  }
 
   if ( length > BLOCK_PAYLOAD ) {
     result.flag = BlockFlag::INVALID_LENGTH;

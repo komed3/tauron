@@ -13,7 +13,6 @@ using DataBlock = std::array< std::uint8_t, BLOCK_SIZE >;
 
 enum class BlockFlag {
   PASSED,
-  INVALID_ID,
   INVALID_CHECKSUM,
   INVALID_LENGTH
 };
@@ -27,7 +26,7 @@ struct ParsedBlock {
 class Block {
 public:
   static DataBlock build( const std::uint8_t id, const std::span< const std::uint8_t > payload );
-  static ParsedBlock parse( DataBlock block, std::uint8_t sequenceSize );
+  static ParsedBlock parse( DataBlock block );
 };
 
 }
