@@ -14,6 +14,7 @@ add_library(
   tauron
 
   include/tauron/core/block.hpp
+  include/tauron/core/sequence.hpp
   include/tauron/core/constants.hpp
   include/tauron/crypto/cipher.hpp
   include/tauron/crypto/keygen.hpp
@@ -23,6 +24,7 @@ add_library(
   include/tauron/utils/word.hpp
 
   src/core/block.cpp
+  src/core/sequence.cpp
   src/crypto/cipher.cpp
   src/crypto/keygen.cpp
   src/utils/checksum.cpp
