@@ -108,4 +108,9 @@ int main() {
     blocks[ i ] = Cipher::decrypt( block, keys );
     printHex( blocks[ i ] );
   }
+
+  // Parse sequence
+
+  std::vector< std::uint8_t > message( count * BLOCK_PAYLOAD );
+  const auto size = Sequence::parse( blocks, message );
 }
