@@ -55,7 +55,7 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
     if ( result.flag != BlockFlag::PASSED )
       throw std::invalid_argument( "Invalid block" );
 
-    if ( result.id >= block.size() )
+    if ( result.id >= blocks.size() )
       throw std::invalid_argument( "Invalid block ID" );
 
     if ( seen[ result.id ] )
