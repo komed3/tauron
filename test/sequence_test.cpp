@@ -1,5 +1,14 @@
+#include <algorithm>
+#include <array>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include "tauron/core/block.hpp"
+#include "tauron/core/constants.hpp"
+#include "tauron/core/sequence.hpp"
 
 static void printResult( const char* name, const bool passed ) {
   std::cout << "[" << ( passed ? "PASS" : "FAIL" ) << "] " << name << '\n';
