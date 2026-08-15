@@ -60,6 +60,9 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
 
     if ( seen[ result.id ] )
       throw std::invalid_argument( "Duplicate block ID" );
+
+    seen[ result.id ] = true;
+    parsed[ result.id ] = std::move( result );
   }
 }
 
