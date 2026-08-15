@@ -10,6 +10,8 @@
 #include "tauron/core/constants.hpp"
 #include "tauron/core/sequence.hpp"
 
+using namespace tauron::core;
+
 static void printResult( const char* name, const bool passed ) {
   std::cout << "[" << ( passed ? "PASS" : "FAIL" ) << "] " << name << '\n';
 }
@@ -29,6 +31,25 @@ static bool throws( const auto& function ) {
   } catch ( const std::exception& ) {
     return true;
   }
+}
+
+static bool validIds( const SequenceResult& result ) {
+  std::array< bool, SEQ_BLOCKS > seen {};
+
+  for ( std::size_t i = 0; i < result.count; ++i ) {
+    const auto parsed = Block::parse( result.blocks[ i ] );
+
+    if ( parsed.flag != BlockFlag::PASSED ) return false;
+    if ( parsed.id >= result.count ) return false;
+    if ( seen[ parsed.id ] ) return false;
+
+    seen[ parsed.id ] = true;
+  }
+
+  for ( std::size_t i = 0; i < result.count; ++i )
+    if ( ! seen[ i ] ) return false;
+
+  return true;
 }
 
 int main() {
