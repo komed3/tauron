@@ -144,5 +144,28 @@ int main() {
 
   allPassed &= fullCount && fullIds && fullRoundtrip;
 
+  // 6. Payload exceeding sequence capacity
+
+  const std::vector< std::uint8_t > oversized( SEQ_BLOCKS * BLOCK_PAYLOAD + 1, 0xAA );
+  const bool oversizedThrows = throws( [&] { Sequence::build( oversized, true ); } );
+
+  printResult( "Payload exceeding maximum size -> throw", oversizedThrows );
+
+  allPassed &= oversizedThrows;
+
+  // 7. Invalid block ID
+  {
+    const auto result = Sequence::build( small, true );
+    auto blocks = std::array< DataBlock, 1 > { result.blocks[ 0 ] };
+    blocks[ 0 ] = Block::build( 1, small );
+
+    std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+    const bool invalidIdThrows = throws( [&] { Sequence::parse( blocks, output ); } );
+
+    printResult( "Invalid block ID -> throw", invalidIdThrows );
+
+    allPassed &= invalidIdThrows;
+  }
+
   return allPassed ? 0 : 1;
 }
