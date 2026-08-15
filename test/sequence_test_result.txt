@@ -1,0 +1,32 @@
+Sequence example:
+Tauron sequence test payload: this text is intentionally long enough to produce several blocks.
+
+00 1c 59 84 54 61 75 72 6f 6e 20 73 65 71 75 65 6e 63 65 20 74 65 73 74 20 70 61 79 6c 6f 61 64 
+03 0b 1b b7 72 61 6c 20 62 6c 6f 63 6b 73 2e 7d 54 58 b3 c3 21 1c 37 d7 68 e1 49 cf 08 5e 25 3e 
+01 1c 97 a8 3a 20 74 68 69 73 20 74 65 78 74 20 69 73 20 69 6e 74 65 6e 74 69 6f 6e 61 6c 6c 79 
+02 1c ca 65 20 6c 6f 6e 67 20 65 6e 6f 75 67 68 20 74 6f 20 70 72 6f 64 75 63 65 20 73 65 76 65 
+
+[PASS] Sequence example roundtrip
+[PASS] Empty EOF sequence -> zero blocks
+[PASS] Empty EOF sequence -> EOF preserved
+[PASS] 1 byte EOF payload -> one block
+[PASS] Small sequence -> valid IDs
+[PASS] Small sequence roundtrip
+[PASS] Exactly one block payload -> one block
+[PASS] Payload exceeding one block -> two blocks
+[PASS] Exact block boundary roundtrip
+[PASS] 29-byte payload roundtrip
+[PASS] Maximum EOF payload -> 256 blocks
+[PASS] Maximum sequence -> valid IDs
+[PASS] Maximum sequence roundtrip
+[PASS] Non-EOF sequence -> always 256 blocks
+[PASS] Non-EOF sequence -> valid IDs
+[PASS] Non-EOF sequence roundtrip
+[PASS] Payload exceeding maximum size -> throw
+[PASS] Invalid block ID -> throw
+[PASS] Duplicate / missing block ID -> throw
+[PASS] Invalid block checksum -> throw
+[PASS] Invalid block length -> throw
+[PASS] Output buffer too small -> throw
+
+Result:     PASS
