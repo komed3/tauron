@@ -74,30 +74,18 @@ int main() {
     true
   );
 
-  std::cout << "Sequence test payload:\n";
+  std::cout << "Sequence example:\n";
   std::cout << text << "\n\n";
 
-  std::cout << "Blocks: " << textResult.count << "\n\n";
-
-  for ( std::size_t i = 0; i < textResult.count; ++i ) {
-    const auto parsed = Block::parse( textResult.blocks[ i ] );
-
-    std::cout
-      << "Block " << std::setfill( ' ' ) << std::setw( 2 ) << i
-      << " | ID: " << std::setw( 3 )
-      << static_cast< unsigned int >( parsed.id )
-      << " | Length: " << std::setw( 2 )
-      << parsed.payload.size()
-      << " | Data: ";
-
+  for ( std::size_t i = 0; i < textResult.count; ++i )
     printHex( textResult.blocks[ i ] );
-  }
 
-  std::array< std::uint8_t, SEQ_BLOCKS * BLOCK_PAYLOAD > textOutput {};
+  std::cout << "\n";
+
+  std::array<std::uint8_t, SEQ_BLOCKS * BLOCK_PAYLOAD> textOutput {};
   const auto textSize = Sequence::parse( std::span( textResult.blocks ).first( textResult.count ), textOutput );
   const bool textRoundtrip = textSize == text.size() && std::equal( text.begin(), text.end(), textOutput.begin() );
 
-  std::cout << "\n";
   printResult( "Sequence example roundtrip", textRoundtrip );
 
   bool allPassed = textRoundtrip;
