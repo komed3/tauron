@@ -167,5 +167,22 @@ int main() {
     allPassed &= invalidIdThrows;
   }
 
+  // 8. Duplicate / missing block ID
+  {
+    const std::vector< std::uint8_t > data( BLOCK_PAYLOAD + 1, 0x66 );
+    const auto result = Sequence::build( data, true );
+
+    std::array< DataBlock, 2 > blocks { result.blocks[ 0 ], result.blocks[ 1 ] };
+    const auto first = Block::parse( blocks[ 0 ] );
+    blocks[ 1 ] = Block::build( first.id, std::span< const std::uint8_t >( data ).subspan( BLOCK_PAYLOAD, 1 ) );
+
+    std::array< std::uint8_t, BLOCK_PAYLOAD * 2 > output {};
+    const bool duplicateIdThrows = throws( [&] { Sequence::parse( blocks, output ); } );
+
+    printResult( "Duplicate / missing block ID -> throw", duplicateIdThrows );
+
+    allPassed &= duplicateIdThrows;
+  }
+
   return allPassed ? 0 : 1;
 }
