@@ -160,6 +160,7 @@ int main() {
     blocks[ 0 ] = Block::build( 1, small );
 
     std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+
     const bool invalidIdThrows = throws( [&] { Sequence::parse( blocks, output ); } );
 
     printResult( "Invalid block ID -> throw", invalidIdThrows );
@@ -175,8 +176,8 @@ int main() {
     std::array< DataBlock, 2 > blocks { result.blocks[ 0 ], result.blocks[ 1 ] };
     const auto first = Block::parse( blocks[ 0 ] );
     blocks[ 1 ] = Block::build( first.id, std::span< const std::uint8_t >( data ).subspan( BLOCK_PAYLOAD, 1 ) );
-
     std::array< std::uint8_t, BLOCK_PAYLOAD * 2 > output {};
+
     const bool duplicateIdThrows = throws( [&] { Sequence::parse( blocks, output ); } );
 
     printResult( "Duplicate / missing block ID -> throw", duplicateIdThrows );
@@ -191,8 +192,8 @@ int main() {
     block[ 4 ] ^= 0x01;
 
     const std::array< DataBlock, 1 > blocks { block };
-
     std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+
     const bool invalidChecksumThrows = throws( [&] { Sequence::parse( blocks, output ); } );
 
     printResult( "Invalid block checksum -> throw", invalidChecksumThrows );
@@ -207,13 +208,26 @@ int main() {
     block[ 1 ] = BLOCK_PAYLOAD + 1;
 
     const std::array< DataBlock, 1 > blocks { block };
-
     std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+
     const bool invalidLengthThrows = throws( [&] { Sequence::parse( blocks, output ); } );
 
     printResult( "Invalid block length -> throw", invalidLengthThrows );
 
     allPassed &= invalidLengthThrows;
+  }
+
+  // 11. Output buffer too small
+  {
+    const auto result = Sequence::build( small, true );
+    std::array< DataBlock, 1 > blocks { result.blocks[ 0 ] };
+    std::array< std::uint8_t, BLOCK_PAYLOAD - 1 > output {};
+
+    const bool smallBufferThrows = throws( [&] { Sequence::parse( blocks, output ); } );
+
+    printResult( "Output buffer too small -> throw", smallBufferThrows );
+
+    allPassed &= smallBufferThrows;
   }
 
   return allPassed ? 0 : 1;
