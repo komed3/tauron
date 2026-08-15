@@ -16,6 +16,8 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
   std::array< std::uint8_t, BLOCK_SIZE > context {};
   utils::Random::fill( context );
 
+  const auto permutation = utils::Permutation::generate( context, count );
+
   return result;
 }
 
