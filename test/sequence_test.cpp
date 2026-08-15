@@ -64,7 +64,43 @@ static bool roundtrip( const std::span< const std::uint8_t > input, const bool e
 }
 
 int main() {
-  bool allPassed = true;
+  const std::string text =
+    "Tauron sequence test payload: "
+    "this text is intentionally long enough "
+    "to produce several blocks.";
+
+  const auto textResult = Sequence::build(
+    std::span( reinterpret_cast< const std::uint8_t* >( text.data() ), text.size() ),
+    true
+  );
+
+  std::cout << "\nSequence test payload:\n";
+  std::cout << text << "\n\n";
+
+  std::cout << "Blocks: " << textResult.count << "\n\n";
+
+  for ( std::size_t i = 0; i < textResult.count; ++i ) {
+    const auto parsed = Block::parse( textResult.blocks[ i ] );
+
+    std::cout
+      << "Block " << std::setfill( ' ' ) << std::setw( 2 ) << i
+      << " | ID: " << std::setw( 3 )
+      << static_cast< unsigned int >( parsed.id )
+      << " | Length: " << std::setw( 2 )
+      << parsed.payload.size()
+      << " | Data: ";
+
+    printHex( textResult.blocks[ i ] );
+  }
+
+  std::array< std::uint8_t, SEQ_BLOCKS * BLOCK_PAYLOAD > textOutput {};
+  const auto textSize = Sequence::parse( std::span( textResult.blocks ).first( textResult.count ), textOutput );
+  const bool textRoundtrip = textSize == text.size() && std::equal( text.begin(), text.end(), textOutput.begin() );
+
+  std::cout << "\n";
+  printResult( "Sequence example roundtrip", textRoundtrip );
+
+  bool allPassed = textRoundtrip;
 
   // 1. Empty EOF sequence
 
