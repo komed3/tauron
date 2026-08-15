@@ -34,6 +34,8 @@ int main() {
   std::cout << "Rounds:\n" << rounds << "\n\n";
   std::cout << "Plaintext:\n" << text << "\n\n";
 
+  // Generate round keys from passphrase
+
   const auto nonce = Random::nonce();
   const auto salt = Random::salt();
 
@@ -56,4 +58,11 @@ int main() {
     fromWords( keys[ r ], bytes );
     printHex( bytes );
   }
+
+  // Build sequence with blocks
+
+  const auto sequence = Sequence::build(
+    std::span( reinterpret_cast< const std::uint8_t* >( text.data() ), text.size() ),
+    true
+  );
 }
