@@ -116,4 +116,9 @@ int main() {
 
   std::string message( payload.begin(), payload.end() );
   std::cout << "\nDecrypted text:\n" << message;
+
+  const bool passed = message == text;
+
+  std::cout << "\n\nResult: " << ( passed ? "PASS" : "FAIL" );
+  return passed ? 0 : 1;
 }
