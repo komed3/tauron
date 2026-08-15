@@ -18,6 +18,16 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
 
   const auto permutation = utils::Permutation::generate( context, count );
 
+  for ( std::size_t i = 0; i < count; ++i ) {
+    const auto offset = i * BLOCK_SIZE;
+    const auto length = offset < payload.size() ? std::min( payload.size() - offset, BLOCK_PAYLOAD ) : 0;
+
+    result.blocks[ i ] = Block::build(
+      static_cast< std::uint8_t >( permutation[ i ] ),
+      payload.subspan( offset, length )
+    );
+  }
+
   return result;
 }
 
