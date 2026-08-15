@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 #include "tauron/core/sequence.hpp"
@@ -16,6 +17,9 @@ int main() {
     "Tauron sequence test payload: "
     "this text is intentionally long enough "
     "to produce several blocks.";
+
+  std::cout << "Passphrase:\n" << passphrase << "\n\n";
+  std::cout << "Plaintext:\n" << text << "\n\n";
 
   //
 }
