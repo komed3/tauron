@@ -14,9 +14,7 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
   SequenceResult result {};
   result.eof = eof;
 
-  const auto count = eof
-    ? ( payload.size() + BLOCK_PAYLOAD - 1 ) / BLOCK_PAYLOAD
-    : SEQ_BLOCKS;
+  const auto count = eof ? ( payload.size() + BLOCK_PAYLOAD - 1 ) / BLOCK_PAYLOAD : SEQ_BLOCKS;
 
   std::array< std::uint8_t, BLOCK_SIZE > context {};
   context[ 0 ] = SEQ_PERMUT_DOMAIN;
