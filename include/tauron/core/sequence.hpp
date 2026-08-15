@@ -20,7 +20,7 @@ struct SequenceResult {
 class Sequence {
 public:
   static SequenceResult build( std::span< const std::uint8_t > payload, bool eof );
-  static std::vector< std::uint8_t > parse( std::span< const DataBlock > blocks );
+  static std::size_t parse( std::span< const DataBlock > blocks, std::span< std::uint8_t > payload );
 };
 
 }
