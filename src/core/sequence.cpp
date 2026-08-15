@@ -19,7 +19,9 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
     : SEQ_BLOCKS;
 
   std::array< std::uint8_t, BLOCK_SIZE > context {};
-  utils::Random::fill( context );
+  context[ 0 ] = SEQ_PERMUT_DOMAIN;
+
+  utils::Random::fill( std::span( context ).subspan( 1 ) );
 
   const auto permutation = utils::Permutation::generate( context, count );
 
