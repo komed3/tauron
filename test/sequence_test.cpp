@@ -64,5 +64,20 @@ static bool roundtrip( const std::span< const std::uint8_t > input, const bool e
 }
 
 int main() {
-  return 0;
+  bool allPassed = true;
+
+  // 1. Empty EOF sequence
+
+  const std::vector< std::uint8_t > empty {};
+  const auto emptyResult = Sequence::build( empty, true );
+
+  const bool emptyCount = emptyResult.count == 0;
+  const bool emptyEof = emptyResult.eof;
+
+  printResult( "Empty EOF sequence -> zero blocks", emptyCount );
+  printResult( "Empty EOF sequence -> EOF preserved", emptyEof );
+
+  allPassed &= emptyCount && emptyEof;
+
+  return allPassed ? 0 : 1;
 }
