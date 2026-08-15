@@ -114,5 +114,20 @@ int main() {
 
   allPassed &= exactCount && overCount && exactRoundtrip && overRoundtrip;
 
+  // 4. Maximum sequence
+
+  const std::vector< std::uint8_t > maximum( SEQ_BLOCKS * BLOCK_PAYLOAD, 0x37 );
+  const auto maximumResult = Sequence::build( maximum, true );
+
+  const bool maximumCount = maximumResult.count == SEQ_BLOCKS;
+  const bool maximumIds = validIds( maximumResult );
+  const bool maximumRoundtrip = roundtrip( maximum, true );
+
+  printResult( "Maximum EOF payload -> 256 blocks", maximumCount );
+  printResult( "Maximum sequence -> valid IDs", maximumIds );
+  printResult( "Maximum sequence roundtrip", maximumRoundtrip );
+
+  allPassed &= maximumCount && maximumIds && maximumRoundtrip;
+
   return allPassed ? 0 : 1;
 }
