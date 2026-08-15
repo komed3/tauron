@@ -1,11 +1,16 @@
 #include "tauron/core/sequence.hpp"
 
+#include <stdexcept>
+
 #include "tauron/utils/permutation.hpp"
 #include "tauron/utils/random.hpp"
 
 namespace tauron::core {
 
 SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eof ) {
+  if ( payload.size() > SEQ_BLOCKS * BLOCK_PAYLOAD )
+    throw std::invalid_argument( "Payload exceeds maximum sequence size" );
+
   SequenceResult result {};
   result.eof = eof;
 
