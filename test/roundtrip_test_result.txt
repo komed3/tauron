@@ -1,0 +1,56 @@
+Passphrase: Tauron test passphrase
+Rounds:     16
+
+Plaintext:
+Tauron sequence test payload: this text is intentionally long enough to produce several blocks.
+
+Nonce:  a5 13 3d f5 c2 84 d8 4e 47 7c 84 77 3b db 5a fa 58 c0 08 52 8d a1 92 64 69 cc 78 78 83 ea fa 06 
+Salt:   5c 90 b6 9e bd 75 46 d8 27 64 2e d7 c6 ca e7 47 
+Master: 35 f7 10 4d dd a9 58 92 97 76 96 37 52 69 91 2a fd 96 4c 2f 4c fb 69 5a c9 80 e8 6c 98 21 7b 07 
+
+Round keys:
+83 0c 2b 3d c6 0a e5 e4 be 50 82 04 f9 89 11 f6 d9 70 bd 63 ae e1 27 54 13 87 5f 8a 4a fe ca 2e 
+ce 27 be d6 c1 5b d5 95 33 ac 19 49 df 6f 25 c4 4c 74 4f 42 1f 93 1b 3d 41 61 04 85 13 63 be 10 
+4d a2 d4 3d 10 1c 3d af fa ef f4 7f 6e 2e a2 c7 cf 4a 27 5f d3 86 a6 96 45 6a 5e 47 69 38 0c ab 
+aa 40 fb aa 35 34 ee 68 97 84 37 da 46 53 55 04 6f 90 b4 16 4f 44 0e 3d 5a ac d9 8a a8 25 7a f7 
+75 9d 7e 69 74 53 a5 19 e5 80 07 62 c8 1b df 02 b2 2c bb fd 08 66 30 c5 8f 39 cf e8 9f 1d 4f 8a 
+0b 78 b9 c7 ba ef 76 7f f0 2e fe 6f 2f 5b b4 50 23 e2 ec 50 87 21 23 62 ec 72 7a 0c 56 16 b1 2f 
+3c a1 7e 6c e3 44 44 33 01 ad 9c d4 e1 13 98 d1 e6 35 08 09 4b 1d b6 58 c7 fa a6 70 b7 6c 7c 4e 
+3a 75 fe da 21 b1 7f 62 79 8d d2 9a a1 3e 70 4f 9a be 6d 94 80 47 9c 2d dd 68 19 74 1e c5 23 78 
+b1 53 0f a3 d5 80 29 c9 29 28 38 71 fe a4 c9 e8 72 ba 7f 88 f2 68 59 d0 27 2e e4 a4 53 33 e9 dc 
+58 54 cc fa c4 c6 31 3a 23 8c a1 ea 14 e5 04 c3 08 b1 66 ba 35 81 b3 4e e1 69 f5 10 18 98 c6 4f 
+95 c3 2b 14 3d 31 74 d0 84 0b c8 b2 9d a9 8a 5c 0f 1f 15 cc 72 3b da 38 4c 87 d2 22 67 25 0f f6 
+a1 4e 4f 6f eb 2a 8a cc e1 45 b2 e3 60 56 ea bf 81 02 4c 7a 28 34 0b 00 d4 61 ee 6c dc ec e5 63 
+6c 7b d8 cb 70 70 8b bc e5 f9 c2 1f 7a ce c0 a1 6c 28 92 ea 91 e9 6e 2b 34 67 18 19 ab 01 3e 6b 
+21 67 5e d1 4d e2 b6 da 49 1e 53 98 50 5b 28 9a 73 23 6b 9f dc 62 10 fd bf 12 2d eb db e7 90 0e 
+b0 6e 0e 8c a6 d9 67 49 f9 43 4e 9a bc cd 2d 44 57 60 2e 1d 45 e5 d8 c5 82 47 eb ae da 57 33 af 
+2d 2a df 22 76 12 8e 2d fc 40 07 27 fd c0 28 05 66 19 0d 80 ff 79 a5 09 bb 1e 28 5a 1b 10 73 3c 
+
+Block count: 4
+EOF:         yes
+
+Blocks:
+00 1c 59 84 54 61 75 72 6f 6e 20 73 65 71 75 65 6e 63 65 20 74 65 73 74 20 70 61 79 6c 6f 61 64 
+02 1c ca 65 20 6c 6f 6e 67 20 65 6e 6f 75 67 68 20 74 6f 20 70 72 6f 64 75 63 65 20 73 65 76 65 
+03 0b ea fc 72 61 6c 20 62 6c 6f 63 6b 73 2e 96 06 4e 51 2c b1 e5 35 fa 6d 65 e0 d7 4e 63 4d 25 
+01 1c 97 a8 3a 20 74 68 69 73 20 74 65 78 74 20 69 73 20 69 6e 74 65 6e 74 69 6f 6e 61 6c 6c 79 
+
+Encrypted blocks:
+31 28 a4 7f 2f 81 6b 4b 9e 4a ab 8c b6 d8 29 0b d7 e2 33 6b 8f 69 84 b0 cc 02 b9 1e 7b 16 f1 54 
+7b bf 4d 47 e8 bc e9 da 92 bf 46 44 45 54 04 fe 96 24 c4 d1 71 2b 1c 4b 45 00 78 91 b1 69 dd 15 
+1a 73 4d 19 26 26 c0 27 16 85 8a 44 d7 de c1 f4 0d ab 3c 77 4d 65 75 8f da b2 20 19 fa 9e e2 98 
+f2 6f 01 f0 42 ce 52 d0 90 da 98 2b a0 b0 54 cc 2f 64 9d 5c b4 1a be 98 e1 17 94 97 a8 c7 57 3d 
+
+Ciphertext:
+31 28 a4 7f 2f 81 6b 4b 9e 4a ab 8c b6 d8 29 0b d7 e2 33 6b 8f 69 84 b0 cc 02 b9 1e 7b 16 f1 54 7b bf 4d 47 e8 bc e9 da 92 bf 46 44 45 54 04 fe 96 24 c4 d1 71 2b 1c 4b 45 00 78 91 b1 69 dd 15 1a 73 4d 19 26 26 c0 27 16 85 8a 44 d7 de c1 f4 0d ab 3c 77 4d 65 75 8f da b2 20 19 fa 9e e2 98 f2 6f 01 f0 42 ce 52 d0 90 da 98 2b a0 b0 54 cc 2f 64 9d 5c b4 1a be 98 e1 17 94 97 a8 c7 57 3d 
+
+Decrypted blocks:
+00 1c 59 84 54 61 75 72 6f 6e 20 73 65 71 75 65 6e 63 65 20 74 65 73 74 20 70 61 79 6c 6f 61 64 
+02 1c ca 65 20 6c 6f 6e 67 20 65 6e 6f 75 67 68 20 74 6f 20 70 72 6f 64 75 63 65 20 73 65 76 65 
+03 0b ea fc 72 61 6c 20 62 6c 6f 63 6b 73 2e 96 06 4e 51 2c b1 e5 35 fa 6d 65 e0 d7 4e 63 4d 25 
+01 1c 97 a8 3a 20 74 68 69 73 20 74 65 78 74 20 69 73 20 69 6e 74 65 6e 74 69 6f 6e 61 6c 6c 79 
+
+Decrypted text:
+Tauron sequence test payload: this text is intentionally long enough to produce several blocks.
+
+Result: PASS
