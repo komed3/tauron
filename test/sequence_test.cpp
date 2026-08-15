@@ -79,5 +79,20 @@ int main() {
 
   allPassed &= emptyCount && emptyEof;
 
+  // 2. Small EOF sequence
+
+  const std::vector< std::uint8_t > small( 1, 0x42 );
+  const auto smallResult = Sequence::build( small, true );
+
+  const bool smallCount = smallResult.count == 1;
+  const bool smallIds = validIds( smallResult );
+  const bool smallRoundtrip = roundtrip( small, true );
+
+  printResult( "1 byte EOF payload -> one block", smallCount );
+  printResult( "Small sequence -> valid IDs", smallIds );
+  printResult( "Small sequence roundtrip", smallRoundtrip );
+
+  allPassed &= smallCount && smallIds && smallRoundtrip;
+
   return allPassed ? 0 : 1;
 }
