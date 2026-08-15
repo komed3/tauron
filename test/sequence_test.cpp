@@ -74,7 +74,7 @@ int main() {
     true
   );
 
-  std::cout << "\nSequence test payload:\n";
+  std::cout << "Sequence test payload:\n";
   std::cout << text << "\n\n";
 
   std::cout << "Blocks: " << textResult.count << "\n\n";

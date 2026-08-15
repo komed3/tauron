@@ -18,7 +18,6 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
 
   std::array< std::uint8_t, BLOCK_SIZE > context {};
   context[ 0 ] = SEQ_PERMUT_DOMAIN;
-
   utils::Random::fill( std::span( context ).subspan( 1 ) );
 
   const auto permutation = utils::Permutation::generate( context, count );
@@ -27,9 +26,8 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
     const auto offset = i * BLOCK_PAYLOAD;
     const auto length = offset < payload.size() ? std::min( payload.size() - offset, BLOCK_PAYLOAD ) : 0;
 
-    result.blocks[ i ] = Block::build(
-      static_cast< std::uint8_t >( permutation[ i ] ),
-      payload.subspan( offset, length )
+    result.blocks[ permutation[ i ] ] = Block::build(
+      static_cast< std::uint8_t >( i ), payload.subspan( offset, length )
     );
   }
 
@@ -73,7 +71,7 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
 
     std::copy(
       parsed[ i ].payload.begin(), parsed[ i ].payload.end(),
-      payload.begin() + i * BLOCK_PAYLOAD
+      payload.begin() + size
     );
 
     size += parsed[ i ].payload.size();
