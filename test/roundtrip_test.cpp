@@ -1,7 +1,9 @@
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
+#include <span>
 #include <string>
+#include <vector>
 
 #include "tauron/core/sequence.hpp"
 #include "tauron/crypto/cipher.hpp"
@@ -67,6 +69,22 @@ int main() {
     true
   );
 
-  std::cout << "\nGenerated blocks: " << sequence.count;
-  std::cout << "\nEOF:              " << ( sequence.eof ? "yes" : "no" ) << "\n\n";
+  std::cout << "\nBlock count: " << sequence.count;
+  std::cout << "\nEOF:         " << ( sequence.eof ? "yes" : "no" );
+  std::cout << "\n\nBlocks:\n";
+
+  for ( std::size_t i = 0; i < sequence.count; ++i )
+    printHex( sequence.blocks[ i ] );
+
+  // Encrypt blocks
+
+  std::vector< uint8_t > encrypted {};
+
+  for ( std::size_t i = 0; i < sequence.count; ++i ) {
+    const auto result = Cipher::encrypt( sequence.blocks[ i ], keys );
+    encrypted.insert( encrypted.end(), result.begin(), result.end() );
+  }
+
+  std::cout << "\nEncrypted:\n";
+  printHex( encrypted );
 }
