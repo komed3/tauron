@@ -44,7 +44,10 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
     throw std::invalid_argument( "Sequence contains too many blocks" );
 
   if ( payload.size() < blocks.size() * BLOCK_PAYLOAD )
-    throw std::invalid_argument( "Payload buffer is too small" )
+    throw std::invalid_argument( "Payload buffer is too small" );
+
+  std::array< ParsedBlock, SEQ_BLOCKS > parsed {};
+  std::array< bool, SEQ_BLOCKS > seen {};
 }
 
 }
