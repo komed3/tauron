@@ -30,8 +30,9 @@ int main() {
     "this text is intentionally long enough "
     "to produce several blocks.";
 
-  std::cout << "Passphrase:\n" << passphrase << "\n\n";
-  std::cout << "Rounds:\n" << rounds << "\n\n";
+  std::cout << "Passphrase: " << passphrase << "\n";
+  std::cout << "Rounds:     " << rounds << "\n\n";
+
   std::cout << "Plaintext:\n" << text << "\n\n";
 
   // Generate round keys from passphrase
@@ -39,16 +40,16 @@ int main() {
   const auto nonce = Random::nonce();
   const auto salt = Random::salt();
 
-  std::cout << "Nonce:\n";
+  std::cout << "Nonce:  ";
   printHex( nonce );
 
-  std::cout << "Salt:\n";
+  std::cout << "Salt:   ";
   printHex( salt );
 
   const auto master = KeyGen::derive( passphrase, salt );
   const auto keys = KeyGen::expand( master, nonce, rounds );
 
-  std::cout << "Master key:\n";
+  std::cout << "Master: ";
   printHex( master );
 
   std::cout << "\nRound keys:\n";
@@ -65,4 +66,7 @@ int main() {
     std::span( reinterpret_cast< const std::uint8_t* >( text.data() ), text.size() ),
     true
   );
+
+  std::cout << "\nGenerated blocks: " << sequence.count;
+  std::cout << "\nEOF:              " << ( sequence.eof ? "yes" : "no" ) << "\n\n";
 }
