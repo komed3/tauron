@@ -3,6 +3,11 @@
 #include "tauron/core/sequence.hpp"
 #include "tauron/crypto/cipher.hpp"
 #include "tauron/crypto/keygen.hpp"
+#include "tauron/utils/random.hpp"
+
+using namespace tauron::core;
+using namespace tauron::crypto;
+using namespace tauron::utils;
 
 int main() {
   const std::string passphrase = "Tauron test passphrase";
