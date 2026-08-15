@@ -21,5 +21,7 @@ int main() {
   std::cout << "Passphrase:\n" << passphrase << "\n\n";
   std::cout << "Plaintext:\n" << text << "\n\n";
 
-  //
+  const auto salt = Random::salt();
+  const auto nonce = Random::nonce();
+  const auto key = KeyGen::derive( passphrase, salt );
 }
