@@ -129,5 +129,20 @@ int main() {
 
   allPassed &= maximumCount && maximumIds && maximumRoundtrip;
 
+  // 5. Non-EOF sequence is always full
+
+  const std::vector< std::uint8_t > partial( 100, 0x55 );
+  const auto fullResult = Sequence::build( partial, false );
+
+  const bool fullCount = fullResult.count == SEQ_BLOCKS;
+  const bool fullIds = validIds( fullResult );
+  const bool fullRoundtrip = roundtrip( partial, false );
+
+  printResult( "Non-EOF sequence -> always 256 blocks", fullCount );
+  printResult( "Non-EOF sequence -> valid IDs", fullIds );
+  printResult( "Non-EOF sequence roundtrip", fullRoundtrip );
+
+  allPassed &= fullCount && fullIds && fullRoundtrip;
+
   return allPassed ? 0 : 1;
 }
