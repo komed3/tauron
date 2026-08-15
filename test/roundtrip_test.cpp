@@ -112,13 +112,13 @@ int main() {
   // Parse sequence
 
   std::vector< std::uint8_t > payload( count * BLOCK_PAYLOAD );
-  Sequence::parse( blocks, payload );
+  const auto size = Sequence::parse( blocks, payload );
 
-  std::string message( payload.begin(), payload.end() );
+  std::string message( payload.begin(), payload.begin() + size );
   std::cout << "\nDecrypted text:\n" << message;
 
   const bool passed = message == text;
-
   std::cout << "\n\nResult: " << ( passed ? "PASS" : "FAIL" );
+
   return passed ? 0 : 1;
 }
