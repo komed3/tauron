@@ -94,5 +94,25 @@ int main() {
 
   allPassed &= smallCount && smallIds && smallRoundtrip;
 
+  // 3. Block boundary
+
+  const std::vector< std::uint8_t > exact( BLOCK_PAYLOAD, 0x11 );
+  const std::vector< std::uint8_t > over( BLOCK_PAYLOAD + 1, 0x22 );
+
+  const auto exactResult = Sequence::build( exact, true );
+  const auto overResult = Sequence::build( over, true );
+
+  const bool exactCount = exactResult.count == 1;
+  const bool overCount = overResult.count == 2;
+  const bool exactRoundtrip = roundtrip( exact, true );
+  const bool overRoundtrip = roundtrip( over, true );
+
+  printResult( "Exactly one block payload -> one block", exactCount );
+  printResult( "Payload exceeding one block -> two blocks", overCount );
+  printResult( "Exact block boundary roundtrip", exactRoundtrip );
+  printResult( "29-byte payload roundtrip", overRoundtrip );
+
+  allPassed &= exactCount && overCount && exactRoundtrip && overRoundtrip;
+
   return allPassed ? 0 : 1;
 }
