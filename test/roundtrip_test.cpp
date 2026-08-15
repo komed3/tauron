@@ -111,6 +111,9 @@ int main() {
 
   // Parse sequence
 
-  std::vector< std::uint8_t > message( count * BLOCK_PAYLOAD );
-  const auto size = Sequence::parse( blocks, message );
+  std::vector< std::uint8_t > payload( count * BLOCK_PAYLOAD );
+  Sequence::parse( blocks, payload );
+
+  std::string message( payload.begin(), payload.end() );
+  std::cout << "\nDecrypted text:\n" << message;
 }
