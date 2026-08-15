@@ -184,5 +184,37 @@ int main() {
     allPassed &= duplicateIdThrows;
   }
 
+  // 9. Invalid checksum
+  {
+    const auto result = Sequence::build( small, true );
+    auto block = result.blocks[ 0 ];
+    block[ 4 ] ^= 0x01;
+
+    const std::array< DataBlock, 1 > blocks { block };
+
+    std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+    const bool invalidChecksumThrows = throws( [&] { Sequence::parse( blocks, output ); } );
+
+    printResult( "Invalid block checksum -> throw", invalidChecksumThrows );
+
+    allPassed &= invalidChecksumThrows;
+  }
+
+  // 10. Invalid length
+  {
+    const auto result = Sequence::build( small, true );
+    auto block = result.blocks[ 0 ];
+    block[ 1 ] = BLOCK_PAYLOAD + 1;
+
+    const std::array< DataBlock, 1 > blocks { block };
+
+    std::array< std::uint8_t, BLOCK_PAYLOAD > output {};
+    const bool invalidLengthThrows = throws( [&] { Sequence::parse( blocks, output ); } );
+
+    printResult( "Invalid block length -> throw", invalidLengthThrows );
+
+    allPassed &= invalidLengthThrows;
+  }
+
   return allPassed ? 0 : 1;
 }
