@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdint>
 #include <span>
 
 #include "tauron/core/block.hpp"
@@ -17,7 +18,7 @@ struct SequenceResult {
 
 class Sequence {
 public:
-  static void build();
+  static SequenceResult build( std::span< const std::uint8_t > payload, bool eof );
   static void parse();
 };
 
