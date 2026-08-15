@@ -9,6 +9,12 @@
 
 namespace tauron::core {
 
+struct SequenceResult {
+  std::array< DataBlock, SEQ_BLOCKS > blocks;
+  bool eof;
+  std::size_t count;
+};
+
 class Sequence {
 public:
   static void build();
