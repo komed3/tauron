@@ -65,6 +65,8 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
     parsed[ result.id ] = std::move( result );
   }
 
+  std::size_t size = 0;
+
   for ( std::size_t i = 0; i < blocks.size(); ++i ) {
     if ( ! seen[ i ] )
       throw std::invalid_argument( "Missing block ID" );
@@ -73,7 +75,11 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
       parsed[ i ].payload.begin(), parsed[ i ].payload.end(),
       payload.begin() + i * BLOCK_PAYLOAD
     );
+
+    size += parsed[ i ].payload.size();
   }
+
+  return size;
 }
 
 }
