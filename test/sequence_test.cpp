@@ -266,5 +266,9 @@ int main() {
     allPassed &= smallBufferThrows;
   }
 
+  std::cout << "\nResult:     "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << "\n";
+
   return allPassed ? 0 : 1;
 }
