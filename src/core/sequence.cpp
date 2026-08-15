@@ -64,6 +64,11 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
     seen[ result.id ] = true;
     parsed[ result.id ] = std::move( result );
   }
+
+  for ( std::size_t i = 0; i < blocks.size(); ++i ) {
+    if ( ! seen[ i ] )
+      throw std::invalid_argument( "Missing block ID" );
+  }
 }
 
 }
