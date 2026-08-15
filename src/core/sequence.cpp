@@ -48,6 +48,10 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
 
   std::array< ParsedBlock, SEQ_BLOCKS > parsed {};
   std::array< bool, SEQ_BLOCKS > seen {};
+
+  for ( const auto& block : blocks ) {
+    auto result = Block::parse( block );
+  }
 }
 
 }
