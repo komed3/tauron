@@ -51,6 +51,15 @@ std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std
 
   for ( const auto& block : blocks ) {
     auto result = Block::parse( block );
+
+    if ( result.flag != BlockFlag::PASSED )
+      throw std::invalid_argument( "Invalid block" );
+
+    if ( result.id >= block.size() )
+      throw std::invalid_argument( "Invalid block ID" );
+
+    if ( seen[ result.id ] )
+      throw std::invalid_argument( "Duplicate block ID" );
   }
 }
 
