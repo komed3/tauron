@@ -5,6 +5,10 @@
 #include <string>
 #include <vector>
 
+#ifdef _WIN32
+  #include <windows.h>
+#endif
+
 #include "tauron/core/sequence.hpp"
 #include "tauron/crypto/cipher.hpp"
 #include "tauron/crypto/keygen.hpp"
@@ -24,6 +28,10 @@ static void printHex( const auto& data ) {
 }
 
 int main() {
+  #ifdef _WIN32
+    SetConsoleOutputCP( CP_UTF8 );
+  #endif
+
   const std::string passphrase = "Tauron test passphrase";
   const std::size_t rounds = 16;
 
