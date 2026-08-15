@@ -1,18 +1,13 @@
 Payload: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
-Block:   2b 10 e9 f1 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f c1 e8 4e 79 21 27 a3 3c a5 f9 8a 3e 
+Block:   2b 10 1f 42 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f ce 2c 59 34 a2 d6 09 94 93 23 e8 77 
 Parsed:  00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
 
 [PASS] Normal block roundtrip
 [PASS] Empty payload
 [PASS] Maximum payload
-[PASS] Random block
-[PASS] Maximum valid ID for 32-block sequence
-[PASS] ID outside sequence
-[PASS] Maximum sequence size
 [PASS] Invalid payload length
 [PASS] Modified payload
 [PASS] Modified random padding
 [PASS] Payload > 28 bytes rejected
-[PASS] Random block with payload rejected
 
 Result:  PASS
