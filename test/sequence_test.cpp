@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <cstdint>
 #include <algorithm>
 #include <array>
 #include <iomanip>
@@ -50,6 +52,15 @@ static bool validIds( const SequenceResult& result ) {
     if ( ! seen[ i ] ) return false;
 
   return true;
+}
+
+static bool roundtrip( const std::span< const std::uint8_t > input, const bool eof ) {
+  const auto result = Sequence::build( input, eof );
+
+  std::array< std::uint8_t, SEQ_BLOCKS * BLOCK_PAYLOAD > output {};
+  const auto size = Sequence::parse( std::span( result.blocks ).first( result.count ), output );
+
+  return size == input.size() && std::equal( input.begin(), input.end(), output.begin() );
 }
 
 int main() {
