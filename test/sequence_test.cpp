@@ -22,6 +22,15 @@ void printHex( const auto& data ) {
   std::cout << std::dec << "\n";
 }
 
+static bool throws( const auto& function ) {
+  try {
+    function();
+    return false;
+  } catch ( const std::exception& ) {
+    return true;
+  }
+}
+
 int main() {
   return 0;
 }
