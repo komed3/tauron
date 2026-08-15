@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <span>
+#include <vector>
 
 #include "tauron/core/block.hpp"
 #include "tauron/core/constants.hpp"
@@ -19,7 +20,7 @@ struct SequenceResult {
 class Sequence {
 public:
   static SequenceResult build( std::span< const std::uint8_t > payload, bool eof );
-  static void parse();
+  static std::vector< std::uint8_t > parse( std::span< const DataBlock > blocks );
 };
 
 }
