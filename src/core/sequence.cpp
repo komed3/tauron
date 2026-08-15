@@ -37,6 +37,11 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
   return result;
 }
 
-std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std::uint8_t > payload ) {}
+std::size_t Sequence::parse( std::span< const DataBlock > blocks, std::span< std::uint8_t > payload ) {
+  if ( blocks.empty() ) return 0;
+
+  if ( blocks.size() > SEQ_BLOCKS )
+    throw std::invalid_argument( "Sequence contains too many blocks" );
+}
 
 }
