@@ -78,13 +78,34 @@ int main() {
 
   // Encrypt blocks
 
-  std::vector< uint8_t > encrypted {};
+  std::vector< std::uint8_t > encrypted {};
+
+  std::cout << "\nEncrypted blocks:\n";
 
   for ( std::size_t i = 0; i < sequence.count; ++i ) {
     const auto result = Cipher::encrypt( sequence.blocks[ i ], keys );
+    printHex( result );
+
     encrypted.insert( encrypted.end(), result.begin(), result.end() );
   }
 
-  std::cout << "\nEncrypted:\n";
+  std::cout << "\nCiphertext:\n";
   printHex( encrypted );
+
+  // Decrypt blocks
+
+  std::size_t count = encrypted.size() / BLOCK_SIZE;
+  std::vector< DataBlock > blocks( count );
+
+  std::cout << "\nDecrypted blocks:\n";
+
+  for ( std::size_t i = 0; i < count; ++i ) {
+    DataBlock block {};
+
+    for ( std::size_t j = 0; j < BLOCK_SIZE; ++j )
+      block[ j ] = encrypted[ i * BLOCK_SIZE + j ];
+
+    blocks[ i ] = Cipher::decrypt( block, keys );
+    printHex( blocks[ i ] );
+  }
 }
