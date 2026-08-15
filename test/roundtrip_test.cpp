@@ -7,6 +7,7 @@
 #include "tauron/crypto/cipher.hpp"
 #include "tauron/crypto/keygen.hpp"
 #include "tauron/utils/random.hpp"
+#include "tauron/utils/word.hpp"
 
 using namespace tauron::core;
 using namespace tauron::crypto;
@@ -29,20 +30,30 @@ int main() {
     "this text is intentionally long enough "
     "to produce several blocks.";
 
-  std::cout << "Passphrase: " << passphrase << "\n";
-  std::cout << "Rounds:     " << rounds << "\n\n";
-
+  std::cout << "Passphrase:\n" << passphrase << "\n\n";
+  std::cout << "Rounds:\n" << rounds << "\n\n";
   std::cout << "Plaintext:\n" << text << "\n\n";
 
-  const auto salt = Random::salt();
   const auto nonce = Random::nonce();
+  const auto salt = Random::salt();
 
-  std::cout << "Salt:       ";
-  printHex( salt );
-
-  std::cout << "Nonce:      ";
+  std::cout << "Nonce:\n";
   printHex( nonce );
 
-  const auto key = KeyGen::derive( passphrase, salt );
-  const auto keys = KeyGen::expand( key, nonce, rounds );
+  std::cout << "Salt:\n";
+  printHex( salt );
+
+  const auto master = KeyGen::derive( passphrase, salt );
+  const auto keys = KeyGen::expand( master, nonce, rounds );
+
+  std::cout << "Master key:\n";
+  printHex( master );
+
+  std::cout << "\nRound keys:\n";
+
+  for ( std::size_t r = 0; r < keys.size(); ++r ) {
+    Bytes bytes {};
+    fromWords( keys[ r ], bytes );
+    printHex( bytes );
+  }
 }
