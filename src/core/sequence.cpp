@@ -28,6 +28,7 @@ SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eo
     );
   }
 
+  result.count = count;
   return result;
 }
 
