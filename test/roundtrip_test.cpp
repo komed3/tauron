@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -10,6 +11,14 @@
 using namespace tauron::core;
 using namespace tauron::crypto;
 using namespace tauron::utils;
+
+static void printHex( const auto& data ) {
+  for ( const auto byte : data )
+    std::cout << std::hex << std::setw( 2 ) << std::setfill( '0' )
+              << static_cast< unsigned int >( byte ) << " ";
+
+  std::cout << std::dec << "\n";
+}
 
 int main() {
   const std::string passphrase = "Tauron test passphrase";
@@ -27,6 +36,12 @@ int main() {
 
   const auto salt = Random::salt();
   const auto nonce = Random::nonce();
+
+  std::cout << "Salt:       ";
+  printHex( salt );
+
+  std::cout << "Nonce:      ";
+  printHex( nonce );
 
   const auto key = KeyGen::derive( passphrase, salt );
   const auto keys = KeyGen::expand( key, nonce, rounds );
