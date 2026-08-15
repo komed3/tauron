@@ -2,8 +2,8 @@
 
 namespace tauron::core {
 
-void Sequence::build() {}
+SequenceResult Sequence::build( std::span< const std::uint8_t > payload, bool eof ) {}
 
-void Sequence::parse() {}
+std::vector< std::uint8_t > Sequence::parse( std::span< const DataBlock > blocks ) {}
 
 }
