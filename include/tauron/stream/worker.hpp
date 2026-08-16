@@ -53,6 +53,9 @@ private:
   std::size_t encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   std::size_t decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output );
 
+  void reset();
+  void update( std::size_t processed, std::size_t written );
+
   WorkerId id_;
   crypto::RoundKeys keys_;
   WorkerState state_;

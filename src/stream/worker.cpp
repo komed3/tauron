@@ -11,4 +11,10 @@ void Worker::stop() {
     state_ = WorkerState::CANCELLED;
 }
 
+void Worker::reset() {
+  processed_ = 0;
+  written_ = 0;
+  time_ = Clock::now();
+}
+
 }
