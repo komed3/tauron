@@ -119,6 +119,11 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
 
       blocks[ j ] = crypto::Cipher::decrypt( blocks[ j ], keys_ );
     }
+
+    const auto parsed = core::Sequence::parse(
+      std::span< const core::DataBlock >( blocks.data(), block_count ),
+      output.subspan( written )
+    );
   }
 }
 
