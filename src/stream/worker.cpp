@@ -2,7 +2,21 @@
 
 #include <stdexcept>
 
+#include "tauron/core/constants.hpp"
+
 namespace tauron::stream {
+
+namespace {
+
+constexpr std::size_t max_chunk_size( std::size_t blocks = core::SEQ_BLOCKS ) noexcept {
+  return core::CHUNK_SEQS * core::BLOCK_SIZE * blocks;
+}
+
+constexpr std::size_t max_payload_size( std::size_t blocks = core::SEQ_BLOCKS ) noexcept {
+  return core::CHUNK_SEQS * core::BLOCK_PAYLOAD * blocks;
+}
+
+} // namespace
 
 Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
   id_( id ), keys_( keys ), state_( WorkerState::IDLE ),
