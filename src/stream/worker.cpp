@@ -89,6 +89,12 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {
   if ( payload.empty() ) return 0;
 
+  if ( payload.size() > core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_SIZE )
+    throw std::invalid_argument( "Payload exceeds maximum chunk size" );
+
+  if ( payload.size() % core::BLOCK_SIZE != 0 )
+    throw std::invalid_argument( "Payload size is not aligned to block size" );
+
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_SIZE;
   const auto count = payload.size() / sequence_size;
 }
