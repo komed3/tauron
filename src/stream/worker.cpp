@@ -29,12 +29,6 @@ WorkerResult Worker::run(
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
 
-  if ( payload.size() > max_payload_size() )
-    throw std::invalid_argument( "Payload exceeds maximum chunk size" );
-
-  if ( ! eof && payload.size() != max_payload_size() )
-    throw std::invalid_argument( "Payload must be full size unless EOF is set" );
-
   reset_stats();
   state_ = WorkerState::PROCESSING;
 
@@ -47,6 +41,7 @@ WorkerResult Worker::run(
     : WorkerResultState::COMPLETED;
 
   state_ = WorkerState::IDLE;
+
   return { state, payload.size(), size };
 }
 
@@ -55,7 +50,10 @@ void Worker::stop() {
     state_ = WorkerState::CANCELLED;
 }
 
-std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {}
+std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
+  const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
+  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+}
 
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
 
