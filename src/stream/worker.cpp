@@ -52,7 +52,7 @@ void Worker::stop() {
 
 std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
-  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+  const auto count = payload.empty() ? 0 : ( payload.size() + sequence_size - 1 ) / sequence_size;
 }
 
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
