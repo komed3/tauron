@@ -49,5 +49,18 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
 }
 
 int main() {
-  return 0;
+  bool allPassed = true;
+
+  // Test setup
+
+  const std::string passphrase = "Tauron worker test passphrase";
+  const auto salt = Random::salt();
+  const auto nonce = Random::nonce();
+
+  const auto master = KeyGen::derive( passphrase, salt );
+  const auto keys = KeyGen::expand( master, nonce, 16 );
+
+  Worker worker( 1, keys );
+
+  return allPassed ? 0 : 1;
 }
