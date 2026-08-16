@@ -20,8 +20,8 @@ inline constexpr std::size_t MAX_CIPHERTEXT_SIZE = core::CHUNK_SEQS * SEQ_CIPHER
 } // namespace
 
 Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
-  id_( id ), keys_( keys ), state_( WorkerState::IDLE ), stop_requested_( false ),
-  processed_( 0 ), written_( 0 ), time_( Clock::now() ) {}
+  id_( id ), keys_( keys ), stop_requested_( false ), state_( WorkerState::IDLE ),
+  processed_( 0 ), written_( 0 ), activity_( Clock::now().time_since_epoch().count() ) {}
 
 void Worker::stop() {
   if ( state_.load( std::memory_order_relaxed ) == WorkerState::PROCESSING )
@@ -151,15 +151,15 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
 }
 
 void Worker::resetStats() {
-  processed_ = 0;
-  written_ = 0;
-  time_ = Clock::now();
+  processed_.store( 0, std::memory_order_relaxed );
+  written_.store( 0, std::memory_order_relaxed );
+  activity_.store( Clock::now().time_since_epoch().count(), std::memory_order_relaxed );
 }
 
 void Worker::updateProgress( std::size_t processed, std::size_t written ) {
-  processed_ = processed;
-  written_ = written;
-  time_ = Clock::now();
+  processed_.store( processed, std::memory_order_relaxed );
+  written_.store( written, std::memory_order_relaxed );
+  activity_.store( Clock::now().time_since_epoch().count(), std::memory_order_relaxed );
 }
 
 WorkerId Worker::id() const {
@@ -174,16 +174,16 @@ bool Worker::ready() const {
   return state_.load( std::memory_order_relaxed ) == WorkerState::IDLE;
 }
 
-std::size_t Worker::bytesProcessed() const {
-  return processed_;
+std::size_t Worker::processed() const {
+  return processed_.load( std::memory_order_relaxed );
 }
 
-std::size_t Worker::bytesWritten() const {
-  return written_;
+std::size_t Worker::written() const {
+  return written_.load( std::memory_order_relaxed );
 }
 
-TimePoint Worker::lastProgress() const {
-  return time_;
+TimePoint Worker::activity() const {
+  return TimePoint( Clock::duration( activity_.load( std::memory_order_relaxed ) ) );
 }
 
 }

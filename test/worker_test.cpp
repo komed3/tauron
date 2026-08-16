@@ -87,8 +87,8 @@ int main() {
     const bool passed =
       worker.id() == 1 &&
       worker.ready() &&
-      worker.bytesProcessed() == 0 &&
-      worker.bytesWritten() == 0;
+      worker.processed() == 0 &&
+      worker.written() == 0;
 
     printResult( "Worker initial state", passed );
     allPassed &= passed;
@@ -103,8 +103,8 @@ int main() {
       result.state == WorkerResultState::COMPLETED &&
       result.bytes_read == 0 &&
       result.bytes_written == 0 &&
-      worker.bytesProcessed() == 0 &&
-      worker.bytesWritten() == 0 &&
+      worker.processed() == 0 &&
+      worker.written() == 0 &&
       worker.ready();
 
     printResult( "Empty payload", passed );
@@ -275,7 +275,7 @@ int main() {
 
     const bool passed =
       result.state == WorkerResultState::CANCELLED &&
-      worker.ready() && worker.bytesProcessed() < payload.size();
+      worker.ready() && worker.processed() < payload.size();
 
     printResult( "Stop while processing", passed );
     allPassed &= passed;

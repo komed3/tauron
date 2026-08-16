@@ -51,9 +51,9 @@ public:
   WorkerState state() const;
   bool ready() const;
 
-  std::size_t bytesProcessed() const;
-  std::size_t bytesWritten() const;
-  TimePoint lastProgress() const;
+  std::size_t processed() const;
+  std::size_t written() const;
+  TimePoint activity() const;
 
 private:
   std::size_t encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
@@ -64,13 +64,13 @@ private:
 
   WorkerId id_;
   crypto::RoundKeys keys_;
-  std::atomic< WorkerState > state_;
 
   std::atomic< bool > stop_requested_;
+  std::atomic< WorkerState > state_;
 
-  std::size_t processed_;
-  std::size_t written_;
-  TimePoint time_;
+  std::atomic< std::size_t > processed_;
+  std::atomic< std::size_t > written_;
+  std::atomic< Clock::duration::rep > activity_;
 };
 
 }
