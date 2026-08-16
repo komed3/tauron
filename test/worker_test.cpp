@@ -53,6 +53,15 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
   return std::equal( payload.begin(), payload.end(), decrypted.begin() );
 }
 
+static bool throws( const auto& function ) {
+  try {
+    function();
+    return false;
+  } catch ( const std::exception& ) {
+    return true;
+  }
+}
+
 int main() {
   bool allPassed = true;
 
@@ -146,6 +155,58 @@ int main() {
     const bool passed = roundtrip( worker, makePayload( maxPayload - 1 ), true );
 
     printResult( "Maximum EOF chunk", passed );
+    allPassed &= passed;
+  }
+
+  // 8. Reject incomplete non-EOF payload
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( sequencePayload );
+      std::vector< std::uint8_t > output( sequenceCiphertext );
+
+      worker.run( Operation::ENCRYPT, payload, output, false );
+    } ) && worker.state() == WorkerState::IDLE;
+
+    printResult( "Reject incomplete non-EOF payload", passed );
+    allPassed &= passed;
+  }
+
+  // 9. Reject payload exceeding maximum chunk
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( maxPayload + 1 );
+      std::vector< std::uint8_t > output( maxCiphertext + sequenceCiphertext );
+
+      worker.run( Operation::ENCRYPT, payload, output, true );
+    } ) && worker.state() == WorkerState::IDLE;
+
+    printResult( "Reject oversized encryption payload", passed );
+    allPassed &= passed;
+  }
+
+  // 10. Reject undersized encryption buffer
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( 1000 );
+      std::vector< std::uint8_t > output( sequenceCiphertext - 1 );
+
+      worker.run( Operation::ENCRYPT, payload, output, true );
+    } ) && worker.state() == WorkerState::IDLE;
+
+    printResult( "Reject undersized encryption buffer", passed );
+    allPassed &= passed;
+  }
+
+  // 11. Reject oversized ciphertext
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( maxCiphertext + 1 );
+      std::vector< std::uint8_t > output( maxPayload );
+
+      worker.run( Operation::DECRYPT, payload, output );
+    } ) && worker.state() == WorkerState::IDLE;
+
+    printResult( "Reject oversized ciphertext", passed );
     allPassed &= passed;
   }
 
