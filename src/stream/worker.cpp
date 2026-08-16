@@ -8,12 +8,8 @@ namespace tauron::stream {
 
 namespace {
 
-constexpr std::size_t max_chunk_size( std::size_t blocks = core::SEQ_BLOCKS ) noexcept {
-  return core::CHUNK_SEQS * core::BLOCK_SIZE * blocks;
-}
-
-constexpr std::size_t max_payload_size( std::size_t blocks = core::SEQ_BLOCKS ) noexcept {
-  return core::CHUNK_SEQS * core::BLOCK_PAYLOAD * blocks;
+inline constexpr std::size_t max_payload_size() noexcept {
+  return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
 
 } // namespace
@@ -51,8 +47,26 @@ void Worker::stop() {
 }
 
 std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
+  if ( payload.empty() ) return 0;
+
+  if ( payload.size() > max_payload_size() )
+    throw std::invalid_argument( "Payload exceeds maximum chunk size" );
+
+  if ( ! eof && payload.size() != max_payload_size() )
+    throw std::invalid_argument( "Payload must be full size unless EOF is set" );
+
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
-  const auto count = payload.empty() ? 0 : ( payload.size() + sequence_size - 1 ) / sequence_size;
+  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+
+  if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_SIZE )
+    throw std::invalid_argument( "Output buffer is too small" );
+
+  std::size_t processed = 0;
+  std::size_t written = 0;
+
+  for ( std::size_t i = 0; i < count; ++i ) {
+    const auto size = std::min( sequence_size, payload.size() - processed );
+  }
 }
 
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
