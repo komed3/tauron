@@ -27,7 +27,13 @@ std::size_t encrypt(
   const auto sequence_size = seq_payload_size();
   const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
 
-  
+  std::size_t written = 0;
+
+  for ( std::size_t i = 0; i < count; ++i ) {
+    const auto offset = i * sequence_size;
+    const auto size = std::min( sequence_size, payload.size() - offset );
+    const bool last = i + 1 == count;
+  }
 }
 
 std::size_t decrypt(
