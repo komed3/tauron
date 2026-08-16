@@ -16,4 +16,24 @@ WorkerId Worker::id() const {
   return id_;
 }
 
+Operation Worker::operation() const {
+  return operation_;
+}
+
+WorkerState Worker::state() const {
+  return state_;
+}
+
+std::size_t Worker::bytes_processed() const {
+  return processed;
+}
+
+std::size_t Worker::bytes_written() const {
+  return written;
+}
+
+TimePoint Worker::last_progress() const {
+  return time;
+}
+
 }
