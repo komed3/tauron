@@ -32,6 +32,7 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
   const auto count = payload.empty() ? 0 : ( payload.size() + sequencePayload - 1 ) / sequencePayload;
 
   std::vector< std::uint8_t > encrypted( count * sequenceCiphertext );
+  const auto encryptedResult = worker.run( Operation::ENCRYPT, payload, encrypted, eof );
 }
 
 int main() {
