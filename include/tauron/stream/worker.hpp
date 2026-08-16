@@ -38,8 +38,8 @@ struct WorkerResult {
 
 class Worker {
 public:
-  explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
-  WorkerResult run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
+  explicit Worker( WorkerId id, const crypto::RoundKeys& keys );
+  WorkerResult run( Operation operation, std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   void stop();
 
   WorkerId id() const;
