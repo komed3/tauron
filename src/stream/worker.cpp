@@ -71,7 +71,15 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
       std::copy( block.begin(), block.end(), output.begin() + written );
       written += block.size();
     }
+
+    processed += size;
+    update_progress( processed, written );
+
+    if ( state_ == WorkerState::CANCELLED )
+      return written;
   }
+
+  return written;
 }
 
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
