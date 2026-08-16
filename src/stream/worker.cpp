@@ -23,7 +23,12 @@ inline constexpr std::size_t seq_payload_size() noexcept {
 std::size_t encrypt(
   std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
   bool eof, const crypto::RoundKeys& keys
-);
+) {
+  const auto sequence_size = seq_payload_size();
+  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+
+  
+}
 
 std::size_t decrypt(
   std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
