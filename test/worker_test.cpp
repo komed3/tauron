@@ -242,7 +242,7 @@ int main() {
     allPassed &= passed;
   }
 
-  // 14. Worler reusable after exception
+  // 14. Worker reusable after exception
   {
     const bool passed = worker.ready() && roundtrip( worker, makePayload( 4096 ), true );
 
