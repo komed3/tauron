@@ -91,5 +91,16 @@ int main() {
     allPassed &= passed;
   }
 
+  // 3. Small EOF payload
+  {
+    const bool passed =
+      roundtrip( worker, makePayload( 1 ), true ) &&
+      roundtrip( worker, makePayload( 127 ), true ) &&
+      roundtrip( worker, makePayload( 1024 ), true );
+
+    printResult( "Small EOF payloads", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
