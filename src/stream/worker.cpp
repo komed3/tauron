@@ -8,7 +8,11 @@ namespace tauron::stream {
 
 namespace {
 
-inline constexpr std::size_t chunk_size() noexcept {
+inline constexpr std::size_t max_chunk_size() noexcept {
+  return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_SIZE;
+}
+
+inline constexpr std::size_t max_payload_size() noexcept {
   return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
 
@@ -32,16 +36,31 @@ WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< st
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
 
-  if ( payload.size() > chunk_size() )
+  if ( payload.size() > max_payload_size() )
     throw std::invalid_argument( "Payload exceeds maximum chunk size" );
 
-  if ( ! eof && payload.size() != chunk_size() )
+  if ( ! eof && payload.size() != max_payload_size() )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
-  if ( output.size() < payload.size() )
+  if ( output.size() < max_chunk_size() )
     throw std::invalid_argument( "Output buffer is too small" );
 
   state_ = WorkerState::PROCESSING;
+
+  const auto size = operation_ == Operation::ENCRYPT
+    ? encrypt( payload, output, eof, keys )
+    : decrypt( payload, output, keys );
+
+  processed = payload.size();
+  written = size;
+  time = Clock::now();
+
+  const auto state = state_ == WorkerState::CANCELLED
+    ? WorkerResultState::CANCELLED
+    : WorkerResultState::COMPLETED;
+
+  state_ = WorkerState::IDLE;
+  return { state, payload.size(), size };
 }
 
 void Worker::stop() {
