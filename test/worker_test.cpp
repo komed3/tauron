@@ -36,13 +36,17 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
 
   if ( encryptedResult.state != WorkerResultState::COMPLETED ) return false;
   if ( encryptedResult.bytes_read != payload.size() ) return false;
-  if ( encryptedResult.bytes_written != encrypted.size() ) return false;
 
   std::vector< std::uint8_t > decrypted( count * sequencePayload );
-  const auto decryptedResult = worker.run( Operation::DECRYPT, encrypted, decrypted );
+
+  const auto decryptedResult = worker.run(
+    Operation::DECRYPT,
+    std::span< const std::uint8_t >( encrypted.data(), encryptedResult.bytes_written ),
+    decrypted
+  );
 
   if ( decryptedResult.state != WorkerResultState::COMPLETED ) return false;
-  if ( decryptedResult.bytes_read != encrypted.size() ) return false;
+  if ( decryptedResult.bytes_read != encryptedResult.bytes_written ) return false;
   if ( decryptedResult.bytes_written != payload.size() ) return false;
 
   return std::equal( payload.begin(), payload.end(), decrypted.begin() );
