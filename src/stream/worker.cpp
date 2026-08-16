@@ -55,6 +55,10 @@ void Worker::stop() {
     state_ = WorkerState::CANCELLED;
 }
 
+std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {}
+
+std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
+
 void Worker::reset_stats() {
   processed_ = 0;
   written_ = 0;
