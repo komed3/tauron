@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "tauron/core/constants.hpp"
@@ -255,6 +256,28 @@ int main() {
     const bool passed = worker.ready();
 
     printResult( "Stop while idle", passed );
+    allPassed &= passed;
+  }
+
+  // 16. Stop while processing
+  {
+    const auto payload = makePayload( maxPayload );
+    std::vector< std::uint8_t > output( maxCiphertext );
+    WorkerResult result {};
+
+    std::thread thread( [&] { result = worker.run( Operation::ENCRYPT, payload, output ); } );
+
+    while ( worker.state() != WorkerState::PROCESSING )
+      std::this_thread::yield();
+
+    worker.stop();
+    thread.join();
+
+    const bool passed =
+      result.state == WorkerResultState::CANCELLED &&
+      worker.ready() && worker.bytesProcessed() < payload.size();
+
+    printResult( "Stop while processing", passed );
     allPassed &= passed;
   }
 
