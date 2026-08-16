@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <span>
 
@@ -16,7 +17,8 @@ enum class Operation {
 
 enum class WorkerState {
   IDLE,
-  PROCESSING
+  PROCESSING,
+  CANCELLED
 };
 
 enum class WorkerResultState {
@@ -33,13 +35,14 @@ struct WorkerResult {
 
 class Worker {
 public:
-  explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
+  explicit Worker( WorkerId id, Operation operation, crypto::RoundKeys& keys );
   WorkerResult run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   void stop();
 
 private:
   WorkerId id;
   Operation operation;
+  crypto::RoundKeys& keys;
   WorkerState state;
 };
 
