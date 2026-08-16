@@ -16,6 +16,10 @@ inline constexpr std::size_t max_payload_size() noexcept {
   return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
 
+inline constexpr std::size_t seq_payload_size() noexcept {
+  return core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
+}
+
 std::size_t encrypt(
   std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
   bool eof, const crypto::RoundKeys& keys
