@@ -128,7 +128,12 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
     processed += size;
     written += parsed;
     update_progress( processed, written );
+
+    if ( state_ == WorkerState::CANCELLED )
+      return written;
   }
+
+  return written;
 }
 
 void Worker::reset_stats() {
