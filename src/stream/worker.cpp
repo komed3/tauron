@@ -105,6 +105,21 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
   std::array< core::DataBlock, core::SEQ_BLOCKS > blocks {};
   std::size_t processed = 0;
   std::size_t written = 0;
+
+  for ( std::size_t i = 0; i < count; ++i ) {
+    const auto size = std::min( sequence_size, payload.size() - processed );
+    const auto block_count = size / core::BLOCK_SIZE;
+
+    for ( std::size_t j = 0; j < block_count; ++j ) {
+      std::copy(
+        payload.begin() + processed + j * core::BLOCK_SIZE,
+        payload.begin() + processed + ( j + 1 ) * core::BLOCK_SIZE,
+        blocks[ j ].begin()
+      );
+
+      blocks[ j ] = crypto::Cipher::decrypt( blocks[ j ], keys_ );
+    }
+  }
 }
 
 void Worker::reset_stats() {
