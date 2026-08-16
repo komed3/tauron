@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "tauron/core/constants.hpp"
+#include "tauron/core/sequence.hpp"
 
 namespace tauron::stream {
 
@@ -33,6 +34,8 @@ std::size_t encrypt(
     const auto offset = i * sequence_size;
     const auto size = std::min( sequence_size, payload.size() - offset );
     const bool last = i + 1 == count;
+
+    const auto sequence = core::Sequence::build( payload.subspan( offset, size ), eof && last );
   }
 }
 
