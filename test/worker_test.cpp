@@ -62,5 +62,19 @@ int main() {
 
   Worker worker( 1, keys );
 
+  const auto sequencePayload = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_PAYLOAD;
+  const auto sequenceCiphertext = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_SIZE;
+  const auto maxPayload = tauron::core::CHUNK_SEQS * sequencePayload;
+  const auto maxCiphertext = tauron::core::CHUNK_SEQS * sequenceCiphertext;
+
+  // 1. Initial state
+  {
+    const bool passed = worker.id() == 1 && worker.state() == WorkerState::IDLE &&
+      worker.bytesProcessed() == 0 && worker.bytesWritten() == 0;
+
+    printResult( "Worker initial state", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
