@@ -161,6 +161,10 @@ WorkerState Worker::state() const {
   return state_;
 }
 
+bool Worker::ready() const {
+  return state_ == WorkerState::IDLE;
+}
+
 std::size_t Worker::bytesProcessed() const {
   return processed_;
 }

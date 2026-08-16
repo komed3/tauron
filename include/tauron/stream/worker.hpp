@@ -48,6 +48,7 @@ public:
 
   WorkerId id() const;
   WorkerState state() const;
+  bool ready() const;
 
   std::size_t bytesProcessed() const;
   std::size_t bytesWritten() const;
