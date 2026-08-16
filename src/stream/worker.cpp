@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "tauron/core/constants.hpp"
+#include "tauron/core/sequence.hpp"
 
 namespace tauron::stream {
 
@@ -66,6 +67,7 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
 
   for ( std::size_t i = 0; i < count; ++i ) {
     const auto size = std::min( sequence_size, payload.size() - processed );
+    const auto sequence = core::Sequence::build( payload.subspan( processed, size ), eof && i + 1 == count );
   }
 }
 
