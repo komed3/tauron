@@ -1,7 +1,9 @@
 #include "tauron/stream/worker.hpp"
 
 #include <stdexcept>
+#include <vector>
 
+#include "tauron/core/block.hpp"
 #include "tauron/core/constants.hpp"
 #include "tauron/core/sequence.hpp"
 #include "tauron/crypto/cipher.hpp"
@@ -59,6 +61,21 @@ std::size_t decrypt(
   const auto sequence_size = max_seq_size();
   const auto count = payload.size() / sequence_size;
   std::size_t written = 0;
+
+  for ( std::size_t i = 0; i < count; ++i ) {
+    const auto offset = i * sequence_size;
+    std::vector< core::DataBlock > blocks( core::SEQ_BLOCKS );
+
+    for ( std::size_t j = 0; j < core::SEQ_BLOCKS; ++j ) {
+      std::copy(
+        payload.begin() + offset + j * core::BLOCK_SIZE,
+        payload.begin() + offset + ( j + 1 ) * core::BLOCK_SIZE,
+        blocks[ j ].begin()
+      );
+
+      blocks[ j ] = crypto::Cipher::decrypt( blocks[ j ], keys );
+    }
+  }
 }
 
 } // namespace
