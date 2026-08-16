@@ -96,7 +96,7 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
     throw std::invalid_argument( "Payload size is not aligned to block size" );
 
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_SIZE;
-  const auto count = payload.size() / sequence_size;
+  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
 
   if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
     throw std::invalid_argument( "Output buffer is too small" );
