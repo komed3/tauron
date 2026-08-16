@@ -241,5 +241,26 @@ int main() {
     allPassed &= passed;
   }
 
+  // 14. Worler reusable after exception
+  {
+    const bool passed = worker.ready() && roundtrip( worker, makePayload( 4096 ), true );
+
+    printResult( "Worker reusable after exception", passed );
+    allPassed &= passed;
+  }
+
+  // 15. Stop while idle
+  {
+    worker.stop();
+    const bool passed = worker.ready();
+
+    printResult( "Stop while idle", passed );
+    allPassed &= passed;
+  }
+
+  std::cout << "\nResult:     "
+            << ( allPassed ? "PASS" : "FAIL" )
+            << '\n';
+
   return allPassed ? 0 : 1;
 }
