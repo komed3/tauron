@@ -86,7 +86,9 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
   return written;
 }
 
-std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {}
+std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {
+  if ( payload.empty() ) return 0;
+}
 
 void Worker::reset_stats() {
   processed_ = 0;
