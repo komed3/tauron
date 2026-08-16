@@ -23,9 +23,14 @@ Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
   id_( id ), keys_( keys ), state_( WorkerState::IDLE ),
   processed_( 0 ), written_( 0 ), time_( Clock::now() ) {}
 
+void Worker::stop() {
+  if ( state_ == WorkerState::PROCESSING )
+    state_ = WorkerState::CANCELLED;
+}
+
 WorkerResult Worker::run(
   Operation operation, std::span< const std::uint8_t > payload,
-  std::span< std::uint8_t > output, bool eof
+  std::span< std::uint8_t > output, bool eof = false
 ) {
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
@@ -48,11 +53,6 @@ WorkerResult Worker::run(
     state_ = WorkerState::IDLE;
     throw;
   }
-}
-
-void Worker::stop() {
-  if ( state_ == WorkerState::PROCESSING )
-    state_ = WorkerState::CANCELLED;
 }
 
 std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
