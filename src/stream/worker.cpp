@@ -4,16 +4,11 @@
 
 #include "tauron/core/constants.hpp"
 #include "tauron/core/sequence.hpp"
+#include "tauron/crypto/cipher.hpp"
 
 namespace tauron::stream {
 
-namespace {
-
-inline constexpr std::size_t max_payload_size() noexcept {
-  return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
-}
-
-} // namespace
+namespace {} // namespace
 
 Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
   id_( id ), keys_( keys ), state_( WorkerState::IDLE ),
@@ -50,10 +45,10 @@ void Worker::stop() {
 std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
   if ( payload.empty() ) return 0;
 
-  if ( payload.size() > max_payload_size() )
+  if ( payload.size() > core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
     throw std::invalid_argument( "Payload exceeds maximum chunk size" );
 
-  if ( ! eof && payload.size() != max_payload_size() )
+  if ( ! eof && payload.size() != core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
@@ -68,6 +63,10 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
   for ( std::size_t i = 0; i < count; ++i ) {
     const auto size = std::min( sequence_size, payload.size() - processed );
     const auto sequence = core::Sequence::build( payload.subspan( processed, size ), eof && i + 1 == count );
+
+    for ( std::size_t j = 0; j < sequence.count; ++j ) {
+      const auto block = crypto::Cipher::encrypt( sequence.blocks[ j ], keys_ );
+    }
   }
 }
 
