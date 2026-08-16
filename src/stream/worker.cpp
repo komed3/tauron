@@ -15,6 +15,8 @@ Worker::Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys 
 WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
+
+  state_ = WorkerState::PROCESSING;
 }
 
 WorkerId Worker::id() const {
