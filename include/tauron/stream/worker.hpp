@@ -10,7 +10,7 @@
 namespace tauron::stream {
 
 using WorkerId = std::uint8_t;
-using Time = std::chrono::steady_clock::time_point;
+using TimePoint = std::chrono::steady_clock::time_point;
 
 enum class Operation {
   ENCRYPT,
@@ -47,7 +47,7 @@ public:
 
   std::size_t bytes_processed() const;
   std::size_t bytes_written() const;
-  Time last_progress() const;
+  TimePoint last_progress() const;
 
 private:
   WorkerId id;
@@ -56,7 +56,7 @@ private:
   WorkerState state;
   std::size_t processed;
   std::size_t written;
-  Time time_point;
+  TimePoint time_point;
 };
 
 }
