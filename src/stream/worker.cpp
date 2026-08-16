@@ -12,6 +12,16 @@ inline constexpr std::size_t chunk_size() noexcept {
   return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
 
+std::size_t encrypt(
+  std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
+  bool eof, const crypto::RoundKeys& keys
+);
+
+std::size_t decrypt(
+  std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
+  const crypto::RoundKeys& keys
+);
+
 } // namespace
 
 Worker::Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys ) :
