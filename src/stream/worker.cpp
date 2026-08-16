@@ -25,7 +25,7 @@ WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< st
   if ( payload.size() > chunk_size() )
     throw std::invalid_argument( "Payload exceeds maximum chunk size" );
 
-  if ( eof && payload.size() < chunk_size() )
+  if ( ! eof && payload.size() != chunk_size() )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
   state_ = WorkerState::PROCESSING;
