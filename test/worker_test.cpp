@@ -9,6 +9,7 @@
 #include "tauron/stream/worker.hpp"
 #include "tauron/utils/random.hpp"
 
+using namespace tauron::core;
 using namespace tauron::crypto;
 using namespace tauron::stream;
 using namespace tauron::utils;
@@ -27,8 +28,8 @@ static std::vector< std::uint8_t > makePayload( const std::size_t size ) {
 }
 
 static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payload, const bool eof ) {
-  const auto sequencePayload = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_PAYLOAD;
-  const auto sequenceCiphertext = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_SIZE;
+  const auto sequencePayload = SEQ_BLOCKS * BLOCK_PAYLOAD;
+  const auto sequenceCiphertext = SEQ_BLOCKS * BLOCK_SIZE;
   const auto count = payload.empty() ? 0 : ( payload.size() + sequencePayload - 1 ) / sequencePayload;
 
   std::vector< std::uint8_t > encrypted( count * sequenceCiphertext );
@@ -66,10 +67,10 @@ int main() {
 
   Worker worker( 1, keys );
 
-  const auto sequencePayload = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_PAYLOAD;
-  const auto sequenceCiphertext = tauron::core::SEQ_BLOCKS * tauron::core::BLOCK_SIZE;
-  const auto maxPayload = tauron::core::CHUNK_SEQS * sequencePayload;
-  const auto maxCiphertext = tauron::core::CHUNK_SEQS * sequenceCiphertext;
+  const auto sequencePayload = SEQ_BLOCKS * BLOCK_PAYLOAD;
+  const auto sequenceCiphertext = SEQ_BLOCKS * BLOCK_SIZE;
+  const auto maxPayload = CHUNK_SEQS * sequencePayload;
+  const auto maxCiphertext = CHUNK_SEQS * sequenceCiphertext;
 
   // 1. Initial state
   {
@@ -103,6 +104,30 @@ int main() {
       roundtrip( worker, makePayload( 1024 ), true );
 
     printResult( "Small EOF payloads", passed );
+    allPassed &= passed;
+  }
+
+  // 4. Block boundaries
+  {
+    const bool passed =
+      roundtrip( worker, makePayload( BLOCK_PAYLOAD - 1 ), true ) &&
+      roundtrip( worker, makePayload( BLOCK_PAYLOAD ), true ) &&
+      roundtrip( worker, makePayload( BLOCK_PAYLOAD + 1 ), true );
+
+    printResult( "Block payload boundaries", passed );
+    allPassed &= passed;
+  }
+
+  // 5. Sequence boundaries
+  {
+    const bool passed =
+      roundtrip( worker, makePayload( sequencePayload - 1 ), true ) &&
+      roundtrip( worker, makePayload( sequencePayload ), true ) &&
+      roundtrip( worker, makePayload( sequencePayload + 1 ), true ) &&
+      roundtrip( worker, makePayload( sequencePayload * 2 ), true ) &&
+      roundtrip( worker, makePayload( sequencePayload * 2 + 1 ), true );
+
+    printResult( "Sequence boundaries", passed );
     allPassed &= passed;
   }
 
