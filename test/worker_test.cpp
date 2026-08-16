@@ -44,6 +44,8 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
   if ( decryptedResult.state != WorkerResultState::COMPLETED ) return false;
   if ( decryptedResult.bytes_read != encrypted.size() ) return false;
   if ( decryptedResult.bytes_written != payload.size() ) return false;
+
+  return std::equal( payload.begin(), payload.end(), decrypted.begin() );
 }
 
 int main() {
