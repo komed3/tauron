@@ -12,6 +12,11 @@ Worker::Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys 
   id_( id ), operation_( operation ), state_( WorkerState::IDLE ), keys( keys ),
   processed( 0 ), written( 0 ), time( Clock::now() ) {}
 
+WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
+  if ( state_ != WorkerState::IDLE )
+    return { WorkerResultState::FAILED, 0, 0 };
+}
+
 WorkerId Worker::id() const {
   return id_;
 }
