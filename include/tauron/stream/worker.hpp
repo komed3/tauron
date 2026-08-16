@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <span>
@@ -35,14 +36,18 @@ struct WorkerResult {
 
 class Worker {
 public:
-  explicit Worker( WorkerId id, Operation operation, crypto::RoundKeys& keys );
+  explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
   WorkerResult run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   void stop();
+
+  WorkerId id() const;
+  Operation operation() const;
+  WorkerState state() const {};
 
 private:
   WorkerId id;
   Operation operation;
-  crypto::RoundKeys& keys;
+  crypto::RoundKeys keys;
   WorkerState state;
 };
 
