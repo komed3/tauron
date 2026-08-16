@@ -69,10 +69,25 @@ int main() {
 
   // 1. Initial state
   {
-    const bool passed = worker.id() == 1 && worker.state() == WorkerState::IDLE &&
+    const bool passed =
+      worker.id() == 1 && worker.state() == WorkerState::IDLE &&
       worker.bytesProcessed() == 0 && worker.bytesWritten() == 0;
 
     printResult( "Worker initial state", passed );
+    allPassed &= passed;
+  }
+
+  // 2. Empty payload
+  {
+    std::vector< std::uint8_t > output;
+    const auto result = worker.run( Operation::ENCRYPT, {}, output, true );
+
+    const bool passed =
+      result.state == WorkerResultState::COMPLETED && result.bytes_read == 0 &&
+      result.bytes_written == 0 && worker.bytesProcessed() == 0 && worker.bytesWritten() == 0 &&
+      worker.state() == WorkerState::IDLE;
+
+    printResult( "Empty payload", passed );
     allPassed &= passed;
   }
 
