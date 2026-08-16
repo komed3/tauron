@@ -18,6 +18,7 @@ inline constexpr std::size_t MIN_ROUNDS = 2;
 inline constexpr std::size_t MAX_ROUNDS = 128;
 
 inline constexpr std::size_t SEQ_BLOCKS = 256;
+inline constexpr std::size_t CHUNK_SEQS = 128;
 
 inline constexpr std::uint8_t KEY_PERMUT_DOMAIN = 0x01;
 inline constexpr std::uint8_t SEQ_PERMUT_DOMAIN = 0x02;
