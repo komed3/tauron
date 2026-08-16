@@ -75,7 +75,11 @@ std::size_t decrypt(
 
       blocks[ j ] = crypto::Cipher::decrypt( blocks[ j ], keys );
     }
+
+    written += core::Sequence::parse( blocks, output.subspan( written ) );
   }
+
+  return written;
 }
 
 } // namespace
