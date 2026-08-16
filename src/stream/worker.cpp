@@ -28,6 +28,9 @@ WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< st
   if ( ! eof && payload.size() != chunk_size() )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
+  if ( output.size() < payload.size() )
+    throw std::invalid_argument( "Output buffer is too small" );
+
   state_ = WorkerState::PROCESSING;
 }
 
