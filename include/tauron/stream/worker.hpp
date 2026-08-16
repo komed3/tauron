@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "tauron/crypto/keygen.hpp"
+
 namespace tauron::stream {
 
 using WorkerId = uint8_t;
@@ -18,7 +20,9 @@ enum class WorkerState {
 
 class Worker {
 public:
-  explicit Worker( WorkerId id, Operation operation );
+  explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
+  void run();
+  void stop();
 
 private:
   WorkerId id;
