@@ -97,6 +97,9 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
 
   const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_SIZE;
   const auto count = payload.size() / sequence_size;
+
+  if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
+    throw std::invalid_argument( "Output buffer is too small" );
 }
 
 void Worker::reset_stats() {
