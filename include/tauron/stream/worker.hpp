@@ -43,7 +43,6 @@ public:
   void stop();
 
   WorkerId id() const;
-  Operation operation() const;
   WorkerState state() const;
 
   std::size_t bytes_processed() const;
@@ -51,15 +50,16 @@ public:
   TimePoint last_progress() const;
 
 private:
+  std::size_t encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
+  std::size_t decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output );
+
   WorkerId id_;
-  Operation operation_;
+  crypto::RoundKeys keys_;
   WorkerState state_;
 
-  crypto::RoundKeys keys;
-
-  std::size_t processed;
-  std::size_t written;
-  TimePoint time;
+  std::size_t processed_;
+  std::size_t written_;
+  TimePoint time_;
 };
 
 }
