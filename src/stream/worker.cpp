@@ -124,6 +124,10 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
       std::span< const core::DataBlock >( blocks.data(), block_count ),
       output.subspan( written )
     );
+
+    processed += size;
+    written += parsed;
+    update_progress( processed, written );
   }
 }
 
