@@ -20,37 +20,42 @@ inline constexpr std::size_t MAX_CIPHERTEXT_SIZE = core::CHUNK_SEQS * SEQ_CIPHER
 } // namespace
 
 Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
-  id_( id ), keys_( keys ), state_( WorkerState::IDLE ),
+  id_( id ), keys_( keys ), state_( WorkerState::IDLE ), stop_requested_( false ),
   processed_( 0 ), written_( 0 ), time_( Clock::now() ) {}
 
 void Worker::stop() {
-  if ( state_ == WorkerState::PROCESSING )
-    state_ = WorkerState::CANCELLED;
+  if ( state_.load( std::memory_order_relaxed ) == WorkerState::PROCESSING )
+    stop_requested_.store( true, std::memory_order_relaxed );
 }
 
 WorkerResult Worker::run(
   Operation operation, std::span< const std::uint8_t > payload,
   std::span< std::uint8_t > output, bool eof
 ) {
-  if ( state_ != WorkerState::IDLE )
+  if ( state_.load( std::memory_order_relaxed ) != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
 
   resetStats();
-  state_ = WorkerState::PROCESSING;
+  stop_requested_.store( false, std::memory_order_relaxed );
+  state_.store( WorkerState::PROCESSING, std::memory_order_relaxed );
 
   try {
     const auto size = operation == Operation::ENCRYPT
       ? encrypt( payload, output, eof )
       : decrypt( payload, output );
 
-    const auto state = state_ == WorkerState::CANCELLED
+    const auto state = state_.load( std::memory_order_relaxed ) == WorkerState::CANCELLED
       ? WorkerResultState::CANCELLED
       : WorkerResultState::COMPLETED;
 
-    state_ = WorkerState::IDLE;
+    state_.store( WorkerState::IDLE, std::memory_order_relaxed );
+    stop_requested_.store( false, std::memory_order_relaxed );
+
     return { state, payload.size(), size };
   } catch ( ... ) {
-    state_ = WorkerState::IDLE;
+    state_.store( WorkerState::IDLE, std::memory_order_relaxed );
+    stop_requested_.store( false, std::memory_order_relaxed );
+
     throw;
   }
 }
@@ -86,8 +91,10 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
     processed += size;
     updateProgress( processed, written );
 
-    if ( state_ == WorkerState::CANCELLED )
+    if ( stop_requested_.load( std::memory_order_relaxed ) ) {
+      state_.store( WorkerState::CANCELLED, std::memory_order_relaxed );
       return written;
+    }
   }
 
   return written;
@@ -134,8 +141,10 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
     written += parsed;
     updateProgress( processed, written );
 
-    if ( state_ == WorkerState::CANCELLED )
+    if ( stop_requested_.load( std::memory_order_relaxed ) ) {
+      state_.store( WorkerState::CANCELLED, std::memory_order_relaxed );
       return written;
+    }
   }
 
   return written;
@@ -158,11 +167,11 @@ WorkerId Worker::id() const {
 }
 
 WorkerState Worker::state() const {
-  return state_;
+  return state_.load( std::memory_order_relaxed );
 }
 
 bool Worker::ready() const {
-  return state_ == WorkerState::IDLE;
+  return state_.load( std::memory_order_relaxed ) == WorkerState::IDLE;
 }
 
 std::size_t Worker::bytesProcessed() const {

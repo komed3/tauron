@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
@@ -63,7 +64,9 @@ private:
 
   WorkerId id_;
   crypto::RoundKeys keys_;
-  WorkerState state_;
+  std::atomic< WorkerState > state_;
+
+  std::atomic< bool > stop_requested_;
 
   std::size_t processed_;
   std::size_t written_;
