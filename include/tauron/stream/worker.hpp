@@ -14,6 +14,10 @@ enum class Operation {
 class Worker {
 public:
   explicit Worker( WorkerId id, Operation operation );
+
+private:
+  WorkerId id;
+  Operation operation;
 };
 
 }
