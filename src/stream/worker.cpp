@@ -35,12 +35,19 @@ WorkerResult Worker::run(
   if ( ! eof && payload.size() != max_payload_size() )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
-  reset_stats();
   state_ = WorkerState::PROCESSING;
+  reset_stats();
 
   const auto size = operation == Operation::ENCRYPT
     ? encrypt( payload, output, eof )
     : decrypt( payload, output );
+
+  const auto state = state_ == WorkerState::CANCELLED
+    ? WorkerResultState::CANCELLED
+    : WorkerResultState::COMPLETED;
+
+  state_ = WorkerState::IDLE;
+  return { state, payload.size(), size };
 }
 
 void Worker::stop() {
