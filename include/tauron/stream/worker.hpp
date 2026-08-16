@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <span>
 
 #include "tauron/crypto/keygen.hpp"
 
@@ -21,7 +22,7 @@ enum class WorkerState {
 class Worker {
 public:
   explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
-  void run();
+  void run( std::span< const uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   void stop();
 
 private:
