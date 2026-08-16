@@ -1,5 +1,6 @@
 #include "tauron/stream/worker.hpp"
 
+#include <memory>
 #include <stdexcept>
 
 #include "tauron/core/constants.hpp"
@@ -66,6 +67,9 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
 
     for ( std::size_t j = 0; j < sequence.count; ++j ) {
       const auto block = crypto::Cipher::encrypt( sequence.blocks[ j ], keys_ );
+
+      std::copy( block.begin(), block.end(), output.begin() + written );
+      written += block.size();
     }
   }
 }
