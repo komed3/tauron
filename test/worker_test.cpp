@@ -141,5 +141,13 @@ int main() {
     allPassed &= passed;
   }
 
+  // 7. Maximum chunk minus one byte
+  {
+    const bool passed = roundtrip( worker, makePayload( maxPayload - 1 ), true );
+
+    printResult( "Maximum EOF chunk", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
