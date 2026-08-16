@@ -1,6 +1,7 @@
 #include "tauron/stream/worker.hpp"
 
 #include <algorithm>
+#include <array>
 #include <stdexcept>
 
 #include "tauron/core/constants.hpp"
@@ -100,6 +101,10 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
 
   if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
     throw std::invalid_argument( "Output buffer is too small" );
+
+  std::array< core::DataBlock, core::SEQ_BLOCKS > blocks {};
+  std::size_t processed = 0;
+  std::size_t written = 0;
 }
 
 void Worker::reset_stats() {
