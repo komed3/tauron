@@ -131,5 +131,15 @@ int main() {
     allPassed &= passed;
   }
 
+  // 6. Maximum chunk
+  {
+    const bool passed =
+      roundtrip( worker, makePayload( maxPayload ), false ) &&
+      roundtrip( worker, makePayload( maxPayload ), true );
+
+    printResult( "Maximum chunk", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
