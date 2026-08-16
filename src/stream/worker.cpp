@@ -4,6 +4,7 @@
 
 #include "tauron/core/constants.hpp"
 #include "tauron/core/sequence.hpp"
+#include "tauron/crypto/cipher.hpp"
 
 namespace tauron::stream {
 
@@ -36,6 +37,13 @@ std::size_t encrypt(
     const bool last = i + 1 == count;
 
     const auto sequence = core::Sequence::build( payload.subspan( offset, size ), eof && last );
+
+    for ( std::size_t j = 0; j < sequence.count; ++j ) {
+      const auto block = crypto::Cipher::encrypt( sequence.blocks[ j ], keys );
+
+      std::copy( block.begin(), block.end(), output.begin() + written );
+      written += block.size();
+    }
   }
 }
 
