@@ -9,7 +9,11 @@ namespace {
 } // namespace
 
 Worker::Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys ) :
-  id( id ), operation( operation ), keys( keys ), state( WorkerState::IDLE ),
-  processed( 0 ), written( 0 ), time_point( Clock::now() ) {}
+  id_( id ), operation_( operation ), state_( WorkerState::IDLE ), keys( keys ),
+  processed( 0 ), written( 0 ), time( Clock::now() ) {}
+
+WorkerId Worker::id() const {
+  return id_;
+}
 
 }

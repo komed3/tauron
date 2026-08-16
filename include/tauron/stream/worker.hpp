@@ -51,13 +51,15 @@ public:
   TimePoint last_progress() const;
 
 private:
-  WorkerId id;
-  Operation operation;
+  WorkerId id_;
+  Operation operation_;
+  WorkerState state_;
+
   crypto::RoundKeys keys;
-  WorkerState state;
+
   std::size_t processed;
   std::size_t written;
-  TimePoint time_point;
+  TimePoint time;
 };
 
 }
