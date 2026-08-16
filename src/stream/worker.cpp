@@ -10,7 +10,14 @@
 
 namespace tauron::stream {
 
-namespace {} // namespace
+namespace {
+
+inline constexpr std::size_t SEQ_PAYLOAD_SIZE =    core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
+inline constexpr std::size_t SEQ_CIPHERTEXT_SIZE = core::SEQ_BLOCKS * core::BLOCK_SIZE;
+inline constexpr std::size_t MAX_PAYLOAD_SIZE =    core::CHUNK_SEQS * SEQ_PAYLOAD_SIZE;
+inline constexpr std::size_t MAX_CIPHERTEXT_SIZE = core::CHUNK_SEQS * SEQ_CIPHERTEXT_SIZE;
+
+} // namespace
 
 Worker::Worker( WorkerId id, const crypto::RoundKeys& keys ) :
   id_( id ), keys_( keys ), state_( WorkerState::IDLE ),
@@ -51,23 +58,22 @@ void Worker::stop() {
 std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof ) {
   if ( payload.empty() ) return 0;
 
-  if ( payload.size() > core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
+  if ( payload.size() > MAX_PAYLOAD_SIZE )
     throw std::invalid_argument( "Payload exceeds maximum chunk size" );
 
-  if ( ! eof && payload.size() != core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
+  if ( ! eof && payload.size() != MAX_PAYLOAD_SIZE )
     throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 
-  const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
-  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+  const auto count = ( payload.size() + SEQ_PAYLOAD_SIZE - 1 ) / SEQ_PAYLOAD_SIZE;
 
-  if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_SIZE )
+  if ( output.size() < count * SEQ_CIPHERTEXT_SIZE )
     throw std::invalid_argument( "Output buffer is too small" );
 
   std::size_t processed = 0;
   std::size_t written = 0;
 
   for ( std::size_t i = 0; i < count; ++i ) {
-    const auto size = std::min( sequence_size, payload.size() - processed );
+    const auto size = std::min( SEQ_PAYLOAD_SIZE, payload.size() - processed );
     const auto sequence = core::Sequence::build( payload.subspan( processed, size ), eof && i + 1 == count );
 
     for ( std::size_t j = 0; j < sequence.count; ++j ) {
@@ -90,16 +96,15 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {
   if ( payload.empty() ) return 0;
 
-  if ( payload.size() > core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_SIZE )
+  if ( payload.size() > MAX_CIPHERTEXT_SIZE )
     throw std::invalid_argument( "Payload exceeds maximum chunk size" );
 
   if ( payload.size() % core::BLOCK_SIZE != 0 )
     throw std::invalid_argument( "Payload size is not aligned to block size" );
 
-  const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_SIZE;
-  const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
+  const auto count = ( payload.size() + SEQ_CIPHERTEXT_SIZE - 1 ) / SEQ_CIPHERTEXT_SIZE;
 
-  if ( output.size() < count * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD )
+  if ( output.size() < count * SEQ_PAYLOAD_SIZE )
     throw std::invalid_argument( "Output buffer is too small" );
 
   std::array< core::DataBlock, core::SEQ_BLOCKS > blocks {};
@@ -107,7 +112,7 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
   std::size_t written = 0;
 
   for ( std::size_t i = 0; i < count; ++i ) {
-    const auto size = std::min( sequence_size, payload.size() - processed );
+    const auto size = std::min( SEQ_CIPHERTEXT_SIZE, payload.size() - processed );
     const auto block_count = size / core::BLOCK_SIZE;
 
     for ( std::size_t j = 0; j < block_count; ++j ) {
