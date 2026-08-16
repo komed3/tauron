@@ -215,5 +215,31 @@ int main() {
     allPassed &= passed;
   }
 
+  // 12. Reject unaligned ciphertext
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( tauron::core::BLOCK_SIZE + 1 );
+      std::vector< std::uint8_t > output( sequencePayload );
+
+      worker.run( Operation::DECRYPT, payload, output );
+    } ) && worker.ready();
+
+    printResult( "Reject unaligned ciphertext", passed );
+    allPassed &= passed;
+  }
+
+  // 13. Reject undersized decryption buffer
+  {
+    const bool passed = throws( [&] {
+      const auto payload = makePayload( sequenceCiphertext );
+      std::vector< std::uint8_t > output( sequencePayload - 1 );
+
+      worker.run( Operation::DECRYPT, payload, output );
+    } ) && worker.ready();
+
+    printResult( "Reject undersized decryption buffer", passed );
+    allPassed &= passed;
+  }
+
   return allPassed ? 0 : 1;
 }
