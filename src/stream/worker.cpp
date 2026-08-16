@@ -18,6 +18,10 @@ inline constexpr std::size_t max_payload_size() noexcept {
   return core::CHUNK_SEQS * core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
 
+inline constexpr std::size_t max_seq_size() noexcept {
+  return core::SEQ_BLOCKS * core::BLOCK_SIZE;
+}
+
 inline constexpr std::size_t seq_payload_size() noexcept {
   return core::SEQ_BLOCKS * core::BLOCK_PAYLOAD;
 }
@@ -28,7 +32,6 @@ std::size_t encrypt(
 ) {
   const auto sequence_size = seq_payload_size();
   const auto count = ( payload.size() + sequence_size - 1 ) / sequence_size;
-
   std::size_t written = 0;
 
   for ( std::size_t i = 0; i < count; ++i ) {
@@ -52,7 +55,11 @@ std::size_t encrypt(
 std::size_t decrypt(
   std::span< const std::uint8_t > payload, std::span< std::uint8_t > output,
   const crypto::RoundKeys& keys
-);
+) {
+  const auto sequence_size = max_seq_size();
+  const auto count = payload.size() / sequence_size;
+  std::size_t written = 0;
+}
 
 } // namespace
 
