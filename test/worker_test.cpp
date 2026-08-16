@@ -50,7 +50,7 @@ static bool roundtrip( Worker& worker, const std::vector< std::uint8_t >& payloa
   if ( decryptedResult.bytes_read != encryptedResult.bytes_written ) return false;
   if ( decryptedResult.bytes_written != payload.size() ) return false;
 
-  return std::equal( payload.begin(), payload.end(), decrypted.begin() );
+  return worker.ready() && std::equal( payload.begin(), payload.end(), decrypted.begin() );
 }
 
 static bool throws( const auto& function ) {
@@ -84,8 +84,10 @@ int main() {
   // 1. Initial state
   {
     const bool passed =
-      worker.id() == 1 && worker.state() == WorkerState::IDLE &&
-      worker.bytesProcessed() == 0 && worker.bytesWritten() == 0;
+      worker.id() == 1 &&
+      worker.ready() &&
+      worker.bytesProcessed() == 0 &&
+      worker.bytesWritten() == 0;
 
     printResult( "Worker initial state", passed );
     allPassed &= passed;
@@ -97,9 +99,12 @@ int main() {
     const auto result = worker.run( Operation::ENCRYPT, {}, output, true );
 
     const bool passed =
-      result.state == WorkerResultState::COMPLETED && result.bytes_read == 0 &&
-      result.bytes_written == 0 && worker.bytesProcessed() == 0 && worker.bytesWritten() == 0 &&
-      worker.state() == WorkerState::IDLE;
+      result.state == WorkerResultState::COMPLETED &&
+      result.bytes_read == 0 &&
+      result.bytes_written == 0 &&
+      worker.bytesProcessed() == 0 &&
+      worker.bytesWritten() == 0 &&
+      worker.ready();
 
     printResult( "Empty payload", passed );
     allPassed &= passed;
@@ -165,7 +170,7 @@ int main() {
       std::vector< std::uint8_t > output( sequenceCiphertext );
 
       worker.run( Operation::ENCRYPT, payload, output, false );
-    } ) && worker.state() == WorkerState::IDLE;
+    } ) && worker.ready();
 
     printResult( "Reject incomplete non-EOF payload", passed );
     allPassed &= passed;
@@ -178,7 +183,7 @@ int main() {
       std::vector< std::uint8_t > output( maxCiphertext + sequenceCiphertext );
 
       worker.run( Operation::ENCRYPT, payload, output, true );
-    } ) && worker.state() == WorkerState::IDLE;
+    } ) && worker.ready();
 
     printResult( "Reject oversized encryption payload", passed );
     allPassed &= passed;
@@ -191,7 +196,7 @@ int main() {
       std::vector< std::uint8_t > output( sequenceCiphertext - 1 );
 
       worker.run( Operation::ENCRYPT, payload, output, true );
-    } ) && worker.state() == WorkerState::IDLE;
+    } ) && worker.ready();
 
     printResult( "Reject undersized encryption buffer", passed );
     allPassed &= passed;
@@ -204,7 +209,7 @@ int main() {
       std::vector< std::uint8_t > output( maxPayload );
 
       worker.run( Operation::DECRYPT, payload, output );
-    } ) && worker.state() == WorkerState::IDLE;
+    } ) && worker.ready();
 
     printResult( "Reject oversized ciphertext", passed );
     allPassed &= passed;
