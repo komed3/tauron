@@ -88,6 +88,9 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
 
 std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output ) {
   if ( payload.empty() ) return 0;
+
+  const auto sequence_size = core::SEQ_BLOCKS * core::BLOCK_SIZE;
+  const auto count = payload.size() / sequence_size;
 }
 
 void Worker::reset_stats() {
