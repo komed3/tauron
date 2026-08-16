@@ -45,6 +45,8 @@ std::size_t encrypt(
       written += block.size();
     }
   }
+
+  return written;
 }
 
 std::size_t decrypt(
