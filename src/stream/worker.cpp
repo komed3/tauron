@@ -23,4 +23,24 @@ void Worker::update_progress( std::size_t processed, std::size_t written ) {
   time_ = Clock::now();
 }
 
+WorkerId Worker::id() const {
+  return id_;
+}
+
+WorkerState Worker::state() const {
+  return state_;
+}
+
+std::size_t Worker::bytes_processed() const {
+  return processed_;
+}
+
+std::size_t Worker::bytes_written() const {
+  return written_;
+}
+
+TimePoint Worker::last_progress() const {
+  return time_;
+}
+
 }
