@@ -1,5 +1,6 @@
 #include "tauron/core/block.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "tauron/utils/checksum.hpp"

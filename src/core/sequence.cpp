@@ -1,6 +1,8 @@
 #include "tauron/core/sequence.hpp"
 
+#include <algorithm>
 #include <stdexcept>
+#include <utility>
 
 #include "tauron/utils/permutation.hpp"
 #include "tauron/utils/random.hpp"
