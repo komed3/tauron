@@ -30,7 +30,7 @@ void Worker::stop() {
 
 WorkerResult Worker::run(
   Operation operation, std::span< const std::uint8_t > payload,
-  std::span< std::uint8_t > output, bool eof = false
+  std::span< std::uint8_t > output, bool eof
 ) {
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
