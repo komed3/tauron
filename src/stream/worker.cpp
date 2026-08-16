@@ -19,6 +19,10 @@ WorkerResult Worker::run( std::span< const std::uint8_t > payload, std::span< st
   state_ = WorkerState::PROCESSING;
 }
 
+void Worker::stop() {
+  state_ = WorkerState::CANCELLED;
+}
+
 WorkerId Worker::id() const {
   return id_;
 }
