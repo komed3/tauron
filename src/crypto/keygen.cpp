@@ -1,5 +1,7 @@
 #include "tauron/crypto/keygen.hpp"
 
+#include <algorithm>
+#include <bit>
 #include <sodium.h>
 #include <stdexcept>
 

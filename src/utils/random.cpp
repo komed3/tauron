@@ -1,6 +1,6 @@
 #include "tauron/utils/random.hpp"
 
-#include <memory>
+#include <algorithm>
 #include <stdexcept>
 
 #ifdef _WIN32

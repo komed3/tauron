@@ -1,5 +1,7 @@
 #include "tauron/crypto/cipher.hpp"
 
+#include <bit>
+
 namespace tauron::crypto {
 
 namespace {

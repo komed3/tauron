@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <span>
-#include <vector>
 
 #include "tauron/core/block.hpp"
 #include "tauron/core/constants.hpp"
