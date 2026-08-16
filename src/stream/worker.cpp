@@ -1,7 +1,6 @@
 #include "tauron/stream/worker.hpp"
 
 #include <algorithm>
-#include <memory>
 #include <stdexcept>
 
 #include "tauron/core/constants.hpp"
@@ -26,17 +25,21 @@ WorkerResult Worker::run(
   reset_stats();
   state_ = WorkerState::PROCESSING;
 
-  const auto size = operation == Operation::ENCRYPT
-    ? encrypt( payload, output, eof )
-    : decrypt( payload, output );
+  try {
+    const auto size = operation == Operation::ENCRYPT
+      ? encrypt( payload, output, eof )
+      : decrypt( payload, output );
 
-  const auto state = state_ == WorkerState::CANCELLED
-    ? WorkerResultState::CANCELLED
-    : WorkerResultState::COMPLETED;
+    const auto state = state_ == WorkerState::CANCELLED
+      ? WorkerResultState::CANCELLED
+      : WorkerResultState::COMPLETED;
 
-  state_ = WorkerState::IDLE;
-
-  return { state, payload.size(), size };
+    state_ = WorkerState::IDLE;
+    return { state, payload.size(), size };
+  } catch ( ... ) {
+    state_ = WorkerState::IDLE;
+    throw;
+  }
 }
 
 void Worker::stop() {
