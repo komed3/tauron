@@ -28,6 +28,12 @@ WorkerResult Worker::run(
 ) {
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
+
+  if ( payload.size() > max_payload_size() )
+    throw std::invalid_argument( "Payload exceeds maximum chunk size" );
+
+  if ( ! eof && payload.size() != max_payload_size() )
+    throw std::invalid_argument( "Payload must be full size unless EOF is set" );
 }
 
 void Worker::stop() {
