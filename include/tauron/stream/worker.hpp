@@ -11,6 +11,11 @@ enum class Operation {
   DECRYPT
 };
 
+enum class WorkerState {
+  IDLE,
+  PROCESSING
+};
+
 class Worker {
 public:
   explicit Worker( WorkerId id, Operation operation );
@@ -18,6 +23,7 @@ public:
 private:
   WorkerId id;
   Operation operation;
+  WorkerState state;
 };
 
 }
