@@ -11,9 +11,15 @@ void Worker::stop() {
     state_ = WorkerState::CANCELLED;
 }
 
-void Worker::reset() {
+void Worker::reset_stats() {
   processed_ = 0;
   written_ = 0;
+  time_ = Clock::now();
+}
+
+void Worker::update_progress( std::size_t processed, std::size_t written ) {
+  processed_ = processed;
+  written_ = written;
   time_ = Clock::now();
 }
 
