@@ -10,7 +10,8 @@
 namespace tauron::stream {
 
 using WorkerId = std::uint8_t;
-using TimePoint = std::chrono::steady_clock::time_point;
+using Clock = std::chrono::steady_clock;
+using TimePoint = Clock::time_point;
 
 enum class Operation {
   ENCRYPT,
