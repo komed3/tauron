@@ -1,5 +1,6 @@
 #include "tauron/stream/worker.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <stdexcept>
 
