@@ -1,0 +1,18 @@
+[PASS] Worker initial state
+[PASS] Empty payload
+[PASS] Small EOF payloads
+[PASS] Block payload boundaries
+[PASS] Sequence boundaries
+[PASS] Maximum chunk
+[PASS] Maximum EOF chunk
+[PASS] Reject incomplete non-EOF payload
+[PASS] Reject oversized encryption payload
+[PASS] Reject undersized encryption buffer
+[PASS] Reject oversized ciphertext
+[PASS] Reject unaligned ciphertext
+[PASS] Reject undersized decryption buffer
+[PASS] Worker reusable after exception
+[PASS] Stop while idle
+[PASS] Stop while processing
+
+Result:     PASS
