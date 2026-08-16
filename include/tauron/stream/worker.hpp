@@ -7,7 +7,7 @@
 
 namespace tauron::stream {
 
-using WorkerId = uint8_t;
+using WorkerId = std::uint8_t;
 
 enum class Operation {
   ENCRYPT,
@@ -19,10 +19,22 @@ enum class WorkerState {
   PROCESSING
 };
 
+enum class WorkerResultState {
+  COMPLETED,
+  CANCELLED,
+  FAILED
+};
+
+struct WorkerResult {
+  WorkerResultState state;
+  std::size_t bytes_read;
+  std::size_t bytes_written;
+};
+
 class Worker {
 public:
   explicit Worker( WorkerId id, Operation operation, const crypto::RoundKeys& keys );
-  void run( std::span< const uint8_t > payload, std::span< std::uint8_t > output, bool eof );
+  WorkerResult run( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   void stop();
 
 private:
