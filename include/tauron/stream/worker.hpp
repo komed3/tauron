@@ -45,16 +45,16 @@ public:
   WorkerId id() const;
   WorkerState state() const;
 
-  std::size_t bytes_processed() const;
-  std::size_t bytes_written() const;
-  TimePoint last_progress() const;
+  std::size_t bytesProcessed() const;
+  std::size_t bytesWritten() const;
+  TimePoint lastProgress() const;
 
 private:
   std::size_t encrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output, bool eof );
   std::size_t decrypt( std::span< const std::uint8_t > payload, std::span< std::uint8_t > output );
 
-  void reset_stats();
-  void update_progress( std::size_t processed, std::size_t written );
+  void resetStats();
+  void updateProgress( std::size_t processed, std::size_t written );
 
   WorkerId id_;
   crypto::RoundKeys keys_;

@@ -30,7 +30,7 @@ WorkerResult Worker::run(
   if ( state_ != WorkerState::IDLE )
     return { WorkerResultState::FAILED, 0, 0 };
 
-  reset_stats();
+  resetStats();
   state_ = WorkerState::PROCESSING;
 
   try {
@@ -84,7 +84,7 @@ std::size_t Worker::encrypt( std::span< const std::uint8_t > payload, std::span<
     }
 
     processed += size;
-    update_progress( processed, written );
+    updateProgress( processed, written );
 
     if ( state_ == WorkerState::CANCELLED )
       return written;
@@ -132,7 +132,7 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
 
     processed += size;
     written += parsed;
-    update_progress( processed, written );
+    updateProgress( processed, written );
 
     if ( state_ == WorkerState::CANCELLED )
       return written;
@@ -141,13 +141,13 @@ std::size_t Worker::decrypt( std::span< const std::uint8_t > payload, std::span<
   return written;
 }
 
-void Worker::reset_stats() {
+void Worker::resetStats() {
   processed_ = 0;
   written_ = 0;
   time_ = Clock::now();
 }
 
-void Worker::update_progress( std::size_t processed, std::size_t written ) {
+void Worker::updateProgress( std::size_t processed, std::size_t written ) {
   processed_ = processed;
   written_ = written;
   time_ = Clock::now();
@@ -161,15 +161,15 @@ WorkerState Worker::state() const {
   return state_;
 }
 
-std::size_t Worker::bytes_processed() const {
+std::size_t Worker::bytesProcessed() const {
   return processed_;
 }
 
-std::size_t Worker::bytes_written() const {
+std::size_t Worker::bytesWritten() const {
   return written_;
 }
 
-TimePoint Worker::last_progress() const {
+TimePoint Worker::lastProgress() const {
   return time_;
 }
 
